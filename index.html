@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f6f5c">
+  <meta name="description" content="LifeQuest English — Skills first, money later. Sống một đời người và học tiếng Anh qua từng công việc.">
+  <title>LifeQuest English — Skills first, money later.</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!--
+    Thống kê người chơi (Cloudflare Web Analytics):
+    Khi đưa lên Cloudflare Pages, bật Web Analytics trong trang quản lý,
+    rồi dán đoạn script Cloudflare cung cấp vào đây.
+  -->
+</head>
+<body>
+  <div id="app">
+    <header id="topbar" class="hidden"></header>
+    <main id="screen" aria-live="polite"></main>
+    <nav id="nav" class="hidden"></nav>
+  </div>
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+
+  <noscript>Trò chơi cần bật JavaScript.</noscript>
+
+  <!-- Dữ liệu (tạo bằng: node tools/build-data.js) -->
+  <script src="js/data.bundle.js"></script>
+  <!-- Lõi -->
+  <script src="js/core/util.js"></script>
+  <script src="js/core/config.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/srs.js"></script>
+  <script src="js/core/questions.js"></script>
+  <script src="js/core/progress.js"></script>
+  <script src="js/core/ui.js"></script>
+  <!-- Màn hình -->
+  <script src="js/screens/onboarding.js"></script>
+  <script src="js/screens/map.js"></script>
+  <script src="js/screens/dig.js"></script>
+  <script src="js/screens/market.js"></script>
+  <script src="js/screens/jobs.js"></script>
+  <script src="js/screens/home.js"></script>
+  <script src="js/screens/quests.js"></script>
+  <script src="js/screens/review.js"></script>
+  <script src="js/screens/wordbook.js"></script>
+  <script src="js/screens/profile.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

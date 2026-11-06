@@ -1,0 +1,12 @@
+{
+  "name": "lifequest-english",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LifeQuest English — Skills first, money later.",
+  "scripts": {
+    "validate": "node tools/validate-words.js data/words/*.json",
+    "build": "node tools/build-data.js",
+    "check": "npm run validate && npm run build",
+    "test": "python3 tests/smoke.py"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "main": [
+    {
+      "id": "mq1",
+      "title": "Ngày đầu ở thành phố",
+      "minLevel": 1,
+      "story": [
+        { "who": "👵", "name": "Bà chủ trọ", "en": "Welcome! This is your room.", "vi": "Chào cháu! Đây là phòng của cháu." },
+        { "who": "👵", "name": "Bà chủ trọ", "en": "The rent is due every week. Go to the dig site and find something to sell.", "vi": "Tiền trọ đóng mỗi tuần. Ra bãi đào kiếm gì đó mà bán nhé." }
+      ],
+      "objectives": [
+        { "type": "dig", "count": 5, "label": "Đập 5 tảng đá ở Bãi đào" },
+        { "type": "learn", "count": 5, "label": "Học 5 từ mới" }
+      ],
+      "reward": { "money": 40, "xp": 40 }
+    },
+    {
+      "id": "mq2",
+      "title": "Phiên chợ đầu tiên",
+      "minLevel": 3,
+      "story": [
+        { "who": "👩‍🌾", "name": "Cô Lan bán rau", "en": "Hey, newbie! Customers here speak English. Listen carefully.", "vi": "Này người mới! Khách ở đây nói tiếng Anh đấy. Nghe kỹ vào." },
+        { "who": "👩‍🌾", "name": "Cô Lan bán rau", "en": "Give them what they ask for, and you get paid.", "vi": "Đưa đúng món khách hỏi là có tiền." }
+      ],
+      "objectives": [
+        { "type": "sell", "count": 5, "label": "Bán đúng 5 món ở Chợ" },
+        { "type": "buyfood", "count": 1, "label": "Mua 1 món ăn để lấy sức" }
+      ],
+      "reward": { "money": 60, "xp": 60 }
+    },
+    {
+      "id": "mq3",
+      "title": "Ca làm đầu tiên",
+      "minLevel": 5,
+      "story": [
+        { "who": "👨‍🍳", "name": "Anh Tuấn chủ quán", "en": "We need a waiter tonight. Can you help?", "vi": "Tối nay quán thiếu người chạy bàn. Em làm được không?" },
+        { "who": "👨‍🍳", "name": "Anh Tuấn chủ quán", "en": "Be polite, listen to the customers, and don't mix up the orders!", "vi": "Lịch sự, nghe khách cho kỹ, đừng mang nhầm món nhé!" }
+      ],
+      "objectives": [
+        { "type": "shift_restaurant", "count": 1, "label": "Làm 1 ca ở Nhà hàng" },
+        { "type": "review", "count": 5, "label": "Ôn lại 5 từ" }
+      ],
+      "reward": { "money": 80, "xp": 80 }
+    },
+    {
+      "id": "mq4",
+      "title": "Đơn giao hàng đầu tiên",
+      "minLevel": 8,
+      "story": [
+        { "who": "🧑‍💼", "name": "Chị Mai điều phối", "en": "A foreign customer ordered food. Can you deliver it?", "vi": "Có khách nước ngoài đặt đồ ăn. Em giao được không?" },
+        { "who": "🧑‍💼", "name": "Chị Mai điều phối", "en": "Follow the directions and call when you are outside.", "vi": "Đi theo chỉ đường và gọi khi tới nơi nhé." }
+      ],
+      "objectives": [
+        { "type": "shift_delivery", "count": 1, "label": "Làm 1 ca Giao hàng" },
+        { "type": "learn", "count": 10, "label": "Học thêm 10 từ mới" }
+      ],
+      "reward": { "money": 120, "xp": 100 }
+    },
+    {
+      "id": "mq5",
+      "title": "Chọn con đường",
+      "minLevel": 10,
+      "story": [
+        { "who": "🧙", "name": "Ông Tư", "en": "You have worked hard. Now choose your path.", "vi": "Cháu đã chăm chỉ rồi. Giờ chọn con đường của mình đi." },
+        { "who": "🧙", "name": "Ông Tư", "en": "Skills first, money later.", "vi": "Có thể không giàu, nhưng phải giỏi." }
+      ],
+      "objectives": [
+        { "type": "sect", "count": 1, "label": "Gia nhập một môn phái" },
+        { "type": "level", "count": 12, "label": "Đạt cấp 12" }
+      ],
+      "reward": { "money": 200, "xp": 150 }
+    },
+    {
+      "id": "mq6",
+      "title": "Phòng trọ tốt hơn",
+      "minLevel": 12,
+      "story": [
+        { "who": "👵", "name": "Bà chủ trọ", "en": "There is a better room upstairs. It has air conditioning.", "vi": "Trên lầu có phòng tốt hơn, có máy lạnh đấy." }
+      ],
+      "objectives": [
+        { "type": "room", "count": 1, "label": "Nâng cấp phòng trọ" },
+        { "type": "words_known", "count": 40, "label": "Thuộc 40 từ (2 sao trở lên)" }
+      ],
+      "reward": { "money": 250, "xp": 200 }
+    },
+    {
+      "id": "mq7",
+      "title": "Người lao động giỏi nhất xóm",
+      "minLevel": 15,
+      "story": [
+        { "who": "👨‍🍳", "name": "Anh Tuấn chủ quán", "en": "Everyone talks about you. You are getting really good!", "vi": "Cả xóm khen em đấy. Em giỏi lên thật rồi!" }
+      ],
+      "objectives": [
+        { "type": "shift_any", "count": 5, "label": "Làm 5 ca (nhà hàng hoặc giao hàng)" },
+        { "type": "level", "count": 20, "label": "Đạt cấp 20" }
+      ],
+      "reward": { "money": 400, "xp": 0 }
+    }
+  ],
+  "daily": [
+    { "id": "d_dig", "type": "dig", "count": 10, "label": "Đập 10 tảng đá", "reward": { "money": 20, "xp": 15 } },
+    { "id": "d_sell", "type": "sell", "count": 5, "label": "Bán đúng 5 món ở chợ", "reward": { "money": 25, "xp": 20 }, "minLevel": 3 },
+    { "id": "d_review", "type": "review", "count": 10, "label": "Ôn 10 từ", "reward": { "money": 20, "xp": 25 } },
+    { "id": "d_learn", "type": "learn", "count": 5, "label": "Học 5 từ mới", "reward": { "money": 20, "xp": 20 } },
+    { "id": "d_rest", "type": "shift_restaurant", "count": 1, "label": "Làm 1 ca nhà hàng", "reward": { "money": 30, "xp": 25 }, "minLevel": 5 },
+    { "id": "d_deliv", "type": "shift_delivery", "count": 1, "label": "Làm 1 ca giao hàng", "reward": { "money": 30, "xp": 25 }, "minLevel": 8 },
+    { "id": "d_perfect", "type": "perfect", "count": 1, "label": "Làm 1 ca không sai câu nào", "reward": { "money": 40, "xp": 30 }, "minLevel": 5 }
+  ]
+}
