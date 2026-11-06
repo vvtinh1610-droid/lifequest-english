@@ -11,18 +11,29 @@
     digEnergy: 1,                 // năng lượng mỗi tảng đá
     shiftEnergy: 12,              // năng lượng mỗi ca làm
     shiftQuestions: 6,
-    goldChance: 0.22,
+    // Bãi đào: tỉ lệ mỗi tảng đá (phần còn lại là đá trống)
+    goldChance: 0.18,
+    itemChance: 0.70,
+    chestChance: 0.05,            // rương kho báu: vừa vàng vừa đồ vật
+    comboBonusXP: 5,              // đào trúng 3 lần liên tiếp
+    // Đồ vật ngoài chủ đề 'dig' cũng có thể đào được (đồ cụ thể, có hình)
+    digExtraWords: ['key', 'mop', 'broom', 'mirror', 'pillow', 'blanket', 'fish', 'mango', 'cabbage', 'bunch of grapes',
+      'chopsticks', 'glass', 'napkin', 'noodles', 'box', 'parcel', 'helmet', 'uniform', 'hard hat', 'safety glasses'],
+    // Chọn từ: tỉ lệ từ mới mỗi lượt (còn lại là từ đến hạn ôn)
+    newWordRatio: 0.65,
+    unlockNextAt: 0.8,            // đã gặp 80% từ vừa sức thì mở thêm từ khó hơn 1 bậc
+    recentAvoid: 6,               // tránh lặp lại 6 từ vừa gặp
     sellPrice: lv => 8 + lv * 3,  // tiền bán 1 món theo bậc tiếng Anh
     payPerCorrect: 9,
     sectLevel: 10,
 
     regions: [
-      { id: 'home', name: 'Xóm trọ', icon: '🏚️', minLevel: 1, desc: 'Phòng của bạn, nghỉ ngơi, nâng cấp phòng' },
-      { id: 'dig', name: 'Bãi đào', icon: '⛏️', minLevel: 1, desc: 'Đập đá, tìm vàng và đồ vật' },
-      { id: 'market', name: 'Chợ', icon: '🧺', minLevel: 3, desc: 'Bán đồ cho khách, mua đồ ăn' },
-      { id: 'restaurant', name: 'Nhà hàng', icon: '🍜', minLevel: 5, desc: 'Rửa chén, chạy bàn, nhận tip' },
-      { id: 'city', name: 'Thành phố', icon: '🛵', minLevel: 8, desc: 'Giao hàng, chỉ đường' },
-      { id: 'next', name: 'Sân bay', icon: '✈️', minLevel: 99, desc: 'Mở ở bản sau' },
+      { id: 'home', name: 'Xóm trọ', en: 'My room', icon: '🏚️', minLevel: 1, desc: 'Phòng của bạn, nghỉ ngơi, nâng cấp phòng' },
+      { id: 'dig', name: 'Hầm mỏ', en: 'The mine', icon: '⛏️', minLevel: 1, desc: 'Đào đá, tìm vàng và đồ vật' },
+      { id: 'market', name: 'Chợ', en: 'The market', icon: '🧺', minLevel: 3, desc: 'Bán đồ cho khách, mua đồ ăn' },
+      { id: 'restaurant', name: 'Nhà hàng', en: 'The restaurant', icon: '🍜', minLevel: 5, desc: 'Rửa chén, chạy bàn, nhận tip' },
+      { id: 'city', name: 'Thành phố', en: 'The city', icon: '🛵', minLevel: 8, desc: 'Giao hàng, chỉ đường' },
+      { id: 'next', name: 'Sân bay', en: 'The airport', icon: '✈️', minLevel: 99, desc: 'Mở ở bản sau' },
     ],
 
     jobs: {

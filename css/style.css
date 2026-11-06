@@ -39,7 +39,7 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
   display: flex;
   flex-direction: column;
 }
-#screen { flex: 1; padding: 12px 14px 96px; }
+#screen { flex: 1; padding: 12px 14px 150px; }
 
 /* ---------- Thanh trên ---------- */
 #topbar {
@@ -174,22 +174,88 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
   content: "🔒"; position: absolute; top: 8px; right: 10px; font-size: 16px;
 }
 
-/* ---------- Bãi đào ---------- */
-.dig-field {
-  background: linear-gradient(#a57a4f, #6e4b2e);
-  border-radius: var(--radius); padding: 14px;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+/* ---------- Đồng vàng (vẽ bằng CSS, luôn màu vàng trên mọi điện thoại) ---------- */
+.coin {
+  display: inline-block; width: 1em; height: 1em; border-radius: 50%; vertical-align: -0.15em;
+  background: radial-gradient(circle at 35% 30%, #fff6c2 0 12%, #ffd84d 30%, #e6a400 70%, #b77900 100%);
+  box-shadow: inset 0 0 0 .08em #c98a00, 0 1px 1px rgba(0,0,0,.25);
 }
+.coin.big { width: 1.1em; height: 1.1em; }
+
+/* ---------- Hầm mỏ ---------- */
+.mine {
+  position: relative; border-radius: var(--radius); padding: 10px 12px 26px; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 196, 92, .35), transparent 60%),
+    radial-gradient(circle at 15% 70%, rgba(0,0,0,.25) 0 8%, transparent 9%),
+    radial-gradient(circle at 85% 40%, rgba(0,0,0,.2) 0 6%, transparent 7%),
+    linear-gradient(#4a3424, #2b1d13 70%, #1f150e);
+  box-shadow: inset 0 0 0 4px #5c4330, inset 0 0 30px rgba(0,0,0,.6);
+}
+.mine-top { display: flex; justify-content: space-between; align-items: center; color: #f3c977; font-weight: 900; letter-spacing: 2px; margin-bottom: 6px; }
+.mine-top span:first-child, .mine-top span:last-child { font-size: 22px; filter: drop-shadow(0 0 6px #ffb84d); }
+.mine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; position: relative; z-index: 1; }
+.mine-rail { position: absolute; left: 0; right: 0; bottom: 8px; height: 8px;
+  background: repeating-linear-gradient(90deg, #7a5a3c 0 6px, transparent 6px 22px), linear-gradient(#8f8f8f, #5d5d5d);
+  background-size: auto, 100% 3px; background-repeat: repeat, no-repeat; background-position: 0 0, 0 2px; opacity: .8; }
 .rock {
-  aspect-ratio: 1; border: 0; border-radius: 22px;
-  background: radial-gradient(circle at 35% 30%, #c9c3bb, #8d867d 70%);
-  box-shadow: inset 0 -6px 0 rgba(0,0,0,.15);
-  font-size: 34px; cursor: pointer; position: relative;
+  aspect-ratio: 1; border: 0; border-radius: 40% 46% 38% 44%;
+  background: radial-gradient(circle at 35% 30%, #a99f94, #6d655c 65%, #4b453f);
+  box-shadow: inset 0 -8px 0 rgba(0,0,0,.25), 0 4px 0 rgba(0,0,0,.35);
+  font-size: 34px; cursor: pointer; position: relative; transition: transform .1s;
 }
-.rock .hp { position: absolute; bottom: 6px; left: 0; right: 0; font-size: 11px; color: #fff; font-weight: 800; }
+.rock::before { content: ""; position: absolute; left: 22%; top: 30%; width: 22%; height: 8%; border-radius: 4px; background: rgba(255, 215, 90, .55); transform: rotate(-20deg); }
+.rock.sel { outline: 3px solid #ffd84d; outline-offset: 3px; }
+.rock .hp { position: absolute; bottom: 8px; left: 0; right: 0; font-size: 11px; color: #ffe9a8; font-weight: 800; }
 .rock.shake { animation: shake .25s; }
-.rock.gone { background: transparent; box-shadow: none; cursor: default; font-size: 26px; }
+.rock.gone { background: transparent; box-shadow: none; cursor: default; font-size: 30px; }
+.rock.gone::before { display: none; }
+.rock .found { display: inline-block; animation: pop .5s; }
 @keyframes shake { 25% { transform: translateX(-4px) rotate(-3deg);} 75% { transform: translateX(4px) rotate(3deg);} }
+
+.miner {
+  position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none;
+  font-size: 40px; line-height: 1; transition: transform .35s ease-in-out;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,.5));
+}
+.miner.no-anim { transition: none; }
+.miner .pick { display: inline-block; font-size: 26px; margin-left: -10px; transform-origin: 20% 80%; }
+.miner.swing .pick { animation: swing .25s; }
+.miner.walk .who { animation: bob .35s; display: inline-block; }
+@keyframes swing { 0% { transform: rotate(-60deg); } 60% { transform: rotate(25deg); } 100% { transform: rotate(0); } }
+@keyframes bob { 25%, 75% { transform: translateY(-5px); } 50% { transform: translateY(0); } }
+.mine-pop {
+  position: absolute; z-index: 4; transform: translate(-50%, 0); pointer-events: none;
+  color: #fff; font-weight: 900; font-size: 16px; white-space: nowrap; text-shadow: 0 2px 3px #000;
+  animation: rise 1.1s forwards;
+}
+@keyframes rise { 0% { opacity: 0; transform: translate(-50%, 10px); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -40px); } }
+.dig-bar { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; align-items: center; margin: 10px 0 4px; }
+.dig-btn { min-height: 60px; font-size: 20px; letter-spacing: 1px; box-shadow: 0 4px 0 #b07c10; }
+.dig-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #b07c10; }
+.streak { color: #c45a00; }
+
+/* ---------- Thuyết minh (phụ đề tiếng Anh + Việt) ---------- */
+#narrator {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 55;
+  bottom: calc(72px + env(safe-area-inset-bottom)); width: calc(100% - 20px); max-width: 460px;
+  display: flex; gap: 10px; align-items: center; cursor: pointer;
+  background: rgba(20, 30, 34, .92); color: #fff; border-radius: 14px; padding: 9px 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25); transition: opacity .4s, transform .4s;
+}
+#narrator.out { opacity: 0; transform: translate(-50%, 10px); pointer-events: none; }
+#narrator .n-ic { font-size: 20px; }
+#narrator b { display: block; font-size: 15px; }
+#narrator .vi { display: block; font-size: 12px; opacity: .8; }
+
+/* ---------- Hướng dẫn ---------- */
+.icon-btn.help { width: 36px; height: 36px; font-size: 16px; }
+.guide-step { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.guide-step:last-child { border-bottom: 0; }
+.guide-step .num { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.guide-step b { display: block; }
+.guide-step .vi { display: block; color: var(--muted); font-size: 13px; }
+.guide { margin: 8px 0 14px; }
 
 /* ---------- Túi đồ / chợ ---------- */
 .bag { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
@@ -284,7 +350,7 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
 
 /* ---------- Thông báo ---------- */
 #toast-root {
-  position: fixed; bottom: calc(84px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: calc(140px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
   z-index: 60; width: calc(100% - 28px); max-width: 452px; pointer-events: none;
 }
 .toast {

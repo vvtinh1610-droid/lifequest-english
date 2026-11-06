@@ -17,7 +17,7 @@
           <b>📜 ${LQ.esc(q.title)}</b>
           <details style="margin:6px 0"><summary class="small muted">Xem lại câu chuyện</summary>${LQ.storyHTML(q.story)}</details>
           ${q.objectives.map(o => { const p = LQ.objectiveProgress(q, o); return `<div class="obj ${p >= o.count ? 'ok' : ''}"><span>${p >= o.count ? '✅' : '▫️'} ${LQ.esc(o.label)}</span><span>${p}/${o.count}</span></div>`; }).join('')}
-          <p class="small muted">Thưởng: ${q.reward.money} 🪙 · ${q.reward.xp} kinh nghiệm</p>
+          <p class="small muted">Thưởng: ${q.reward.money} ${LQ.COIN} · ${q.reward.xp} kinh nghiệm</p>
           <button class="btn block ${done ? 'gold' : ''}" data-act="claimMain" ${done ? '' : 'disabled'}>${done ? 'Nhận thưởng 🎁' : 'Chưa hoàn thành'}</button>
         </div>`;
       }
@@ -29,7 +29,7 @@
           <div class="card row">
             <div class="grow"><b>${LQ.esc(d.label)}</b>
               <div class="bar light" style="margin:6px 0"><i style="width:${Math.round(d.progress / d.count * 100)}%"></i></div>
-              <div class="small muted">${d.progress}/${d.count} · ${d.reward.money} 🪙 · ${d.reward.xp} KN</div></div>
+              <div class="small muted">${d.progress}/${d.count} · ${d.reward.money} ${LQ.COIN} · ${d.reward.xp} KN</div></div>
             ${d.claimed ? '<span class="tag gray">Đã nhận</span>' : `<button class="btn small ${d.progress >= d.count ? 'gold' : ''}" data-act="claimDaily" data-id="${d.id}" ${d.progress >= d.count ? '' : 'disabled'}>Nhận</button>`}
           </div>`).join('')}`;
     },
@@ -39,7 +39,7 @@
     const q = LQ.claimMain();
     if (!q) return;
     LQ.beep('level');
-    LQ.toast(`🎁 Hoàn thành "${LQ.esc(q.title)}"! +${q.reward.money} 🪙`, 'gold');
+    LQ.toast(`🎁 Hoàn thành "${LQ.esc(q.title)}"! +${q.reward.money} ${LQ.COIN}`, 'gold');
     LQ.render();
     LQ.afterAction();
   };
@@ -47,7 +47,7 @@
     const r = LQ.claimDaily(d.id);
     if (!r) return;
     LQ.beep('coin');
-    LQ.toast(`🎁 +${r.reward.money} 🪙 · +${r.reward.xp} KN`, 'gold');
+    LQ.toast(`🎁 +${r.reward.money} ${LQ.COIN} · +${r.reward.xp} KN`, 'gold');
     LQ.render();
     LQ.afterAction();
   };

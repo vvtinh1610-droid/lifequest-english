@@ -26,7 +26,10 @@ window.LQ = window.LQ || {};
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
-  LQ.fmtMoney = n => `${Math.round(n).toLocaleString('vi-VN')} 🪙`;
+  // Đồng vàng vẽ bằng CSS: emoji 🪙 trên nhiều điện thoại Android hiện màu bạc
+  LQ.COIN = '<i class="coin" aria-label="vàng"></i>';
+  LQ.emo = e => (e === '🪙' ? '<i class="coin big" aria-hidden="true"></i>' : (e || ''));
+  LQ.fmtMoney = n => `${Math.round(n).toLocaleString('vi-VN')} ${LQ.COIN}`;
 
   // ---------- Đọc tiếng Anh ----------
   let voice = null;
@@ -41,19 +44,35 @@ window.LQ = window.LQ || {};
     chooseVoice();
     window.speechSynthesis.onvoiceschanged = chooseVoice;
   }
-  LQ.speak = (text, rate) => {
+  // LQ.speak(text): đọc ngay, cắt câu đang đọc. LQ.speakNext(text): đọc nối tiếp sau câu đang đọc.
+  function utter(text, rate, queue) {
     try {
       if (!('speechSynthesis' in window) || !text) return;
       const s = LQ.state && LQ.state.settings;
       if (s && s.voice === false) return;
-      window.speechSynthesis.cancel();
+      const synth = window.speechSynthesis;
+      if (!queue) synth.cancel();
+      if (!voice) chooseVoice();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US';
       if (voice) u.voice = voice;
       u.rate = rate || (s && s.rate) || 0.85;
-      window.speechSynthesis.speak(u);
+      synth.speak(u);
+      if (synth.paused) synth.resume();
     } catch (e) { /* bỏ qua */ }
+  }
+  LQ.speak = (text, rate) => utter(text, rate, false);
+  LQ.speakNext = (text, rate) => utter(text, rate, true);
+
+  // Điện thoại (nhất là iPhone) chỉ cho phát giọng đọc sau lần chạm đầu tiên: mở khóa ngay lần chạm đó
+  let unlocked = false;
+  const unlock = () => {
+    if (unlocked || !('speechSynthesis' in window)) return;
+    unlocked = true;
+    try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; window.speechSynthesis.speak(u); } catch (e) { /* bỏ qua */ }
   };
+  document.addEventListener('touchend', unlock, { once: true, passive: true });
+  document.addEventListener('click', unlock, { once: true });
 
   // ---------- Âm thanh hiệu ứng (tự tạo, không cần file) ----------
   let ctx = null;

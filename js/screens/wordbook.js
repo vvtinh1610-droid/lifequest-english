@@ -22,7 +22,7 @@
           <div class="card">
             ${groups[t].sort((a, b) => a.word.localeCompare(b.word)).map(w => `
               <div class="wb-item" data-act="showWord" data-id="${w.id}" style="cursor:pointer">
-                <span class="e">${w.emoji || '📝'}</span>
+                <span class="e">${LQ.emo(w.emoji) || '📝'}</span>
                 <div class="grow"><b>${LQ.esc(w.word)}</b><div class="small muted">${LQ.esc(w.vi)}</div></div>
                 <span class="stars">${'★'.repeat(LQ.stars(w.id))}${'☆'.repeat(3 - LQ.stars(w.id))}</span>
               </div>`).join('')}

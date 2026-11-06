@@ -46,14 +46,14 @@
   };
 
   const TABS = [
-    ['map', '🗺️', 'Bản đồ'], ['quests', '📜', 'Nhiệm vụ'], ['review', '🔁', 'Ôn tập'],
-    ['wordbook', '📖', 'Sổ từ'], ['profile', '👤', 'Hồ sơ'],
+    ['map', '🗺️', 'Bản đồ', 'Map'], ['quests', '📜', 'Nhiệm vụ', 'Quests'], ['review', '🔁', 'Ôn tập', 'Review'],
+    ['wordbook', '📖', 'Sổ từ', 'Word book'], ['profile', '👤', 'Hồ sơ', 'Profile'],
   ];
   const TAB_OF = { dig: 'map', market: 'map', job: 'map', home: 'map', quiz: 'map' };
   LQ.renderNav = () => {
     const cur = TAB_OF[LQ.current.name] || LQ.current.name;
-    LQ.$('#nav').innerHTML = TABS.map(([id, ic, label]) =>
-      `<button data-act="nav" data-to="${id}" class="${cur === id ? 'on' : ''}">
+    LQ.$('#nav').innerHTML = TABS.map(([id, ic, label, en]) =>
+      `<button data-act="nav" data-to="${id}" data-en="${en}" class="${cur === id ? 'on' : ''}">
         <span class="ic">${ic}</span>${label}<span class="dot hidden" id="dot-${id}"></span></button>`).join('');
     LQ.refreshBadges();
   };
@@ -102,7 +102,7 @@
     const lv = LQ.state.englishLevel || 0;
     return `
     <div class="wordcard">
-      <div class="big">${w.emoji || '📝'}</div>
+      <div class="big">${LQ.emo(w.emoji) || '📝'}</div>
       <div class="w">${LQ.esc(w.word)} <button class="icon-btn" data-act="sayWord" data-id="${w.id}" aria-label="Nghe">🔊</button></div>
       <div class="ipa">${LQ.esc(w.ipa)} · <span class="tag gray">${LQ.esc(LQ.typeName(w.type))}</span>
         ${w.region !== 'common' ? `<span class="tag gold">${w.region}</span>` : ''}
@@ -116,9 +116,11 @@
     </div>`;
   };
   LQ.typeName = t => ({ word: 'từ', collocation: 'cụm từ', phrase: 'mẫu câu', idiom: 'thành ngữ', slang: 'tiếng lóng' }[t] || t);
-  LQ.showWord = (w, buttons) => {
+  // Mở thẻ từ và tự đọc: (câu dẫn nếu có) → từ → câu ví dụ, không cần bấm 🔊
+  LQ.showWord = (w, buttons, intro) => {
     LQ.modal(LQ.wordCardHTML(w, `<div class="stack" style="margin-top:14px">${buttons || '<button class="btn block" data-act="close">Đóng</button>'}</div>`));
-    LQ.speak(w.word);
+    if (intro) { LQ.narrate(intro.en, intro.vi); LQ.speakNext(w.word); } else LQ.speak(w.word);
+    LQ.speakNext(w.example);
   };
   LQ.act.showWord = d => { const w = LQ.wordById[d.id]; if (w) LQ.showWord(w); };
 
@@ -144,6 +146,7 @@
       if (quiz.i >= quiz.questions.length) return quizSummary();
       const q = quiz.questions[quiz.i];
       const n = quiz.npc ? quiz.npc(quiz.i, q) : null;
+      quiz.curNpc = n;
       const pct = Math.round(quiz.i / quiz.questions.length * 100);
       return `
         <div class="q-head">
@@ -151,7 +154,7 @@
           <div class="q-progress"><div class="small muted">${quiz.icon || ''} ${LQ.esc(quiz.title)} · ${quiz.i + 1}/${quiz.questions.length}</div>
             <div class="bar light"><i style="width:${pct}%"></i></div></div>
         </div>
-        ${n ? `<div class="npc"><div class="face">${n.face}</div><div class="bubble">${LQ.esc(n.line)}${n.lineVi && (LQ.state.englishLevel || 0) <= 2 ? `<span class="vi">${LQ.esc(n.lineVi)}</span>` : ''}</div></div>` : ''}
+        ${n ? `<div class="npc"><div class="face">${n.face}</div><div class="bubble" data-act="say" data-text="${LQ.esc(n.line)}">${LQ.esc(n.line)} 🔊${n.lineVi && (LQ.state.englishLevel || 0) <= 2 ? `<span class="vi">${LQ.esc(n.lineVi)}</span>` : ''}</div></div>` : ''}
         <div class="card">
           <div class="row spread">
             <div class="q-prompt ${q.promptBig ? 'big grow' : ''}">${LQ.esc(q.prompt)}</div>
@@ -160,7 +163,7 @@
           ${q.hint ? `<div class="muted small">${LQ.esc(q.hint)}</div>` : ''}
           <div class="q-opts ${q.grid ? 'emoji' : ''}" style="margin-top:12px">
             ${q.options.map((o, i) => `<button class="opt" data-act="quizAnswer" data-i="${i}">
-              ${o.emoji ? `<span class="big">${o.emoji}</span>` : ''}${LQ.esc(o.label)}</button>`).join('')}
+              ${o.emoji ? `<span class="big">${LQ.emo(o.emoji)}</span>` : ''}${LQ.esc(o.label)}</button>`).join('')}
           </div>
           <div id="quiz-fb"></div>
         </div>`;
@@ -169,7 +172,10 @@
       if (!quiz || quiz.i >= quiz.questions.length) return;
       const q = quiz.questions[quiz.i];
       quiz.answered = false;
-      if (q.audio) setTimeout(() => LQ.speak(q.audio), 250);
+      // Đọc lời dẫn tình huống trước, rồi đến câu hỏi (nếu là câu nghe)
+      const n = quiz.curNpc;
+      if (n && n.line) { LQ.speak(n.line); if (q.audio) LQ.speakNext(q.audio); }
+      else if (q.audio) LQ.speak(q.audio);
     },
   };
   LQ.act.quizAudio = () => { const q = quiz && quiz.questions[quiz.i]; if (q) LQ.speak(q.audio); };
@@ -191,7 +197,7 @@
     LQ.$('#quiz-fb').innerHTML = `
       <div class="feedback ${ok ? 'good' : 'bad'}">
         <b>${ok ? '✅ Chính xác!' : '❌ Chưa đúng. Đáp án: ' + LQ.esc(q.options[q.answer].label)}</b>
-        <div style="margin-top:6px">${w.emoji || ''} <b>${LQ.esc(w.word)}</b> <span class="muted">${LQ.esc(w.ipa)}</span> — ${LQ.esc(w.vi)}</div>
+        <div style="margin-top:6px">${LQ.emo(w.emoji)} <b>${LQ.esc(w.word)}</b> <span class="muted">${LQ.esc(w.ipa)}</span> — ${LQ.esc(w.vi)}</div>
         <div class="small" style="margin-top:4px"><i>${LQ.esc(w.example)}</i><br><span class="muted">${LQ.esc(w.exampleVi)}</span></div>
       </div>
       <button class="btn block" style="margin-top:12px" data-act="quizNext">${quiz.i + 1 < quiz.questions.length ? 'Tiếp tục →' : 'Xem kết quả'}</button>`;
@@ -239,6 +245,8 @@
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-act]');
     if (!t) return;
+    // Nút nào có data-en thì đọc tên tiếng Anh khi chạm (hành động sau đó có thể đọc câu khác đè lên)
+    if (t.dataset.en) LQ.speak(t.dataset.en);
     const fn = LQ.act[t.dataset.act];
     if (fn) { e.preventDefault(); fn(t.dataset, t, e); }
   });

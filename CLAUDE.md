@@ -19,13 +19,14 @@ Bản thiết kế đầy đủ (Claude Doc): "LifeQuest English – Tài liệu
 index.html            Khung trang, thứ tự nạp script
 css/style.css         Toàn bộ giao diện (mobile-first, rộng tối đa 480px)
 js/data.bundle.js     TỰ ĐỘNG TẠO từ data/
-js/core/util.js       DOM, ngẫu nhiên, LQ.speak (đọc tiếng Anh), LQ.beep (âm thanh)
+js/core/util.js       DOM, ngẫu nhiên, LQ.speak / LQ.speakNext (đọc tiếng Anh), LQ.beep (âm thanh), LQ.COIN / LQ.emo (đồng vàng CSS)
 js/core/config.js     LQ.CONFIG: số liệu cân bằng, vùng, nghề, môn phái, phòng, đồ ăn
 js/core/state.js      Trạng thái người chơi, lưu/tải, tiền, XP, năng lượng
 js/core/srs.js        Chỉ mục từ, ôn tập ngắt quãng (hộp 0–5), chọn từ cho hoạt động
 js/core/questions.js  Tạo câu hỏi: listen / meaning / fill / reverse
 js/core/progress.js   Sự kiện LQ.emit, nhiệm vụ chính và hằng ngày
 js/core/ui.js         Điều hướng LQ.go, thanh trên/dưới, modal, toast, bộ chạy câu hỏi LQ.runQuiz
+js/core/narration.js  Thuyết minh tiếng Anh + phụ đề (LQ.LINES, LQ.say, LQ.narrate), hướng dẫn từng khu (LQ.guide, LQ.helpBtn)
 js/screens/*.js       Mỗi màn hình đăng ký LQ.screens.<tên> = { render(params) → HTML, mount(params)? }
 js/main.js            Khởi động
 data/words/*.json     Từ vựng (mỗi chủ đề một file, 400 từ Gemini). _seed.json (nếu có) = từ mẫu tạm thời
@@ -43,6 +44,11 @@ tests/smoke.py        Chạy thử toàn bộ luồng chơi bằng Playwright, c
 - Sự kiện cho nhiệm vụ: `LQ.emit(type, n)` với type: `dig, learn, sell, buyfood, review, shift_restaurant, shift_delivery, shift_any, perfect, sect, room`.
 - Giao diện tiếng Việt, đơn giản, thân thiện. Nội dung học bằng tiếng Anh. Không dùng `alert/confirm/prompt`.
 - Thay đổi số liệu cân bằng → sửa `js/core/config.js`, không rải số trong code.
+- **Mọi hành động đều có thuyết minh tiếng Anh** (đọc to tự động, không đợi người chơi bấm 🔊) kèm phụ đề Việt:
+  dùng `LQ.say('<nhóm câu>', vars)` với câu trong `LQ.LINES`, hoặc `LQ.narrate(en, vi)`. Đọc nối tiếp thì thêm `{ queue: true }`.
+- Nút có `data-en="..."` sẽ tự đọc tên tiếng Anh khi chạm. Mỗi khu có nút ❓ (`LQ.helpBtn(key)`) và hướng dẫn song ngữ lần đầu (`LQ.firstVisit(key)`).
+- Thẻ từ (`LQ.showWord`) tự đọc từ rồi câu ví dụ. Câu khách nói phải là cả câu có ngữ cảnh/lý do, không chỉ một từ.
+- Không dùng emoji 🪙 trong giao diện (Android hiện màu bạc): dùng `LQ.COIN`, hoặc `LQ.emo(w.emoji)` khi in emoji của từ.
 
 ## Thêm từ vựng (quy trình)
 1. Lưu file JSON (theo mẫu bên dưới) vào `data/words/<topic>.json` (vd. `dig.json`, `market.json`).
@@ -61,20 +67,22 @@ Mẫu một từ (16 trường, bắt buộc đủ):
 - `type`: word | collocation | phrase | idiom | slang · `level`: 0–4 · `region`: common | US | UK | AU | SG | IN
 - `register`: formal | neutral | informal | slang · `job`: none | restaurant | delivery
 - Điền `blankAnswer` vào `___` của `blankExample` phải ra đúng `example` (không tính dấu câu cuối).
-- Chủ đề đang dùng: `home, dig, market, restaurant, city, delivery, work`. Đồ đào được lấy từ chủ đề `dig` (danh từ có emoji).
+- Chủ đề đang dùng: `home, dig, market, restaurant, city, delivery, work`. Đồ đào được lấy từ chủ đề `dig` (danh từ có emoji)
+  cộng danh sách `digExtraWords` trong `config.js`. Thêm đồ đào mới thì nên thêm lý do mua vào `PURPOSE` trong `js/screens/market.js`.
 
 ## Trạng thái giai đoạn 1
 Đã xong:
-- [x] Tạo nhân vật (giới tính, dáng người, tính cách), bài xếp bậc (10 câu mẫu)
-- [x] Bản đồ 6 vùng mở theo cấp: Xóm trọ, Bãi đào, Chợ (cấp 3), Nhà hàng (5), Thành phố (8), Sân bay (khóa)
-- [x] Bãi đào (vàng / đồ vật = từ mới), túi đồ 10 ô; Chợ bán theo lời khách nói + mua đồ ăn
+- [x] Tạo nhân vật (giới tính, dáng người, tính cách), bài xếp bậc 40 câu Gemini (xáo đáp án, sai hết một bậc thì dừng)
+- [x] Bản đồ 6 vùng mở theo cấp: Xóm trọ, Hầm mỏ, Chợ (cấp 3), Nhà hàng (5), Thành phố (8), Sân bay (khóa)
+- [x] Hầm mỏ: nhân vật chạy tới tảng đá, nút ĐÀO, vàng / đồ vật / rương kho báu, chuỗi trúng liên tiếp; túi đồ 10 ô
+- [x] Chợ: khách nói cả câu có lý do mua (nghe lại, nghe chậm, dịch) + mua đồ ăn
+- [x] Thuyết minh tiếng Anh tự động + phụ đề cho mọi hành động; hướng dẫn song ngữ từng khu; chọn từ xen kẽ từ mới theo bậc
 - [x] Ca nhà hàng, ca giao hàng (6 câu, tiền công, tip), chọn môn phái ở cấp 10
 - [x] Cấp 1–20, năng lượng hồi theo thời gian, ngủ, nâng cấp phòng, đồ đã thuộc hiện trong phòng
 - [x] 7 nhiệm vụ chính, nhiệm vụ hằng ngày, ôn tập ngắt quãng, sổ từ, hồ sơ, sao chép kết quả gửi Zalo
 - [x] Từ vựng Gemini 8 đợt (400 từ: home, dig, market, restaurant×2, city, delivery, work) trong `data/words/`, đã bỏ từ mẫu
 
 Việc tiếp theo:
-- [ ] Thay `data/placement.json` bằng 40 câu của Gemini
 - [ ] Nhiệm vụ nghề có hội thoại riêng (khách gọi món nhiều bước, chỉ đường trên bản đồ) — cần thiết kế định dạng `data/jobs.json`
 - [ ] Gắn Cloudflare Web Analytics vào `index.html`
 - [ ] Thử kín với 20–50 người, đo tỉ lệ quay lại ngày hôm sau

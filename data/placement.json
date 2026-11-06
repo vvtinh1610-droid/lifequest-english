@@ -1,12 +1,642 @@
 [
-  {"id":"pt_s01","level":0,"skill":"listening","kind":"listen_pick","prompt":"Nghe và chọn hình đúng","audioText":"water","options":["💧 water","🍚 rice","🔑 key","🚪 door"],"answer":0,"explainVi":"\"water\" nghĩa là nước."},
-  {"id":"pt_s02","level":0,"skill":"vocabulary","kind":"meaning","prompt":"\"bed\" nghĩa là gì?","audioText":"bed","options":["cái bàn","cái giường","cái ghế","cái cửa"],"answer":1,"explainVi":"\"bed\" là cái giường."},
-  {"id":"pt_s03","level":1,"skill":"listening","kind":"listen_pick","prompt":"Nghe và chọn câu đúng","audioText":"How much is this?","options":["Cái này là gì?","Bạn ở đâu?","Cái này bao nhiêu tiền?","Mấy giờ rồi?"],"answer":2,"explainVi":"\"How much is this?\" dùng để hỏi giá."},
-  {"id":"pt_s04","level":1,"skill":"grammar","kind":"fill","prompt":"I ___ a worker in a factory.","audioText":"","options":["is","am","are","be"],"answer":1,"explainVi":"Đi với \"I\" dùng \"am\"."},
-  {"id":"pt_s05","level":2,"skill":"situation","kind":"reply","prompt":"A customer says: \"Can I see the menu?\" What do you say?","audioText":"Can I see the menu?","options":["No, I am busy.","Sure, here you are.","It is spicy.","I'm on my way."],"answer":1,"explainVi":"\"Sure, here you are\" = Dạ, của anh chị đây."},
-  {"id":"pt_s06","level":2,"skill":"grammar","kind":"fill","prompt":"Yesterday I ___ to the market with my mom.","audioText":"","options":["go","goes","went","going"],"answer":2,"explainVi":"\"Yesterday\" là quá khứ nên dùng \"went\"."},
-  {"id":"pt_s07","level":3,"skill":"vocabulary","kind":"fill","prompt":"Sorry I'm late, I got stuck in a traffic ___.","audioText":"","options":["jam","block","line","stop"],"answer":0,"explainVi":"\"traffic jam\" = kẹt xe."},
-  {"id":"pt_s08","level":3,"skill":"situation","kind":"reply","prompt":"Your boss says: \"Could you cover my shift on Saturday?\" What does she want?","audioText":"Could you cover my shift on Saturday?","options":["Bạn làm thay ca thứ Bảy cho cô ấy","Bạn nghỉ thứ Bảy","Bạn đóng cửa hàng","Bạn che cái bàn lại"],"answer":0,"explainVi":"\"cover a shift\" = làm thay ca."},
-  {"id":"pt_s09","level":4,"skill":"vocabulary","kind":"meaning","prompt":"\"That's a rip-off!\" means…","audioText":"That's a rip-off!","options":["It's a good deal.","It's far too expensive.","It's broken.","It's sold out."],"answer":1,"explainVi":"\"rip-off\" = bị chặt chém, quá đắt."},
-  {"id":"pt_s10","level":4,"skill":"reading","kind":"read","prompt":"\"Tenants must give 30 days' notice before moving out.\" What must tenants do?","audioText":"","options":["Pay 30 days of rent","Tell the landlord a month before leaving","Clean the room for 30 days","Move out within 30 days"],"answer":1,"explainVi":"\"give notice\" = báo trước."}
+  {
+    "id": "pt_001",
+    "level": 0,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Nghe và chọn hình đúng",
+    "audioText": "coffee",
+    "options": [
+      "☕ coffee",
+      "💧 water",
+      "🍎 apple",
+      "🍞 bread"
+    ],
+    "answer": 0,
+    "explainVi": "\"coffee\" nghĩa là cà phê."
+  },
+  {
+    "id": "pt_002",
+    "level": 0,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Nghe và chọn câu đáp lại phù hợp",
+    "audioText": "Hello, how are you?",
+    "options": [
+      "👋 Goodbye!",
+      "😊 I'm fine, thank you.",
+      "📝 My name is John.",
+      "🛌 I am sleeping."
+    ],
+    "answer": 1,
+    "explainVi": "Khi ai đó hỏi \"how are you?\" (bạn khỏe không?), câu trả lời đúng là \"I'm fine, thank you.\" (tôi khỏe, cảm ơn)."
+  },
+  {
+    "id": "pt_003",
+    "level": 0,
+    "skill": "vocabulary",
+    "kind": "meaning",
+    "prompt": "Từ \"work\" có nghĩa là gì?",
+    "audioText": "",
+    "options": [
+      "Ngủ",
+      "Chơi",
+      "Làm việc",
+      "Ăn uống"
+    ],
+    "answer": 2,
+    "explainVi": "\"work\" có nghĩa là làm việc hoặc công việc."
+  },
+  {
+    "id": "pt_004",
+    "level": 0,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Chọn từ đúng để điền vào chỗ trống: I ___ a student.",
+    "audioText": "",
+    "options": [
+      "is",
+      "are",
+      "be",
+      "am"
+    ],
+    "answer": 3,
+    "explainVi": "Chủ ngữ \"I\" đi với động từ to be là \"am\"."
+  },
+  {
+    "id": "pt_005",
+    "level": 0,
+    "skill": "situation",
+    "kind": "reply",
+    "prompt": "Bạn sẽ nói gì khi ai đó giúp đỡ bạn?",
+    "audioText": "",
+    "options": [
+      "Thank you!",
+      "Excuse me.",
+      "I'm sorry.",
+      "Never mind."
+    ],
+    "answer": 0,
+    "explainVi": "\"Thank you!\" dùng để cảm ơn khi được giúp đỡ."
+  },
+  {
+    "id": "pt_006",
+    "level": 0,
+    "skill": "vocabulary",
+    "kind": "meaning",
+    "prompt": "Từ \"money\" có nghĩa là gì?",
+    "audioText": "",
+    "options": [
+      "Thời gian",
+      "Tiền bạc",
+      "Công việc",
+      "Nhà cửa"
+    ],
+    "answer": 1,
+    "explainVi": "\"money\" có nghĩa là tiền bạc."
+  },
+  {
+    "id": "pt_007",
+    "level": 0,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Chọn từ đúng để điền vào chỗ trống: He ___ to work every day.",
+    "audioText": "",
+    "options": [
+      "go",
+      "going",
+      "goes",
+      "went"
+    ],
+    "answer": 2,
+    "explainVi": "Chủ ngữ ngôi thứ ba số ít (He) trong thì hiện tại đơn đi với động từ thêm s/es, ở đây là \"goes\"."
+  },
+  {
+    "id": "pt_008",
+    "level": 0,
+    "skill": "reading",
+    "kind": "read",
+    "prompt": "Đọc đoạn sau: \"My name is Tom. I am 30 years old.\". Tom bao nhiêu tuổi?",
+    "audioText": "",
+    "options": [
+      "13",
+      "20",
+      "40",
+      "30"
+    ],
+    "answer": 3,
+    "explainVi": "\"30 years old\" nghĩa là 30 tuổi."
+  },
+  {
+    "id": "pt_009",
+    "level": 1,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Nghe và chọn câu hỏi đúng",
+    "audioText": "How much is this shirt?",
+    "options": [
+      "Cái áo này ở đâu?",
+      "Cái áo này giá bao nhiêu?",
+      "Cái áo này màu gì?",
+      "Ai mua cái áo này?"
+    ],
+    "answer": 1,
+    "explainVi": "\"How much is this?\" dùng để hỏi giá tiền."
+  },
+  {
+    "id": "pt_010",
+    "level": 1,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Nghe người quản lý nói và chọn ý chính",
+    "audioText": "Please come to my office at 2 PM.",
+    "options": [
+      "Gặp ở phòng họp lúc 3 giờ.",
+      "Đi ăn trưa lúc 12 giờ.",
+      "Đến văn phòng quản lý lúc 2 giờ.",
+      "Tan làm lúc 5 giờ chiều."
+    ],
+    "answer": 2,
+    "explainVi": "\"come to my office at 2 PM\" nghĩa là đến văn phòng lúc 2 giờ chiều."
+  },
+  {
+    "id": "pt_011",
+    "level": 1,
+    "skill": "vocabulary",
+    "kind": "meaning",
+    "prompt": "Từ \"rent\" trong câu \"I want to rent a room\" có nghĩa là gì?",
+    "audioText": "",
+    "options": [
+      "Bán",
+      "Mua",
+      "Sửa chữa",
+      "Thuê"
+    ],
+    "answer": 3,
+    "explainVi": "\"rent a room\" có nghĩa là thuê một căn phòng."
+  },
+  {
+    "id": "pt_012",
+    "level": 1,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Chọn từ đúng: She didn't ___ to the meeting yesterday.",
+    "audioText": "",
+    "options": [
+      "go",
+      "goes",
+      "went",
+      "going"
+    ],
+    "answer": 0,
+    "explainVi": "Sau trợ động từ \"didn't\" ở thì quá khứ, động từ chính giữ nguyên mẫu là \"go\"."
+  },
+  {
+    "id": "pt_013",
+    "level": 1,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Chọn từ đúng: I need to buy some ___ at the market for dinner.",
+    "audioText": "",
+    "options": [
+      "shoes",
+      "vegetables",
+      "laptops",
+      "cars"
+    ],
+    "answer": 1,
+    "explainVi": "Đi chợ mua đồ ăn tối thì chọn \"vegetables\" (rau củ)."
+  },
+  {
+    "id": "pt_014",
+    "level": 1,
+    "skill": "reading",
+    "kind": "read",
+    "prompt": "Đọc biển báo: \"Store hours: 8 AM to 5 PM\". Cửa hàng đóng cửa lúc mấy giờ?",
+    "audioText": "",
+    "options": [
+      "8 giờ sáng",
+      "12 giờ trưa",
+      "5 giờ chiều",
+      "8 giờ tối"
+    ],
+    "answer": 2,
+    "explainVi": "\"to 5 PM\" nghĩa là cửa hàng hoạt động đến 5 giờ chiều thì đóng cửa."
+  },
+  {
+    "id": "pt_015",
+    "level": 1,
+    "skill": "situation",
+    "kind": "reply",
+    "prompt": "Bạn hỏi đường: \"Excuse me, where is the hospital?\" Người khác sẽ đáp lại:",
+    "audioText": "",
+    "options": [
+      "It's 10 dollars.",
+      "I am a doctor.",
+      "Tomorrow morning.",
+      "Turn left at the corner."
+    ],
+    "answer": 3,
+    "explainVi": "\"Turn left at the corner\" (rẽ trái ở góc phố) là chỉ dẫn đường đi."
+  },
+  {
+    "id": "pt_016",
+    "level": 1,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Chọn từ đúng: ___ you help me carry this box?",
+    "audioText": "",
+    "options": [
+      "Can",
+      "Are",
+      "Is",
+      "Do"
+    ],
+    "answer": 0,
+    "explainVi": "\"Can you help me...?\" là cấu trúc phổ biến dùng để nhờ ai đó giúp đỡ."
+  },
+  {
+    "id": "pt_017",
+    "level": 2,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and identify the problem.",
+    "audioText": "My laptop is broken, I need to get it fixed before the meeting.",
+    "options": [
+      "The meeting is canceled.",
+      "The internet is disconnected.",
+      "The computer is not working.",
+      "The speaker is late."
+    ],
+    "answer": 2,
+    "explainVi": "\"laptop is broken\" đồng nghĩa với việc máy tính không hoạt động."
+  },
+  {
+    "id": "pt_018",
+    "level": 2,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and choose the correct time.",
+    "audioText": "The train departs at half past ten.",
+    "options": [
+      "10:00",
+      "10:15",
+      "10:50",
+      "10:30"
+    ],
+    "answer": 3,
+    "explainVi": "\"half past ten\" là cách nói khác của 10:30."
+  },
+  {
+    "id": "pt_019",
+    "level": 2,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: I usually check my ___ first thing in the morning at the office.",
+    "audioText": "",
+    "options": [
+      "emails",
+      "keys",
+      "shoes",
+      "doors"
+    ],
+    "answer": 0,
+    "explainVi": "Việc thường làm đầu tiên ở văn phòng là kiểm tra email (hộp thư điện tử)."
+  },
+  {
+    "id": "pt_020",
+    "level": 2,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: I have been living in this city ___ five years.",
+    "audioText": "",
+    "options": [
+      "since",
+      "for",
+      "in",
+      "at"
+    ],
+    "answer": 1,
+    "explainVi": "Dùng \"for\" + khoảng thời gian (five years) trong thì hiện tại hoàn thành tiếp diễn."
+  },
+  {
+    "id": "pt_021",
+    "level": 2,
+    "skill": "situation",
+    "kind": "reply",
+    "prompt": "Choose the best reply: \"Would you mind closing the window?\"",
+    "audioText": "",
+    "options": [
+      "Yes, I would.",
+      "No, thanks.",
+      "No, not at all.",
+      "Yes, please."
+    ],
+    "answer": 2,
+    "explainVi": "\"No, not at all\" (Không có gì phiền cả) là cách đồng ý lịch sự khi được hỏi \"Would you mind...\"."
+  },
+  {
+    "id": "pt_022",
+    "level": 2,
+    "skill": "reading",
+    "kind": "read",
+    "prompt": "Read the text: \"Due to heavy rain, your package delivery will be delayed until tomorrow.\" Why is the package late?",
+    "audioText": "",
+    "options": [
+      "Wrong address",
+      "Traffic jam",
+      "Lost package",
+      "Bad weather"
+    ],
+    "answer": 3,
+    "explainVi": "\"heavy rain\" (mưa lớn) thuộc về bad weather (thời tiết xấu)."
+  },
+  {
+    "id": "pt_023",
+    "level": 2,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: If it rains, we ___ stay home.",
+    "audioText": "",
+    "options": [
+      "will",
+      "would",
+      "could",
+      "are"
+    ],
+    "answer": 0,
+    "explainVi": "Câu điều kiện loại 1 diễn tả sự việc có thể xảy ra ở tương lai: If + HTĐ, S + will + V."
+  },
+  {
+    "id": "pt_024",
+    "level": 2,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: The landlord asked me to sign the ___ before moving in.",
+    "audioText": "",
+    "options": [
+      "receipt",
+      "lease",
+      "bill",
+      "menu"
+    ],
+    "answer": 1,
+    "explainVi": "\"lease\" là hợp đồng thuê nhà, cần ký trước khi chuyển vào ở."
+  },
+  {
+    "id": "pt_025",
+    "level": 3,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and select the main idea.",
+    "audioText": "Could you cover my shift this Friday? I have a doctor's appointment.",
+    "options": [
+      "The speaker is quitting the job.",
+      "The speaker wants to work extra hours.",
+      "The speaker wants to see the doctor on Saturday.",
+      "The speaker needs someone to work for them."
+    ],
+    "answer": 3,
+    "explainVi": "\"cover my shift\" nghĩa là làm thay ca làm việc cho người khác."
+  },
+  {
+    "id": "pt_026",
+    "level": 3,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and identify the issue in the office.",
+    "audioText": "We're running out of paper for the printer, so please order some more.",
+    "options": [
+      "The office lacks printing supplies.",
+      "The printer is broken.",
+      "Someone stole the paper.",
+      "The ink cartridge is empty."
+    ],
+    "answer": 0,
+    "explainVi": "\"running out of paper\" nghĩa là sắp hết giấy in (thiếu vật tư in ấn)."
+  },
+  {
+    "id": "pt_027",
+    "level": 3,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: I need to ___ the problem before the customer complains.",
+    "audioText": "",
+    "options": [
+      "turn off",
+      "look into",
+      "give up",
+      "take off"
+    ],
+    "answer": 1,
+    "explainVi": "Phrasal verb \"look into\" có nghĩa là xem xét, điều tra một vấn đề."
+  },
+  {
+    "id": "pt_028",
+    "level": 3,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: By the time we arrived at the restaurant, they ___.",
+    "audioText": "",
+    "options": [
+      "closed",
+      "have closed",
+      "had closed",
+      "closing"
+    ],
+    "answer": 2,
+    "explainVi": "Hành động đóng cửa đã xảy ra trước hành động đến nơi (trong quá khứ), nên dùng thì quá khứ hoàn thành \"had closed\"."
+  },
+  {
+    "id": "pt_029",
+    "level": 3,
+    "skill": "situation",
+    "kind": "reply",
+    "prompt": "Choose the best reply: \"I can't access the company network this morning.\"",
+    "audioText": "",
+    "options": [
+      "That's a great idea.",
+      "I don't like the network.",
+      "You should buy a new car.",
+      "Have you tried resetting your router?"
+    ],
+    "answer": 3,
+    "explainVi": "Lời khuyên khởi động lại router là phản hồi hợp lý nhất khi có người gặp sự cố mạng."
+  },
+  {
+    "id": "pt_030",
+    "level": 3,
+    "skill": "reading",
+    "kind": "read",
+    "prompt": "Read the memo: \"Effective next Monday, casual wear is permitted only on Fridays.\" What does this mean?",
+    "audioText": "",
+    "options": [
+      "Employees must wear uniforms on Fridays.",
+      "Casual clothes are allowed on Fridays.",
+      "Employees cannot wear casual clothes ever.",
+      "Casual wear is allowed every day."
+    ],
+    "answer": 1,
+    "explainVi": "Thông báo nói rằng quần áo tự do (casual wear) chỉ được phép mặc vào ngày thứ Sáu."
+  },
+  {
+    "id": "pt_031",
+    "level": 3,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: She was promoted because of her outstanding ___ in the last quarter.",
+    "audioText": "",
+    "options": [
+      "appearance",
+      "performance",
+      "attendance",
+      "resistance"
+    ],
+    "answer": 1,
+    "explainVi": "\"outstanding performance\" nghĩa là hiệu suất làm việc xuất sắc, là lý do để được thăng chức."
+  },
+  {
+    "id": "pt_032",
+    "level": 3,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: You ___ have told me you were going to be late!",
+    "audioText": "",
+    "options": [
+      "must",
+      "can",
+      "should",
+      "will"
+    ],
+    "answer": 2,
+    "explainVi": "\"should have + V3\" dùng để phàn nàn về một việc lẽ ra nên làm trong quá khứ (lẽ ra bạn nên báo là bạn sẽ đến trễ)."
+  },
+  {
+    "id": "pt_033",
+    "level": 4,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and identify the speaker's intention.",
+    "audioText": "Let's touch base next week to discuss the project timeline.",
+    "options": [
+      "To contact each other and catch up on the project.",
+      "To play baseball together.",
+      "To cancel the project completely.",
+      "To delay the project until next month."
+    ],
+    "answer": 0,
+    "explainVi": "Thành ngữ \"touch base\" trong công sở có nghĩa là liên hệ, trao đổi ngắn gọn để cập nhật tình hình."
+  },
+  {
+    "id": "pt_034",
+    "level": 4,
+    "skill": "listening",
+    "kind": "listen_pick",
+    "prompt": "Listen and interpret the business idiom.",
+    "audioText": "The new policy will be implemented across the board.",
+    "options": [
+      "Only managers will follow the policy.",
+      "The policy applies to everyone in the company.",
+      "The policy will be written on a whiteboard.",
+      "Only the board of directors will know."
+    ],
+    "answer": 1,
+    "explainVi": "Thành ngữ \"across the board\" có nghĩa là áp dụng toàn diện, áp dụng cho tất cả mọi người trong tổ chức."
+  },
+  {
+    "id": "pt_035",
+    "level": 4,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: We need to ___ our expenses if we want to increase profits.",
+    "audioText": "",
+    "options": [
+      "put up with",
+      "look down on",
+      "cut back on",
+      "get away with"
+    ],
+    "answer": 2,
+    "explainVi": "Phrasal verb \"cut back on\" có nghĩa là cắt giảm (chi tiêu, ngân sách)."
+  },
+  {
+    "id": "pt_036",
+    "level": 4,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: Not only ___ late, but she also forgot to bring the quarterly report.",
+    "audioText": "",
+    "options": [
+      "she was",
+      "did she",
+      "she is",
+      "was she"
+    ],
+    "answer": 3,
+    "explainVi": "Cấu trúc đảo ngữ với \"Not only\": Not only + trợ động từ / to be + S..., but S + also..."
+  },
+  {
+    "id": "pt_037",
+    "level": 4,
+    "skill": "situation",
+    "kind": "reply",
+    "prompt": "Choose the most supportive reply: \"I feel like I'm in over my head with this new assignment.\"",
+    "audioText": "",
+    "options": [
+      "Don't worry, I can help you figure it out.",
+      "You should quit your job.",
+      "Your head is perfectly fine.",
+      "I don't care about your assignment."
+    ],
+    "answer": 0,
+    "explainVi": "\"in over my head\" nghĩa là bị quá sức. Lời đáp lại phù hợp là đề nghị giúp đỡ."
+  },
+  {
+    "id": "pt_038",
+    "level": 4,
+    "skill": "reading",
+    "kind": "read",
+    "prompt": "Read the excerpt: \"Due to corporate restructuring, the marketing and sales departments will be consolidated to streamline operations.\" What is happening?",
+    "audioText": "",
+    "options": [
+      "Both departments are being fired.",
+      "The two departments are merging into one.",
+      "The marketing department is moving to a new city.",
+      "Sales are dropping drastically."
+    ],
+    "answer": 1,
+    "explainVi": "\"consolidated\" đồng nghĩa với \"merged\", tức là sát nhập hai phòng ban lại với nhau để tinh gọn quy trình."
+  },
+  {
+    "id": "pt_039",
+    "level": 4,
+    "skill": "vocabulary",
+    "kind": "fill",
+    "prompt": "Fill in the blank: As a freelancer, it's important to keep track of your monthly income and ___.",
+    "audioText": "",
+    "options": [
+      "expansions",
+      "expectations",
+      "expenditures",
+      "experiences"
+    ],
+    "answer": 2,
+    "explainVi": "\"expenditures\" nghĩa là các khoản chi tiêu, đi cặp với \"income\" (thu nhập)."
+  },
+  {
+    "id": "pt_040",
+    "level": 4,
+    "skill": "grammar",
+    "kind": "fill",
+    "prompt": "Fill in the blank: I'd rather you ___ the client directly until we have finalized the new strategy.",
+    "audioText": "",
+    "options": [
+      "don't contact",
+      "won't contact",
+      "not contact",
+      "didn't contact"
+    ],
+    "answer": 3,
+    "explainVi": "Cấu trúc \"would rather\" (I'd rather) khi chủ ngữ muốn người khác làm/không làm gì ở hiện tại/tương lai dùng động từ ở thì quá khứ đơn (didn't contact)."
+  }
 ]

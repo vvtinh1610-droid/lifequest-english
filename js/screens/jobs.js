@@ -14,17 +14,26 @@
       const cost = energyCost(p.job);
       const bonus = sectBonus(p.job) > 1;
       return `
-        <div class="row spread"><h1>${job.icon} ${job.name}</h1><button class="btn small light" data-act="nav" data-to="map">← Bản đồ</button></div>
+        <div class="row spread"><h1>${job.icon} ${job.name}</h1>
+          <div class="row">${LQ.helpBtn('job')}<button class="btn small light" data-act="nav" data-to="map" data-en="Back to the map">← Bản đồ</button></div></div>
         <div class="card soft">
           ${p.job === 'restaurant'
             ? '<p>👨‍🍳 Quán đông khách nước ngoài. Nghe khách gọi món, hiểu yêu cầu, trả lời cho đúng.</p>'
             : '<p>🧑‍💼 Đơn hàng đến liên tục. Đọc chỉ đường, nghe khách gọi điện, giao đúng chỗ.</p>'}
-          <p class="small">Mỗi ca: ${C().shiftQuestions} tình huống · tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} 🪙 mỗi câu đúng · đúng hết được thêm tip.</p>
+          <p class="small">Mỗi ca: ${C().shiftQuestions} tình huống · tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} ${LQ.COIN} mỗi câu đúng · đúng hết được thêm tip.</p>
         </div>
-        <button class="btn block" data-act="startShift" data-job="${p.job}" ${s.energy >= cost ? '' : 'disabled'}>Bắt đầu ca làm</button>
+        <button class="btn block" data-act="startShift" data-job="${p.job}" data-en="Start my shift" ${s.energy >= cost ? '' : 'disabled'}>Bắt đầu ca làm · Start</button>
         ${s.energy < cost ? '<p class="small muted center">Không đủ năng lượng. Mua đồ ăn ở Chợ hoặc chờ hồi năng lượng.</p>' : ''}
         <h3>Từ vựng của nghề</h3>
         <p class="small muted">Đã gặp ${countSeen(job.topics)} / ${countAll(job.topics)} từ thuộc nhóm này.</p>`;
+    },
+    mount(params) {
+      if (params.welcomed) return;
+      params.welcomed = true;
+      if (!LQ.firstVisit('job')) {
+        LQ.narrate(params.job === 'restaurant' ? 'Welcome to the restaurant. Ready to work?' : 'Welcome to the city. Ready to deliver?',
+          params.job === 'restaurant' ? 'Chào mừng đến nhà hàng. Sẵn sàng làm việc chưa?' : 'Chào mừng ra thành phố. Sẵn sàng giao hàng chưa?', { queue: true });
+      }
     },
   };
   const countAll = ts => ts.reduce((n, t) => n + (LQ.byTopic[t] || []).filter(LQ.allowed).length, 0);
@@ -58,7 +67,9 @@
         LQ.emit('shift_any', 1);
         if (perfect) LQ.emit('perfect', 1);
         LQ.beep('coin');
-        return `<b>Hết ca!</b><br>Tiền công: +${pay} 🪙${tip ? `<br>Tip: +${tip} 🪙 ${perfect ? '(không sai câu nào!)' : '😄'}` : ''}<br>Kinh nghiệm: +${xp}`;
+        LQ.narrate(perfect ? `Perfect shift! You earned ${pay + tip} gold coins.` : `Your shift is over. You earned ${pay + tip} gold coins.`,
+          perfect ? `Ca làm hoàn hảo! Bạn kiếm được ${pay + tip} đồng vàng.` : `Hết ca rồi. Bạn kiếm được ${pay + tip} đồng vàng.`);
+        return `<b>Hết ca!</b><br>Tiền công: +${pay} ${LQ.COIN}${tip ? `<br>Tip: +${tip} ${LQ.COIN} ${perfect ? '(không sai câu nào!)' : '😄'}` : ''}<br>Kinh nghiệm: +${xp}`;
       },
     });
   };

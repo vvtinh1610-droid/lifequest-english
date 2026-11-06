@@ -66,25 +66,40 @@
       .map(([id]) => LQ.wordById[id]);
   };
 
-  // Chọn n từ cho một hoạt động: ưu tiên từ đến hạn ôn, rồi từ mới, rồi từ khác
+  // Chọn n từ cho một hoạt động. Mỗi lượt bốc thăm: phần lớn là từ mới (newWordRatio),
+  // còn lại là từ đến hạn ôn. Tránh lặp các từ vừa gặp. Gặp gần hết từ vừa sức thì mở thêm từ khó hơn.
+  const recent = [];
   LQ.pickWords = (topics, n, filter) => {
-    const pool = topics.flatMap(t => LQ.byTopic[t] || []).filter(LQ.allowed).filter(filter || (() => true));
+    const C = LQ.CONFIG;
+    const base = topics.flatMap(t => LQ.byTopic[t] || []).filter(filter || (() => true));
+    const W = LQ.state.words;
+    const lvl = LQ.state.englishLevel || 0;
+    let pool = base.filter(LQ.allowed);
+    if (pool.length && pool.filter(w => W[w.id]).length / pool.length >= C.unlockNextAt) {
+      pool = base.filter(w => w.level <= lvl + 2);
+    }
     if (!pool.length) return [];
     const now = Date.now();
-    const W = LQ.state.words;
-    const due = LQ.shuffle(pool.filter(w => W[w.id] && W[w.id].due <= now));
+    const notRecent = w => !recent.includes(w.id);
+    const due = LQ.shuffle(pool.filter(w => W[w.id] && W[w.id].due <= now && notRecent(w)));
     const fresh = LQ.shuffle(pool.filter(w => !W[w.id]));
-    const rest = LQ.shuffle(pool.filter(w => W[w.id] && W[w.id].due > now));
-    // Trộn: khoảng 40% ôn, 60% mới
+    const rest = LQ.shuffle(pool.filter(w => W[w.id] && W[w.id].due > now && notRecent(w)));
+    const anyLeft = LQ.shuffle(pool);
     const out = [];
-    const nDue = Math.min(due.length, Math.ceil(n * 0.4));
-    out.push(...due.slice(0, nDue));
-    out.push(...fresh.slice(0, n - out.length));
-    out.push(...due.slice(nDue, nDue + (n - out.length)));
-    out.push(...rest.slice(0, n - out.length));
-    return LQ.shuffle(out.slice(0, n));
+    const take = list => { while (list.length) { const w = list.shift(); if (!out.includes(w)) { out.push(w); return true; } } return false; };
+    for (let k = 0; k < n; k++) {
+      const wantNew = Math.random() < C.newWordRatio;
+      const order = wantNew ? [fresh, due, rest, anyLeft] : [due, fresh, rest, anyLeft];
+      for (const list of order) if (take(list)) break;
+    }
+    for (const w of out) { recent.push(w.id); if (recent.length > C.recentAvoid) recent.shift(); }
+    return LQ.shuffle(out);
   };
 
-  // Đồ vật đào được: danh từ có hình
-  LQ.isObject = w => (w.pos === 'noun' || w.type === 'collocation') && w.emoji && w.word.split(' ').length <= 3 && !/[.?!]$/.test(w.word);
+  // Đồ vật đào được: danh từ có hình (không lấy cụm động từ như "dig a hole")
+  const VERB_START = /^(dig|take|wash|do|go|pay|call|cross|clean|chop|wipe|sweep|sign|work|split|run|comp|drop|pick|pull|beat|hit)\b/i;
+  LQ.isObject = w => (w.pos === 'noun' || w.type === 'collocation') && !!w.emoji && w.word.split(' ').length <= 3
+    && !/[.?!]$/.test(w.word) && !VERB_START.test(w.word);
+  LQ.isDiggable = w => (w.topic === 'dig' && LQ.isObject(w))
+    || (LQ.CONFIG.digExtraWords.includes(w.word.toLowerCase()) && !!w.emoji);
 })(window.LQ);

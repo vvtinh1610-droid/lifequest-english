@@ -20,17 +20,23 @@
             ${q.objectives.map(o => { const p = LQ.objectiveProgress(q, o); return `<div class="obj ${p >= o.count ? 'ok' : ''}"><span>${p >= o.count ? '✅' : '▫️'} ${LQ.esc(o.label)}</span><span>${p}/${o.count}</span></div>`; }).join('')}
           </div>` : q && s.level < q.minLevel ? `<div class="card soft small">🔒 Nhiệm vụ tiếp theo mở ở cấp ${q.minLevel}.</div>` : ''}
         ${due >= 5 ? `<div class="card gold row" data-act="nav" data-to="review" style="cursor:pointer"><span style="font-size:28px">🔁</span><div class="grow"><b>${due} từ cần ôn</b><div class="small">Ôn ngay để không quên, có thưởng kinh nghiệm.</div></div></div>` : ''}
-        <h2>Bản đồ</h2>
+        <div class="row spread"><h2>Bản đồ · Map</h2>${LQ.helpBtn('map')}</div>
         <div class="regions">
           ${C().regions.map(r => {
             const locked = s.level < r.minLevel;
-            return `<button class="region ${locked ? 'locked' : ''}" data-act="${locked ? 'lockedRegion' : 'enterRegion'}" data-id="${r.id}" data-lv="${r.minLevel}">
+            return `<button class="region ${locked ? 'locked' : ''}" data-act="${locked ? 'lockedRegion' : 'enterRegion'}" data-id="${r.id}" data-lv="${r.minLevel}" data-en="${LQ.esc(r.en)}">
               <span class="big">${r.icon}</span><b>${r.name}</b>
               <span class="small muted">${locked ? (r.minLevel > 90 ? 'Sắp ra mắt' : 'Mở ở cấp ' + r.minLevel) : r.desc}</span></button>`;
           }).join('')}
         </div>`;
     },
+    mount(params) {
+      if (!params.welcomed) { params.welcomed = true; LQ.firstVisit('map'); }
+    },
   };
   LQ.act.enterRegion = d => { const t = TARGET[d.id]; if (t) LQ.go(t[0], t[1]); };
-  LQ.act.lockedRegion = d => LQ.toast(+d.lv > 90 ? '✈️ Sân bay và nước ngoài sẽ mở ở bản cập nhật sau.' : `🔒 Đạt cấp ${d.lv} để mở vùng này.`);
+  LQ.act.lockedRegion = d => {
+    LQ.say('locked', null, { queue: true });
+    LQ.toast(+d.lv > 90 ? '✈️ Sân bay và nước ngoài sẽ mở ở bản cập nhật sau.' : `🔒 Đạt cấp ${d.lv} để mở vùng này.`);
+  };
 })(window.LQ);

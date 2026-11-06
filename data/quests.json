@@ -6,10 +6,10 @@
       "minLevel": 1,
       "story": [
         { "who": "👵", "name": "Bà chủ trọ", "en": "Welcome! This is your room.", "vi": "Chào cháu! Đây là phòng của cháu." },
-        { "who": "👵", "name": "Bà chủ trọ", "en": "The rent is due every week. Go to the dig site and find something to sell.", "vi": "Tiền trọ đóng mỗi tuần. Ra bãi đào kiếm gì đó mà bán nhé." }
+        { "who": "👵", "name": "Bà chủ trọ", "en": "The rent is due every week. Go to the mine and find something to sell.", "vi": "Tiền trọ đóng mỗi tuần. Ra hầm mỏ kiếm gì đó mà bán nhé." }
       ],
       "objectives": [
-        { "type": "dig", "count": 5, "label": "Đập 5 tảng đá ở Bãi đào" },
+        { "type": "dig", "count": 5, "label": "Đào 5 tảng đá ở Hầm mỏ" },
         { "type": "learn", "count": 5, "label": "Học 5 từ mới" }
       ],
       "reward": { "money": 40, "xp": 40 }

@@ -68,7 +68,7 @@
     render: () => `
       <div class="center" style="padding-top:20px;font-size:56px">🧭</div>
       <h1 class="center">Tiếng Anh của bạn đang ở đâu?</h1>
-      <p class="center muted">Làm bài ngắn khoảng 3–5 phút để game chọn độ khó vừa sức. Sai cũng không sao, game sẽ tự điều chỉnh khi bạn chơi.</p>
+      <p class="center muted">Bài có tối đa 40 câu, dễ đến khó, mất khoảng 5–10 phút. Nếu sai hết một bậc, bài sẽ tự dừng. Sai cũng không sao, game sẽ tự điều chỉnh khi bạn chơi.</p>
       <button class="btn block" data-act="ptStart">Làm bài xếp bậc</button>
       <div style="height:10px"></div>
       <button class="btn block ghost" data-act="ptZero">Tôi mất gốc hoàn toàn, bắt đầu từ đầu</button>`,
@@ -77,8 +77,14 @@
 
   let pt = null;
   LQ.act.ptStart = () => {
-    const all = ((window.LQ_DATA && window.LQ_DATA.placement) || []).slice().sort((a, b) => a.level - b.level);
+    // Xáo thứ tự đáp án mỗi lần làm bài để không đoán được theo vị trí
+    const all = ((window.LQ_DATA && window.LQ_DATA.placement) || []).slice().sort((a, b) => a.level - b.level)
+      .map(q => {
+        const order = LQ.shuffle(q.options.map((o, i) => i));
+        return Object.assign({}, q, { options: order.map(i => q.options[i]), answer: order.indexOf(q.answer) });
+      });
     pt = { qs: all, i: 0, score: {}, total: {}, answered: false };
+    LQ.ptCurrent = () => pt && pt.qs[pt.i];   // dùng cho tests/smoke.py
     LQ.go('placement');
   };
   LQ.screens.placement = {

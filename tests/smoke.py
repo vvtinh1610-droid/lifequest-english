@@ -21,7 +21,8 @@ def click(page, sel, n=0):
 
 
 with sync_playwright() as p:
-    b = p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox"])
+    chrome = "/usr/bin/google-chrome"  # Linux; trên Windows để Playwright tự dùng Chromium của nó
+    b = p.chromium.launch(executable_path=chrome, args=["--no-sandbox"]) if pathlib.Path(chrome).exists() else p.chromium.launch()
     page = b.new_page(viewport={"width": 390, "height": 844})
     page.on("pageerror", lambda e: errors.append(f"pageerror: {e}"))
     page.on("console", lambda m: errors.append(f"console.{m.type}: {m.text}") if m.type == "error" else None)
@@ -44,13 +45,12 @@ with sync_playwright() as p:
         if page.locator('[data-act="ptAnswer"]').count() == 0:
             break
         # chọn đáp án đúng bằng dữ liệu
-        idx = page.evaluate("""() => {
-            const n = +document.querySelector('.small.muted').textContent.match(/Câu (\\d+)/)[1] - 1;
-            const qs = window.LQ_DATA.placement.slice().sort((a,b)=>a.level-b.level);
-            return qs[n].answer; }""")
+        idx = page.evaluate("LQ.ptCurrent().answer")  # đáp án đã được xáo, lấy từ câu đang hiện
         click(page, '[data-act="ptAnswer"]', idx)
         click(page, '[data-act="ptNext"]')
     shot(page, "05-placement-result")
+    # Bảng hướng dẫn lần đầu: chỉ để lại của Hầm mỏ, các khu khác coi như đã xem
+    page.evaluate("Object.assign(LQ.state.seenIntro, {map: true, market: true, job: true, home: true}); LQ.save()")
     click(page, '[data-act="introStory"]')
     page.wait_for_timeout(200)
     shot(page, "06-first-quest")
@@ -60,23 +60,28 @@ with sync_playwright() as p:
     click(page, '#nav [data-to="map"]')
     shot(page, "08-map")
 
-    # Bãi đào
+    # Hầm mỏ: chạm tảng đá để nhân vật chạy tới, rồi bấm nút ĐÀO
     click(page, '[data-act="enterRegion"][data-id="dig"]')
+    page.wait_for_timeout(400)
+    if page.locator('#modal-root .guide').count():
+        shot(page, "09-guide-dig")
+        click(page, '[data-act="guideOk"]')
+    page.locator('.mine-grid .rock:not(.gone)').first.click()
+    page.wait_for_timeout(400)
     for k in range(40):
         if page.locator('#modal-root .modal').count():
             if k < 6:
                 shot(page, f"09-wordcard-{k}")
-            click(page, '#modal-root [data-act="closeAfter"], #modal-root [data-act="close"], #modal-root [data-act="closeAndQuests"]')
+            click(page, '#modal-root [data-act="closeAfter"], #modal-root [data-act="close"], #modal-root [data-act="closeAndQuests"], #modal-root [data-act="guideOk"]')
             if page.locator('#modal-root .modal').count():
                 page.evaluate("LQ.closeModal()")
             if page.evaluate("LQ.current.name") != "dig":
                 page.evaluate("LQ.go('dig')")
-        rocks = page.locator('.rock:not(.gone)')
-        if rocks.count() == 0:
+        if page.locator('.mine-grid .rock:not(.gone)').count() == 0:
             page.wait_for_timeout(1900)
             continue
-        rocks.first.click()
-        page.wait_for_timeout(60)
+        page.locator('[data-act="digNow"]').click()
+        page.wait_for_timeout(420)
     shot(page, "10-dig")
 
     # Nâng cấp nhanh để thử các vùng sau

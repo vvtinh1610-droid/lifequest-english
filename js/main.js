@@ -6,8 +6,9 @@
   LQ.onLevelUp = lv => {
     setTimeout(() => {
       LQ.toast(`⬆️ Lên cấp ${lv}!`, 'gold');
+      LQ.say('levelUp', { n: lv }, { queue: true });
       const r = C().regions.find(x => x.minLevel === lv);
-      if (r) LQ.toast(`🗺️ Mở vùng mới: ${r.icon} ${r.name}`, 'good');
+      if (r) { LQ.toast(`🗺️ Mở vùng mới: ${r.icon} ${r.name}`, 'good'); LQ.narrate(`A new place is open: ${r.en}!`, `Mở khu vực mới: ${r.name}!`, { queue: true }); }
       if (lv === C().maxLevel) LQ.toast('🏆 Bạn đã đạt cấp tối đa của bản thử nghiệm!', 'gold');
     }, 150);
     // Nhiệm vụ hằng ngày có thể có thêm loại mới khi lên cấp: giữ nguyên trong ngày

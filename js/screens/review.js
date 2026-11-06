@@ -18,7 +18,7 @@
             <button class="btn block" data-act="startReview">Ôn ngay</button></div>`
           : seen ? `<div class="card center"><div style="font-size:44px">✨</div><p>Chưa có từ nào đến hạn ôn. Đi làm thêm để gặp từ mới nhé!</p>
             <button class="btn block light" data-act="startReview" data-all="1">Ôn ngẫu nhiên 10 từ đã gặp</button></div>`
-          : `<div class="card center"><p>Bạn chưa gặp từ nào. Ra Bãi đào để bắt đầu!</p><button class="btn" data-act="enterRegion" data-id="dig">⛏️ Bãi đào</button></div>`}`;
+          : `<div class="card center"><p>Bạn chưa gặp từ nào. Vào Hầm mỏ để bắt đầu!</p><button class="btn" data-act="enterRegion" data-id="dig">⛏️ Hầm mỏ</button></div>`}`;
     },
   };
 
