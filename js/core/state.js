@@ -23,7 +23,8 @@
     stats: { days: [], minutes: 0, sessions: 0, digs: 0, gold: 0, sells: 0, shifts: 0, correct: 0, wrong: 0, tests: [] },
     settings: { rate: 0.85, sound: true, voice: true, voiceGender: 'female' },   // voiceGender: female (Heart) | male (Adam)
     seenIntro: {},
-    scenes: {},            // id tình huống ca làm -> số lần đã chơi
+    scenes: {},            // id bài ca làm -> số lần đã chơi
+    jobProgress: {},       // id vị trí (dish, wait, cook, driver…) -> số bài đã học xong
   });
 
   LQ.load = () => {

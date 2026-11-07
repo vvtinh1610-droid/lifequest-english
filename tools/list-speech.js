@@ -66,7 +66,7 @@ for (const j of Object.values(C.jobs)) j.lines.forEach(add);
 
 // 3b. Tình huống ca làm nhập vai (data/jobs.json): lời thoại, câu hỏi, đáp án, lời giải thích
 for (const j of Object.values(ctx.LQ_DATA.jobs || {})) {
-  for (const sc of j.scenes) for (const st of sc.steps) {
+  for (const sc of j.roles.flatMap(r => r.lessons)) for (const st of sc.steps) {
     if (st.ask) { add(st.ask); for (const o of st.options) { add(o.en); add(o.why); } } else add(st.en);
   }
 }

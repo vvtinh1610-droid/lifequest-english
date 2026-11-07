@@ -237,7 +237,7 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
 
 /* ---------- Ca làm nhập vai: khung cảnh ---------- */
 .scene {
-  position: relative; border-radius: var(--radius); margin: 10px 0; padding: 10px 12px 12px; min-height: 170px; overflow: hidden;
+  position: relative; border-radius: var(--radius); margin: 8px 0; padding: 8px 12px 10px; min-height: 140px; overflow: hidden;
   background: linear-gradient(#f6e6c8, #e6c99a); box-shadow: inset 0 -26px 0 rgba(120, 80, 40, .18);
 }
 .scene.place-door { background: linear-gradient(#cfe8f5 0 55%, #b48a5a 55%); }
@@ -255,7 +255,7 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
 .scene-props { font-size: 20px; letter-spacing: 3px; opacity: .9; margin-top: 6px; text-align: right; }
 .scene-cast { display: flex; justify-content: center; align-items: flex-end; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
 .actor { text-align: center; transition: transform .2s; }
-.actor .face { font-size: 46px; display: block; line-height: 1; filter: drop-shadow(0 3px 2px rgba(0,0,0,.25)); }
+.actor .face { font-size: 42px; display: block; line-height: 1; filter: drop-shadow(0 3px 2px rgba(0,0,0,.25)); }
 .actor small { display: inline-block; font-size: 11px; font-weight: 800; background: rgba(255,255,255,.85); color: var(--ink); padding: 1px 7px; border-radius: 999px; margin-top: 2px; }
 .actor.you small { background: var(--brand); color: #fff; }
 .actor.talk { transform: translateY(-6px) scale(1.08); }
@@ -263,7 +263,7 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
 .actor.enter { animation: walkin .7s ease-out; }
 @keyframes walkin { from { transform: translateX(160px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes talk { 50% { transform: rotate(-6deg); } }
-.say-box { background: #fff; border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); margin: 8px 0 12px; cursor: pointer; position: relative; }
+.say-box { background: #fff; border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); margin: 8px 0 12px; position: relative; }
 .say-box::before { content: ""; position: absolute; top: -8px; left: 40px; border: 8px solid transparent; border-top: 0; border-bottom-color: #fff; }
 .say-box .who { font-size: 12px; font-weight: 800; color: var(--brand); margin-bottom: 2px; }
 .say-box b { font-size: 18px; }
@@ -272,6 +272,12 @@ input[type=text]:focus { outline: none; border-color: var(--brand-2); }
 .say-box.small-ctx { opacity: .85; padding: 8px 12px; }
 .say-box.small-ctx b { font-size: 15px; }
 .spk { font-size: 14px; }
+.spk-btn { flex: none; border: 0; background: var(--brand-soft); color: var(--brand); width: 38px; height: 38px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+.say-box.asking { border: 2px solid var(--brand-2); }
+.say-box.asking b { font-size: 19px; }
+.opt-row { display: flex; gap: 6px; align-items: center; }
+.opt-row .opt { flex: 1; }
+.role-card .obj { align-items: center; }
 .card.ask .q-prompt { font-size: 19px; margin: 4px 0; }
 .opt.role { display: flex; gap: 10px; align-items: center; }
 .opt.role .oe { font-size: 26px; flex: none; min-width: 30px; text-align: center; }

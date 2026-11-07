@@ -37,7 +37,8 @@
         <button class="btn small light" data-act="tLevel" data-v="10">Lên cấp 10</button>
         <button class="btn small light" data-act="tBag">Đầy túi đồ</button>
         <button class="btn small light" data-act="tIntro">Xem lại hướng dẫn</button>
-        <button class="btn small light" data-act="tScenes">Chơi lại tình huống</button>
+        <button class="btn small light" data-act="tScenes">Học lại ca làm từ bài 1</button>
+        <button class="btn small light" data-act="tUnlockLessons">Mở hết bài ca làm</button>
         <button class="btn small light" data-act="testAccount">Tạo lại tài khoản test</button>
       </div>
       <div class="small muted" style="margin-top:8px">Bậc tiếng Anh (ảnh hưởng độ khó, phụ đề):</div>
@@ -62,7 +63,12 @@
     done('Đã đầy túi đồ');
   };
   LQ.act.tIntro = () => { LQ.state.seenIntro = {}; done('Hướng dẫn sẽ hiện lại ở mỗi khu'); };
-  LQ.act.tScenes = () => { LQ.state.scenes = {}; done('Tình huống ca làm sẽ chơi lại từ đầu'); };
+  LQ.act.tScenes = () => { LQ.state.scenes = {}; LQ.state.jobProgress = {}; done('Các bài ca làm sẽ học lại từ bài 1'); };
+  LQ.act.tUnlockLessons = () => {
+    const p = LQ.state.jobProgress = LQ.state.jobProgress || {};
+    for (const j of Object.values((window.LQ_DATA && window.LQ_DATA.jobs) || {})) for (const r of j.roles) p[r.id] = r.lessons.length;
+    done('Đã mở hết các bài ca làm');
+  };
   LQ.act.tEng = d => { LQ.state.englishLevel = +d.v; done('Bậc tiếng Anh: ' + d.v); };
 
   // ---------- Thử âm thanh (cho mọi người, nằm trong Hồ sơ) ----------

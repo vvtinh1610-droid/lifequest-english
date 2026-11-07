@@ -74,12 +74,18 @@ window.LQ = window.LQ || {};
   LQ.audioLog = [];            // nhật ký gần nhất, dùng cho nút "Thử âm thanh"
   const logA = m => { LQ.audioLog.push(m); if (LQ.audioLog.length > 12) LQ.audioLog.shift(); };
 
+  // Gọi lại khi đọc hết hàng đợi (dùng để tự chuyển câu thoại). Bị hủy nếu có câu mới cắt ngang.
+  const idleCbs = [];
+  LQ.whenQuiet = cb => {
+    if (!playing && !queue.length) { setTimeout(cb, 0); return; }
+    idleCbs.push(cb);
+  };
   function next() {
     clearTimeout(watchdog);
     playing = false;
     const item = queue.shift();
     current = item || null;
-    if (!item) return;
+    if (!item) { const cbs = idleCbs.splice(0); cbs.forEach(cb => setTimeout(cb, 0)); return; }
     playing = true;
     const id = audioId(item.text);
     if (id) playFile(item, id, folders(), 0);
@@ -129,12 +135,14 @@ window.LQ = window.LQ || {};
   function stopAll() {
     clearTimeout(watchdog);
     queue.length = 0;
+    idleCbs.length = 0;
     current = null;
     if (player) { player.onended = null; player.onerror = null; try { player.pause(); } catch (e) { /* bỏ qua */ } }
     // Chỉ hủy giọng máy khi nó đang đọc: gọi cancel() thừa làm Chrome Android nuốt mất câu tiếp theo
     try { const ss = window.speechSynthesis; if (ss && (ss.speaking || ss.pending)) ss.cancel(); } catch (e) { /* bỏ qua */ }
     playing = false;
   }
+  LQ.isSpeaking = () => playing || queue.length > 0;
   function utter(text, rate, append) {
     if (!text || settings().voice === false) return;
     if (!append) stopAll();

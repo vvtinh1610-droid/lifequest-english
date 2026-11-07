@@ -1,4 +1,4 @@
-/* Ca làm: nhà hàng, giao hàng. Mỗi ca là một chuỗi tình huống tiếng Anh. */
+/* Ca làm: nhà hàng, giao hàng. Chọn vị trí (rửa chén, phục vụ, phụ bếp, tài xế…), học từng bài nhập vai. */
 (function (LQ) {
   'use strict';
   const C = () => LQ.CONFIG;
@@ -16,14 +16,15 @@
       return `
         <div class="row spread"><h1>${job.icon} ${job.name}</h1>
           <div class="row">${LQ.helpBtn('job')}<button class="btn small light" data-act="nav" data-to="map" data-en="Back to the map">← Bản đồ</button></div></div>
-        <div class="card soft">
+        <div class="card soft small">
           ${p.job === 'restaurant'
-            ? '<p>👨‍🍳 Bạn là nhân viên mới của một nhà hàng. Đón khách, ghi món, phụ bếp, rửa chén, tính tiền… Quản lý và chị Mai sẽ chỉ bạn từng việc.</p>'
-            : '<p>🛵 Bạn là tài xế giao hàng. Lấy hàng ở quán, nghe khách chỉ đường, gặp bảo vệ chung cư, giao hàng và thu tiền.</p>'}
-          <p class="small">Mỗi ca: ${C().shiftScenes} tình huống thực tế · tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} ${LQ.COIN} mỗi lần làm đúng ngay · không sai lần nào được thêm tip.</p>
+            ? '👨‍🍳 Bạn là nhân viên mới của một nhà hàng. Chọn vị trí để học việc từng bước, quản lý và chị Mai sẽ chỉ bạn.'
+            : '🛵 Bạn là tài xế giao hàng mới. Anh Tuấn, tài xế lâu năm, sẽ chỉ bạn từng việc.'}
+          <br>Mỗi bài tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} ${LQ.COIN} mỗi lần làm đúng ngay · không sai lần nào được thêm tip.
         </div>
-        <button class="btn block" data-act="startShift" data-job="${p.job}" data-en="Start my shift" ${s.energy >= cost ? '' : 'disabled'}>Bắt đầu ca làm · Start</button>
-        ${s.energy < cost ? '<p class="small muted center">Không đủ năng lượng. Mua đồ ăn ở Chợ hoặc chờ hồi năng lượng.</p>' : ''}
+        ${s.energy < cost ? '<p class="small muted center">⚡ Không đủ năng lượng. Mua đồ ăn ở Chợ hoặc chờ hồi năng lượng.</p>' : ''}
+        <h3>Chọn vị trí làm việc</h3>
+        ${LQ.rolesOf(p.job).map(r => roleCard(p.job, r, s.energy >= cost)).join('')}
         <h3>Từ vựng của nghề</h3>
         <p class="small muted">Đã gặp ${countSeen(job.topics)} / ${countAll(job.topics)} từ thuộc nhóm này.</p>`;
     },
@@ -36,6 +37,23 @@
       }
     },
   };
+  // Thẻ một vị trí: tiến độ, nút học bài tiếp theo, danh sách bài để ôn lại
+  function roleCard(job, r, canWork) {
+    const done = LQ.roleDone(r.id), n = r.lessons.length;
+    const nextIdx = done < n ? done : null;
+    return `<div class="card role-card">
+      <div class="row"><span style="font-size:34px">${r.icon}</span>
+        <div class="grow"><b>${LQ.esc(r.vi)}</b> <span class="muted small">· ${LQ.esc(r.en)}</span><div class="small muted">${LQ.esc(r.desc)}</div></div></div>
+      <div class="bar light" style="margin:8px 0 4px"><i style="width:${Math.round(Math.min(done, n) / n * 100)}%"></i></div>
+      <div class="small muted">Đã học ${Math.min(done, n)}/${n} bài</div>
+      <button class="btn block" style="margin-top:8px" data-act="startShift" data-job="${job}" data-role="${r.id}" data-en="Start my shift" ${canWork ? '' : 'disabled'}>
+        ${nextIdx !== null ? `▶ Bài ${nextIdx + 1}: ${LQ.esc(r.lessons[nextIdx].title)}` : '🔁 Làm ca ôn tập'}</button>
+      <details class="small" style="margin-top:6px"><summary>Các bài (${n})</summary>
+        ${r.lessons.map((l, i) => `<div class="obj"><span>${i < done ? '✅' : i === done ? '▶️' : '🔒'} ${i + 1}. ${LQ.esc(l.title)}</span>
+          ${i < done ? `<button class="btn small light" data-act="startShift" data-job="${job}" data-role="${r.id}" data-lesson="${i}" ${canWork ? '' : 'disabled'}>Học lại</button>` : ''}</div>`).join('')}
+      </details>
+    </div>`;
+  }
   const countAll = ts => ts.reduce((n, t) => n + (LQ.byTopic[t] || []).filter(LQ.allowed).length, 0);
   const countSeen = ts => ts.reduce((n, t) => n + (LQ.byTopic[t] || []).filter(w => LQ.state.words[w.id]).length, 0);
 
@@ -44,8 +62,9 @@
     const job = C().jobs[key];
     const cost = energyCost(key);
     if (!LQ.useEnergy(cost)) { LQ.toast('⚡ Không đủ năng lượng.'); return; }
-    // Ca làm nhập vai theo tình huống thật (data/jobs.json), xem js/screens/shift.js
-    const started = LQ.startRolePlay(key, r => {
+    // Ca làm nhập vai, học từng bài của vị trí đã chọn (data/jobs.json), xem js/screens/shift.js
+    const roleId = d.role || (LQ.rolesOf(key)[0] || {}).id;
+    const started = LQ.startRolePlay(key, roleId, d.lesson != null && d.lesson !== '' ? +d.lesson : null, r => {
       {
         const s = LQ.state;
         const perfect = r.correct === r.total;

@@ -2,256 +2,447 @@
   "restaurant": {
     "places": {
       "door": { "en": "Front door", "vi": "Cửa ra vào", "props": "🚪🪴🛎️" },
-      "dining": { "en": "Dining room", "vi": "Phòng ăn", "props": "🪑🍽️🪑🕯️🪑🍽️🪑" },
+      "dining": { "en": "Dining room", "vi": "Phòng ăn", "props": "🪑🍽️🪑🕯️🪑" },
       "table": { "en": "Table 3", "vi": "Bàn số 3", "props": "🪑🍽️🥢🪑" },
       "kitchen": { "en": "Kitchen", "vi": "Nhà bếp", "props": "🍳🔥🥘🧂🔪" },
+      "fridge": { "en": "Walk-in fridge", "vi": "Kho lạnh", "props": "🧊🥩🥬🥚" },
       "sink": { "en": "Washing area", "vi": "Khu rửa chén", "props": "🚰🫧🍽️🧽" },
       "counter": { "en": "Cashier counter", "vi": "Quầy thu ngân", "props": "🧾💵💳" }
     },
     "cast": {
       "manager": { "face": "🧑‍💼", "en": "Manager", "vi": "Quản lý" },
-      "senior": { "face": "👩‍🦱", "en": "Mai (senior)", "vi": "Chị Mai (đàn chị)" },
+      "senior": { "face": "👩‍🦱", "en": "Mai (senior)", "vi": "Chị Mai" },
       "chef": { "face": "👨‍🍳", "en": "Chef", "vi": "Bếp trưởng" },
       "customer": { "face": "🧑", "en": "Customer", "vi": "Khách" }
     },
-    "scenes": [
+    "roles": [
       {
-        "id": "r_greet", "level": 0, "title": "Đón khách", "place": "door",
-        "cast": { "customer": { "face": "👨‍👩‍👧", "en": "Customers", "vi": "Gia đình khách" } },
-        "steps": [
-          { "who": "narrator", "en": "New customers are coming in.", "vi": "Có khách mới bước vào.", "enter": "customer" },
-          { "who": "manager", "en": "Please go and greet them.", "vi": "Em ra chào khách đi." },
-          { "ask": "What do you say first?", "vi": "Bạn nói gì đầu tiên?", "options": [
-            { "emoji": "😊", "en": "Hello! Welcome!", "vi": "Xin chào! Chào mừng quý khách!", "ok": true, "why": "Great! Always greet customers with a smile.", "whyVi": "Tốt lắm! Luôn chào khách với nụ cười." },
-            { "emoji": "👋", "en": "Goodbye!", "vi": "Tạm biệt!", "why": "We say goodbye when people leave, not when they arrive.", "whyVi": "Goodbye dùng khi khách ra về, không phải lúc mới đến." },
-            { "emoji": "😐", "en": "What do you want?", "vi": "Muốn gì?", "why": "That sounds rude. Be polite with customers.", "whyVi": "Câu này nghe cộc lốc. Hãy lịch sự với khách." }
-          ] },
-          { "who": "customer", "en": "Hi! A table for three, please.", "vi": "Chào em! Cho một bàn ba người nhé." },
-          { "ask": "How many people need a table?", "vi": "Khách cần bàn cho mấy người?", "options": [
-            { "emoji": "3️⃣", "en": "Three people", "vi": "Ba người", "ok": true, "why": "Yes. They said a table for three.", "whyVi": "Đúng. Khách nói 'a table for three' là bàn ba người." },
-            { "emoji": "2️⃣", "en": "Two people", "vi": "Hai người", "why": "Listen again: a table for three.", "whyVi": "Nghe lại nhé: 'a table for three' là ba người." },
-            { "emoji": "4️⃣", "en": "Four people", "vi": "Bốn người", "why": "Listen again: a table for three.", "whyVi": "Nghe lại nhé: 'a table for three' là ba người." }
-          ] },
-          { "ask": "What do you say next?", "vi": "Tiếp theo bạn nói gì?", "options": [
-            { "emoji": "🚶", "en": "Please follow me.", "vi": "Mời quý khách đi theo tôi.", "ok": true, "why": "Good. Now take them to a table.", "whyVi": "Tốt. Giờ dẫn khách tới bàn." },
-            { "emoji": "🙅", "en": "Sit anywhere. I'm busy.", "vi": "Ngồi đâu cũng được. Tôi bận.", "why": "Don't leave customers alone. Show them to a table.", "whyVi": "Đừng bỏ khách một mình. Hãy dẫn khách tới bàn." },
-            { "emoji": "🔒", "en": "We are closed.", "vi": "Quán đóng cửa rồi.", "why": "The restaurant is open. The customers can come in.", "whyVi": "Quán đang mở cửa. Khách vào được." }
-          ] },
-          { "who": "customer", "en": "Thank you! It looks nice in here.", "vi": "Cảm ơn em! Quán trông đẹp quá." }
+        "id": "dish", "icon": "🧽", "en": "Dishwasher", "vi": "Rửa chén",
+        "desc": "Việc đầu tiên của người mới: rửa chén, đĩa, xoong chảo cho sạch bóng.",
+        "lessons": [
+          {
+            "id": "dish_1", "title": "Chuẩn bị trước khi rửa", "place": "sink",
+            "steps": [
+              { "who": "senior", "en": "Welcome to the washing area! Today I'll teach you how to wash dishes the right way.", "vi": "Chào mừng em tới khu rửa chén! Hôm nay chị dạy em rửa chén cho đúng cách.", "enter": "senior" },
+              { "who": "senior", "ask": "First, what do you put on to protect your hands?", "vi": "Đầu tiên, em đeo gì để bảo vệ tay?", "options": [
+                { "emoji": "🧤", "en": "Rubber gloves", "vi": "Găng tay cao su", "ok": true, "why": "Yes. Gloves protect your hands from hot water and strong soap.", "whyVi": "Đúng. Găng tay bảo vệ tay khỏi nước nóng và nước rửa chén." },
+                { "emoji": "💍", "en": "A ring", "vi": "Một chiếc nhẫn", "why": "Take your rings off. They can scratch plates and collect dirt.", "whyVi": "Tháo nhẫn ra. Nhẫn làm trầy đĩa và dính bẩn." },
+                { "emoji": "🧣", "en": "A scarf", "vi": "Khăn quàng cổ", "why": "A scarf is for cold weather, not for washing.", "whyVi": "Khăn quàng để giữ ấm, không phải để rửa chén." }
+              ] },
+              { "who": "senior", "ask": "Good. And what do you wear to keep your clothes dry?", "vi": "Tốt. Còn mặc gì để quần áo không bị ướt?", "options": [
+                { "emoji": "🥼", "en": "An apron", "vi": "Tạp dề", "ok": true, "why": "Right. An apron keeps your clothes clean and dry.", "whyVi": "Đúng. Tạp dề giữ quần áo sạch và khô." },
+                { "emoji": "🎒", "en": "A backpack", "vi": "Ba lô", "why": "A backpack doesn't cover your clothes. Wear an apron.", "whyVi": "Ba lô không che được quần áo. Hãy mặc tạp dề." }
+              ] },
+              { "who": "senior", "en": "Now fill the sink with water and add a little dish soap.", "vi": "Giờ xả nước vào bồn và cho một ít nước rửa chén." },
+              { "who": "senior", "ask": "How hot should the water be?", "vi": "Nước nên nóng cỡ nào?", "options": [
+                { "emoji": "♨️", "en": "Hot, but safe to touch", "vi": "Nóng, nhưng chạm tay vào được", "ok": true, "why": "Right. Hot water removes grease, but it must not burn you.", "whyVi": "Đúng. Nước nóng làm tan dầu mỡ, nhưng không được làm bỏng tay." },
+                { "emoji": "🔥", "en": "Boiling hot", "vi": "Nước sôi", "why": "Boiling water can burn you, even with gloves.", "whyVi": "Nước sôi có thể làm bỏng, kể cả khi đeo găng." },
+                { "emoji": "🧊", "en": "Ice cold", "vi": "Lạnh như đá", "why": "Cold water can't remove grease.", "whyVi": "Nước lạnh không làm sạch được dầu mỡ." }
+              ] },
+              { "who": "senior", "ask": "We have glasses, plates and a greasy pan. What do you wash first?", "vi": "Có ly, đĩa và một cái chảo dính mỡ. Em rửa cái nào trước?", "options": [
+                { "emoji": "🥛", "en": "The glasses", "vi": "Mấy cái ly", "ok": true, "why": "Yes! Wash the cleanest things first: glasses, then plates, then pots and pans.", "whyVi": "Đúng! Rửa đồ sạch nhất trước: ly, rồi đĩa, rồi mới tới xoong chảo." },
+                { "emoji": "🍳", "en": "The greasy pan", "vi": "Cái chảo dính mỡ", "why": "If you wash the pan first, the water gets oily and the glasses get greasy.", "whyVi": "Rửa chảo trước thì nước dính dầu, ly rửa sau sẽ bị nhờn." },
+                { "emoji": "🧺", "en": "Everything at the same time", "vi": "Bỏ hết vào cùng lúc", "why": "Too many things in the sink can break the glasses.", "whyVi": "Bỏ quá nhiều đồ vào bồn dễ làm vỡ ly." }
+              ] },
+              { "who": "senior", "en": "Remember: glasses first, then plates, and pots and pans last.", "vi": "Nhớ nhé: ly trước, rồi đĩa, xoong chảo để cuối cùng." }
+            ]
+          },
+          {
+            "id": "dish_2", "title": "Cạo thức ăn thừa, ngâm nồi", "place": "sink",
+            "steps": [
+              { "who": "senior", "en": "Look, these plates still have food on them.", "vi": "Nhìn nè, mấy cái đĩa này còn dính đồ ăn.", "enter": "senior" },
+              { "who": "senior", "ask": "What do you do with the leftover food?", "vi": "Em làm gì với đồ ăn thừa?", "options": [
+                { "emoji": "🗑️", "en": "Scrape it into the food waste bin", "vi": "Cạo vào thùng rác thức ăn", "ok": true, "why": "Yes. Scrape first, so the water and the sink stay clean.", "whyVi": "Đúng. Cạo trước để nước và bồn rửa sạch hơn." },
+                { "emoji": "🚰", "en": "Wash it down the drain", "vi": "Xả xuống cống", "why": "Food blocks the drain. Scrape it into the bin.", "whyVi": "Đồ ăn làm nghẹt cống. Hãy cạo vào thùng rác." }
+              ] },
+              { "who": "senior", "ask": "This pan has a lot of oil in it. Can you pour the oil into the sink?", "vi": "Chảo này còn nhiều dầu. Em đổ dầu xuống bồn được không?", "options": [
+                { "emoji": "🥫", "en": "No. I pour it into an old can and throw it away.", "vi": "Không. Em đổ vào lon cũ rồi bỏ đi.", "ok": true, "why": "Right. Oil gets hard in the pipes and blocks the drain.", "whyVi": "Đúng. Dầu đông cứng trong ống và làm nghẹt cống." },
+                { "emoji": "🚿", "en": "Yes, with hot water it's fine.", "vi": "Được, xả nước nóng là ổn.", "why": "Even with hot water, the oil gets hard later in the pipes.", "whyVi": "Dù xả nước nóng, dầu vẫn đông lại trong ống sau đó." }
+              ] },
+              { "who": "senior", "ask": "This pot has burnt rice at the bottom. What is the easiest way to clean it?", "vi": "Nồi này cháy cơm dưới đáy. Cách dễ nhất để rửa là gì?", "options": [
+                { "emoji": "🫧", "en": "Soak it in hot soapy water for fifteen minutes", "vi": "Ngâm nước nóng pha xà bông 15 phút", "ok": true, "why": "Yes. Soaking makes burnt food soft and easy to remove.", "whyVi": "Đúng. Ngâm cho phần cháy mềm ra, chà rất dễ." },
+                { "emoji": "🔨", "en": "Hit it hard with a spoon", "vi": "Lấy muỗng gõ mạnh", "why": "You will damage the pot. Soak it first.", "whyVi": "Làm hỏng nồi đó. Ngâm trước đã." },
+                { "emoji": "🗑️", "en": "Throw the pot away", "vi": "Vứt cái nồi đi", "why": "No! We can clean it. Soak it first.", "whyVi": "Không! Rửa được mà. Ngâm trước đã." }
+              ] },
+              { "who": "senior", "ask": "While the pot is soaking, what do you do?", "vi": "Trong lúc ngâm nồi, em làm gì?", "options": [
+                { "emoji": "🍽️", "en": "Wash the glasses and plates", "vi": "Rửa ly và đĩa", "ok": true, "why": "Smart. Don't waste time. Wash other things while it soaks.", "whyVi": "Khéo lắm. Không phí thời gian, rửa đồ khác trong lúc ngâm." },
+                { "emoji": "📱", "en": "Play on my phone", "vi": "Chơi điện thoại", "why": "There are many dishes waiting. Keep working.", "whyVi": "Còn nhiều chén đĩa đang chờ. Làm tiếp nhé." }
+              ] },
+              { "who": "senior", "en": "Good. Scrape, soak, and keep moving. That's how we work fast.", "vi": "Tốt. Cạo, ngâm, rồi làm tiếp. Vậy mới nhanh." }
+            ]
+          },
+          {
+            "id": "dish_3", "title": "Rửa đĩa cho sạch bóng", "place": "sink",
+            "steps": [
+              { "who": "senior", "en": "Now let's wash the plates. Take the sponge.", "vi": "Giờ mình rửa đĩa. Cầm miếng mút lên.", "enter": "senior" },
+              { "who": "senior", "ask": "How much soap do you put on the sponge?", "vi": "Em cho bao nhiêu nước rửa chén lên miếng mút?", "options": [
+                { "emoji": "💧", "en": "A few drops", "vi": "Vài giọt", "ok": true, "why": "Right. A few drops are enough. Too much soap is hard to rinse.", "whyVi": "Đúng. Vài giọt là đủ. Nhiều quá khó xả sạch." },
+                { "emoji": "🫗", "en": "Half the bottle", "vi": "Nửa chai", "why": "That's too much! It wastes soap and is hard to rinse.", "whyVi": "Nhiều quá! Phí xà bông mà khó xả sạch." },
+                { "emoji": "🚫", "en": "No soap", "vi": "Không cho", "why": "Without soap, the grease stays on the plate.", "whyVi": "Không có xà bông thì dầu mỡ vẫn bám trên đĩa." }
+              ] },
+              { "who": "senior", "ask": "The sponge has a soft side and a rough side. Which side do you use for plates?", "vi": "Miếng mút có mặt mềm và mặt nhám. Rửa đĩa thì dùng mặt nào?", "options": [
+                { "emoji": "🟨", "en": "The soft side", "vi": "Mặt mềm", "ok": true, "why": "Yes. The soft side cleans plates without scratching them.", "whyVi": "Đúng. Mặt mềm rửa sạch mà không làm trầy đĩa." },
+                { "emoji": "🟩", "en": "The rough side", "vi": "Mặt nhám", "why": "The rough side can scratch plates. Use it for pots.", "whyVi": "Mặt nhám dễ làm trầy đĩa. Mặt đó để chà nồi." }
+              ] },
+              { "who": "senior", "ask": "How do you scrub the plate?", "vi": "Em chà đĩa thế nào?", "options": [
+                { "emoji": "🔄", "en": "In small circles, on the front, the back and the edge", "vi": "Xoay tròn nhỏ, cả mặt trước, mặt sau và viền", "ok": true, "why": "Perfect. Don't forget the back and the edge. Dirt hides there too.", "whyVi": "Hoàn hảo. Đừng quên mặt sau và viền đĩa, chỗ đó cũng dính bẩn." },
+                { "emoji": "1️⃣", "en": "Only the front", "vi": "Chỉ mặt trước", "why": "Grease also sticks to the back and the edge.", "whyVi": "Mặt sau và viền đĩa cũng dính dầu mỡ." },
+                { "emoji": "💦", "en": "Just put it in the water", "vi": "Chỉ nhúng vào nước", "why": "Water alone doesn't clean. You have to scrub.", "whyVi": "Chỉ nhúng nước thì không sạch. Phải chà." }
+              ] },
+              { "who": "senior", "ask": "Touch the plate with your fingers. It still feels slippery and oily. What do you do?", "vi": "Lấy tay sờ thử. Đĩa vẫn còn trơn, nhớt. Em làm gì?", "options": [
+                { "emoji": "🧽", "en": "Wash it again with soap", "vi": "Rửa lại với xà bông", "ok": true, "why": "Yes. Slippery means there is still grease. Wash it again.", "whyVi": "Đúng. Còn trơn là còn dầu mỡ. Rửa lại lần nữa." },
+                { "emoji": "🤷", "en": "It's fine. Put it on the rack.", "vi": "Không sao. Để lên giá luôn.", "why": "Customers will feel the grease. Wash it again.", "whyVi": "Khách sẽ thấy đĩa nhờn. Rửa lại đi em." }
+              ] },
+              { "who": "senior", "ask": "Now the plate feels clean and squeaky. What's next?", "vi": "Giờ sờ thấy đĩa sạch, kêu ken két rồi. Tiếp theo là gì?", "options": [
+                { "emoji": "🚿", "en": "Rinse it under clean running water", "vi": "Xả dưới vòi nước sạch", "ok": true, "why": "Right. Rinse off all the soap.", "whyVi": "Đúng. Xả sạch hết xà bông." },
+                { "emoji": "🫧", "en": "Put it away with soap on it", "vi": "Cất luôn khi còn xà bông", "why": "Soap left on plates gets into the food. Rinse first.", "whyVi": "Xà bông còn trên đĩa sẽ dính vào đồ ăn. Xả trước đã." }
+              ] },
+              { "who": "senior", "ask": "Where do you put the clean plates?", "vi": "Đĩa sạch để đâu?", "options": [
+                { "emoji": "🗄️", "en": "On the drying rack, standing up", "vi": "Lên giá úp chén, dựng đứng", "ok": true, "why": "Yes. Standing up lets the water drip off.", "whyVi": "Đúng. Dựng đứng cho nước chảy ráo." },
+                { "emoji": "📚", "en": "In a pile, still wet", "vi": "Chồng lên nhau khi còn ướt", "why": "Wet plates in a pile don't dry and can smell bad.", "whyVi": "Chồng đĩa ướt lên nhau sẽ không khô và dễ có mùi." }
+              ] },
+              { "who": "senior", "en": "Nice and shiny! You're getting good at this.", "vi": "Sạch bóng! Em làm khá lắm rồi đó." }
+            ]
+          },
+          {
+            "id": "dish_4", "title": "Chà chảo dầu mỡ", "place": "sink",
+            "steps": [
+              { "who": "senior", "en": "Now the hardest one: this greasy pan. It's oily inside and outside.", "vi": "Giờ tới cái khó nhất: cái chảo dính mỡ này. Dầu bám cả trong lẫn ngoài.", "enter": "senior" },
+              { "who": "senior", "ask": "Which side of the sponge do you use for the pan?", "vi": "Chà chảo thì dùng mặt nào của miếng mút?", "options": [
+                { "emoji": "🟩", "en": "The rough side", "vi": "Mặt nhám", "ok": true, "why": "Yes. The rough side removes stuck grease.", "whyVi": "Đúng. Mặt nhám chà sạch dầu mỡ bám chặt." },
+                { "emoji": "🟨", "en": "The soft side", "vi": "Mặt mềm", "why": "The soft side is too weak for heavy grease.", "whyVi": "Mặt mềm không đủ sức chà dầu mỡ bám dày." }
+              ] },
+              { "who": "senior", "ask": "This is a non-stick pan. Can you use steel wool on it?", "vi": "Đây là chảo chống dính. Em dùng búi sắt chà được không?", "options": [
+                { "emoji": "🙅", "en": "No. Steel wool scratches non-stick pans.", "vi": "Không. Búi sắt làm trầy lớp chống dính.", "ok": true, "why": "Right. Use the rough side of the sponge, not steel wool.", "whyVi": "Đúng. Dùng mặt nhám của mút, không dùng búi sắt." },
+                { "emoji": "⛓️", "en": "Yes. Steel wool is the strongest.", "vi": "Được. Búi sắt chà mạnh nhất.", "why": "It's strong, but it ruins the non-stick surface.", "whyVi": "Mạnh thật, nhưng làm hỏng lớp chống dính." }
+              ] },
+              { "who": "senior", "ask": "Where do you scrub the pan?", "vi": "Em chà những chỗ nào của chảo?", "options": [
+                { "emoji": "🍳", "en": "Inside, outside, the bottom and the handle", "vi": "Trong, ngoài, đáy và cán chảo", "ok": true, "why": "Yes. Grease is everywhere. The handle gets greasy from our hands too.", "whyVi": "Đúng. Dầu bám khắp nơi. Cán chảo cũng nhờn vì tay cầm." },
+                { "emoji": "⭕", "en": "Only inside", "vi": "Chỉ bên trong", "why": "The outside and the bottom get greasy and black too.", "whyVi": "Bên ngoài và đáy chảo cũng dính mỡ, ám đen." }
+              ] },
+              { "who": "senior", "ask": "There is a burnt spot. How hard do you scrub?", "vi": "Có một chỗ bị cháy. Em chà mạnh cỡ nào?", "options": [
+                { "emoji": "💪", "en": "Hard on the burnt spot, gently on the rest", "vi": "Chà mạnh chỗ cháy, nhẹ tay chỗ khác", "ok": true, "why": "Perfect. Strong where it's needed, gentle everywhere else.", "whyVi": "Hoàn hảo. Mạnh tay chỗ cần, nhẹ tay chỗ khác." },
+                { "emoji": "🪶", "en": "Very gently everywhere", "vi": "Nhẹ nhàng khắp nơi", "why": "Too gentle. The burnt spot won't come off.", "whyVi": "Nhẹ quá. Chỗ cháy sẽ không sạch." }
+              ] },
+              { "who": "senior", "ask": "You rinse the pan, but there are still some oily spots. What now?", "vi": "Em xả nước rồi, nhưng vẫn còn vài chỗ nhờn. Giờ sao?", "options": [
+                { "emoji": "🔁", "en": "Add a little soap and scrub those spots again", "vi": "Thêm chút xà bông, chà lại mấy chỗ đó", "ok": true, "why": "Yes. Check, and wash again until it's clean.", "whyVi": "Đúng. Kiểm tra, còn bẩn thì rửa lại tới khi sạch." },
+                { "emoji": "🙈", "en": "Leave it. Nobody will see.", "vi": "Kệ. Ai mà thấy.", "why": "The chef will see, and the next dish will taste bad.", "whyVi": "Bếp sẽ thấy, và món nấu sau sẽ bị ám mùi." }
+              ] },
+              { "who": "senior", "ask": "It's clean now. How do you dry the pan?", "vi": "Sạch rồi. Em làm khô chảo thế nào?", "options": [
+                { "emoji": "🧺", "en": "Dry it with a clean towel", "vi": "Lau khô bằng khăn sạch", "ok": true, "why": "Yes. A dry pan doesn't rust and is ready to use.", "whyVi": "Đúng. Chảo khô thì không gỉ và dùng được ngay." },
+                { "emoji": "💦", "en": "Put it away wet", "vi": "Cất luôn khi còn ướt", "why": "Water spots and rust. Dry it first.", "whyVi": "Sẽ ố nước và gỉ. Lau khô trước đã." }
+              ] },
+              { "who": "senior", "ask": "Where does the pan go now?", "vi": "Giờ cái chảo để đâu?", "options": [
+                { "emoji": "🪝", "en": "On the hook above the stove", "vi": "Treo lên móc phía trên bếp", "ok": true, "why": "Right. Put things back where the cooks can find them.", "whyVi": "Đúng. Cất đúng chỗ để đầu bếp dễ tìm." },
+                { "emoji": "🚰", "en": "Under the sink", "vi": "Dưới gầm bồn rửa", "why": "The cooks can't find it there. It goes on the hook.", "whyVi": "Để đó đầu bếp không tìm được. Treo lên móc." }
+              ] }
+            ]
+          },
+          {
+            "id": "dish_5", "title": "Dọn dẹp khu rửa chén", "place": "sink",
+            "steps": [
+              { "who": "senior", "en": "All the dishes are clean. But we are not done yet. Now we clean our tools.", "vi": "Chén đĩa sạch hết rồi. Nhưng chưa xong đâu. Giờ dọn dụng cụ.", "enter": "senior" },
+              { "who": "senior", "ask": "What do you do with the sponge?", "vi": "Em làm gì với miếng mút?", "options": [
+                { "emoji": "🧽", "en": "Rinse it, squeeze out the water and let it dry", "vi": "Xả sạch, vắt khô rồi để cho ráo", "ok": true, "why": "Yes. A wet, dirty sponge grows germs and smells bad.", "whyVi": "Đúng. Mút ướt và bẩn sẽ sinh vi khuẩn và có mùi." },
+                { "emoji": "🫧", "en": "Leave it in the dirty water", "vi": "Để nó trong nước bẩn", "why": "Germs grow fast in dirty water. Rinse and dry it.", "whyVi": "Vi khuẩn sinh sôi nhanh trong nước bẩn. Xả và để ráo." }
+              ] },
+              { "who": "senior", "ask": "This old sponge smells bad and is falling apart. What do you do?", "vi": "Miếng mút cũ này hôi và rách rồi. Em làm gì?", "options": [
+                { "emoji": "🆕", "en": "Throw it away and use a new one", "vi": "Bỏ đi, lấy miếng mới", "ok": true, "why": "Right. An old sponge makes dishes dirtier, not cleaner.", "whyVi": "Đúng. Mút cũ làm chén bẩn thêm chứ không sạch hơn." },
+                { "emoji": "♻️", "en": "Keep using it", "vi": "Dùng tiếp", "why": "A smelly sponge is full of germs. Change it.", "whyVi": "Mút có mùi là đầy vi khuẩn. Thay miếng mới." }
+              ] },
+              { "who": "senior", "ask": "What about the dirty water in the sink?", "vi": "Còn nước bẩn trong bồn thì sao?", "options": [
+                { "emoji": "🕳️", "en": "Drain it, then empty the drain basket", "vi": "Xả nước, rồi đổ rác ở giỏ lọc", "ok": true, "why": "Yes. Food in the drain basket makes the sink smell.", "whyVi": "Đúng. Rác trong giỏ lọc làm bồn rửa bốc mùi." },
+                { "emoji": "📅", "en": "Keep it for tomorrow", "vi": "Để mai dùng tiếp", "why": "Old dirty water smells terrible. Drain it.", "whyVi": "Nước bẩn để qua đêm rất hôi. Xả đi." }
+              ] },
+              { "who": "senior", "ask": "The sink and the counter are wet and dirty. What next?", "vi": "Bồn và mặt bàn còn ướt và bẩn. Tiếp theo?", "options": [
+                { "emoji": "🧻", "en": "Wipe the sink and the counter with a clean cloth", "vi": "Lau bồn và mặt bàn bằng khăn sạch", "ok": true, "why": "Good. A clean area is ready for the next shift.", "whyVi": "Tốt. Khu vực sạch sẽ sẵn sàng cho ca sau." },
+                { "emoji": "🚶", "en": "Leave it for the next person", "vi": "Để người ca sau làm", "why": "Always clean your own area before you leave.", "whyVi": "Khu của mình thì mình dọn trước khi về." }
+              ] },
+              { "who": "senior", "ask": "Last step. What about your gloves and your hands?", "vi": "Bước cuối. Còn găng tay và tay em thì sao?", "options": [
+                { "emoji": "🧼", "en": "Wash and hang the gloves, then wash my hands", "vi": "Rửa và treo găng tay, rồi rửa tay", "ok": true, "why": "Perfect! Clean tools and clean hands.", "whyVi": "Hoàn hảo! Dụng cụ sạch, tay cũng sạch." },
+                { "emoji": "🗑️", "en": "Throw the gloves on the floor", "vi": "Quăng găng tay xuống sàn", "why": "Gloves can be used again. Wash and hang them.", "whyVi": "Găng tay còn dùng lại. Rửa rồi treo lên." }
+              ] },
+              { "who": "manager", "en": "Wow, the washing area looks great!", "vi": "Ồ, khu rửa chén sạch đẹp quá!", "enter": "manager" },
+              { "who": "manager", "ask": "Are you finished?", "vi": "Em xong chưa?", "options": [
+                { "emoji": "🙋", "en": "Yes, I'm done with the dishes. What should I do next?", "vi": "Dạ, em rửa chén xong rồi. Em làm gì tiếp ạ?", "ok": true, "why": "Great attitude! Always ask what to do next.", "whyVi": "Thái độ rất tốt! Luôn hỏi việc tiếp theo." },
+                { "emoji": "🏠", "en": "Yes. I'm going home now.", "vi": "Xong rồi. Em về đây.", "why": "Check with your manager before you leave.", "whyVi": "Hỏi quản lý trước khi về nhé." }
+              ] }
+            ]
+          }
         ]
       },
       {
-        "id": "r_who_cooked", "level": 0, "title": "Khách muốn gặp người nấu", "place": "dining",
-        "cast": { "customer": { "face": "👴", "en": "Old man", "vi": "Ông khách" } },
-        "steps": [
-          { "who": "customer", "en": "This soup is delicious! Can I meet the person who cooked it?", "vi": "Món súp này ngon quá! Tôi gặp người nấu được không?", "enter": "customer" },
-          { "ask": "Who should you call?", "vi": "Bạn nên gọi ai?", "options": [
-            { "emoji": "👨‍🍳", "en": "The chef", "vi": "Bếp trưởng", "ok": true, "why": "Yes! The chef is the person who cooks the food.", "whyVi": "Đúng! Bếp trưởng (chef) là người nấu ăn." },
-            { "emoji": "💁", "en": "The waiter", "vi": "Anh phục vụ", "why": "A waiter brings the food, but does not cook it.", "whyVi": "Người phục vụ (waiter) mang món ra, nhưng không nấu." },
-            { "emoji": "🧾", "en": "The cashier", "vi": "Thu ngân", "why": "A cashier takes the money. The cook is the chef.", "whyVi": "Thu ngân (cashier) nhận tiền. Người nấu là chef." },
-            { "emoji": "🧑‍💼", "en": "The owner", "vi": "Ông chủ", "why": "The owner owns the restaurant, but the chef cooked the soup.", "whyVi": "Ông chủ (owner) sở hữu quán, nhưng chef mới là người nấu súp." }
-          ] },
-          { "who": "chef", "en": "Hello, sir. I'm the chef. I'm happy you like the soup.", "vi": "Chào ông. Tôi là bếp trưởng. Rất vui vì ông thích món súp.", "enter": "chef" },
-          { "who": "customer", "en": "It's wonderful. Can we see the menu again? We want something sweet.", "vi": "Tuyệt lắm. Cho chúng tôi xem lại thực đơn nhé? Chúng tôi muốn ăn gì đó ngọt." },
-          { "ask": "What does the customer want to order now?", "vi": "Bây giờ khách muốn gọi món gì?", "options": [
-            { "emoji": "🍰", "en": "Dessert", "vi": "Món tráng miệng", "ok": true, "why": "Right. Something sweet after a meal is dessert.", "whyVi": "Đúng. Món ngọt sau bữa ăn là món tráng miệng (dessert)." },
-            { "emoji": "🍛", "en": "Another main course", "vi": "Thêm một món chính", "why": "He said 'something sweet'. That's dessert.", "whyVi": "Ông nói 'something sweet' (gì đó ngọt), đó là món tráng miệng." },
-            { "emoji": "🧂", "en": "More salt", "vi": "Thêm muối", "why": "Salt is not sweet. He wants dessert.", "whyVi": "Muối không ngọt. Ông muốn món tráng miệng." }
-          ] },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "📖", "en": "Of course. Here is the dessert menu.", "vi": "Dạ được. Thực đơn tráng miệng đây ạ.", "ok": true, "why": "Perfect. Polite and helpful.", "whyVi": "Hoàn hảo. Lịch sự và chu đáo." },
-            { "emoji": "🙅", "en": "No more food today.", "vi": "Hôm nay hết đồ ăn rồi.", "why": "The kitchen is open. Give him the menu.", "whyVi": "Bếp vẫn mở. Hãy đưa thực đơn cho khách." }
-          ] }
+        "id": "wait", "icon": "🍽️", "en": "Waiter", "vi": "Phục vụ bàn",
+        "desc": "Đón khách, ghi món, bưng món, xử lý phàn nàn và tính tiền.",
+        "lessons": [
+          {
+            "id": "wait_1", "title": "Đón khách", "place": "door",
+            "cast": { "customer": { "face": "👨‍👩‍👧", "en": "Customers", "vi": "Gia đình khách" } },
+            "steps": [
+              { "who": "narrator", "en": "New customers are coming in.", "vi": "Có khách mới bước vào.", "enter": "customer" },
+              { "who": "manager", "ask": "Please go and greet them. What do you say first?", "vi": "Em ra chào khách đi. Em nói gì đầu tiên?", "enter": "manager", "options": [
+                { "emoji": "😊", "en": "Hello! Welcome!", "vi": "Xin chào! Chào mừng quý khách!", "ok": true, "why": "Great! Always greet customers with a smile.", "whyVi": "Tốt lắm! Luôn chào khách với nụ cười." },
+                { "emoji": "👋", "en": "Goodbye!", "vi": "Tạm biệt!", "why": "We say goodbye when people leave, not when they arrive.", "whyVi": "Goodbye dùng khi khách ra về, không phải lúc mới đến." },
+                { "emoji": "😐", "en": "What do you want?", "vi": "Muốn gì?", "why": "That sounds rude. Be polite with customers.", "whyVi": "Câu này nghe cộc lốc. Hãy lịch sự với khách." }
+              ] },
+              { "who": "customer", "ask": "Hi! A table for three, please.", "vi": "Chào em! Cho một bàn ba người nhé.", "options": [
+                { "emoji": "3️⃣", "en": "Of course. A table for three. Please follow me.", "vi": "Dạ vâng. Bàn ba người. Mời đi theo em.", "ok": true, "why": "Perfect. Repeat the number and show them to a table.", "whyVi": "Hoàn hảo. Nhắc lại số người và dẫn khách tới bàn." },
+                { "emoji": "2️⃣", "en": "A table for two? This way.", "vi": "Bàn hai người ạ? Lối này.", "why": "Listen again: a table for three.", "whyVi": "Nghe lại: 'a table for three' là ba người." },
+                { "emoji": "🙅", "en": "Sit anywhere. I'm busy.", "vi": "Ngồi đâu cũng được. Tôi bận.", "why": "Don't leave customers alone. Show them to a table.", "whyVi": "Đừng bỏ khách một mình. Dẫn khách tới bàn." }
+              ] },
+              { "who": "customer", "ask": "Thank you! Can we sit by the window?", "vi": "Cảm ơn! Cho chúng tôi ngồi cạnh cửa sổ được không?", "options": [
+                { "emoji": "🪟", "en": "Sure. This table by the window is free.", "vi": "Dạ được. Bàn cạnh cửa sổ này đang trống.", "ok": true, "why": "Good. 'Free' here means nobody is using it.", "whyVi": "Tốt. 'Free' ở đây là bàn đang trống." },
+                { "emoji": "🚪", "en": "No. Sit by the door.", "vi": "Không. Ngồi cạnh cửa đi.", "why": "If a window table is free, give them what they ask for.", "whyVi": "Nếu bàn cửa sổ còn trống thì chiều theo ý khách." }
+              ] },
+              { "who": "narrator", "ask": "The customers sit down. What do you give them?", "vi": "Khách đã ngồi. Bạn đưa gì cho khách?", "options": [
+                { "emoji": "📖", "en": "The menu and some water", "vi": "Thực đơn và nước lọc", "ok": true, "why": "Yes. Menu and water first, then they can choose.", "whyVi": "Đúng. Đưa thực đơn và nước trước để khách chọn món." },
+                { "emoji": "🧾", "en": "The bill", "vi": "Hóa đơn", "why": "They haven't eaten yet! The bill comes at the end.", "whyVi": "Khách chưa ăn mà! Hóa đơn đưa sau cùng." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_2", "title": "Ghi món", "place": "table",
+            "cast": { "customer": { "face": "👩", "en": "Customer", "vi": "Cô khách" } },
+            "steps": [
+              { "who": "customer", "ask": "Excuse me! We're ready to order.", "vi": "Em ơi! Chúng tôi gọi món nhé.", "enter": "customer", "options": [
+                { "emoji": "📝", "en": "Sure. What would you like?", "vi": "Dạ vâng. Quý khách muốn dùng gì ạ?", "ok": true, "why": "Good. 'What would you like?' is polite.", "whyVi": "Tốt. 'What would you like?' là câu hỏi lịch sự." },
+                { "emoji": "✋", "en": "Wait.", "vi": "Đợi đó.", "why": "Too short and not polite. Say 'One moment, please' if you are busy.", "whyVi": "Quá cộc. Nếu bận hãy nói 'One moment, please'." }
+              ] },
+              { "who": "customer", "ask": "I'd like a bowl of beef pho and an iced coffee, please.", "vi": "Cho tôi một tô phở bò và một ly cà phê đá nhé.", "options": [
+                { "emoji": "🍜", "en": "One beef pho and one iced coffee. Anything else?", "vi": "Một phở bò, một cà phê đá. Còn gì nữa không ạ?", "ok": true, "why": "Great. Repeat the order and ask 'Anything else?'", "whyVi": "Tuyệt. Nhắc lại món và hỏi 'Còn gì nữa không?'" },
+                { "emoji": "🍗", "en": "One chicken pho and one hot tea.", "vi": "Một phở gà, một trà nóng.", "why": "Listen again: beef pho and iced coffee.", "whyVi": "Nghe lại: beef pho (phở bò), iced coffee (cà phê đá)." }
+              ] },
+              { "who": "customer", "ask": "No onions in the pho, please. I don't like them.", "vi": "Phở đừng cho hành nhé. Tôi không thích.", "options": [
+                { "emoji": "🧅", "en": "No problem. No onions. I'll tell the kitchen.", "vi": "Dạ được. Không hành. Em sẽ báo bếp.", "ok": true, "why": "Yes. Write special requests on the order and tell the kitchen.", "whyVi": "Đúng. Ghi yêu cầu riêng vào phiếu và báo cho bếp." },
+                { "emoji": "🤷", "en": "Onions are good for you.", "vi": "Hành tốt cho sức khỏe mà.", "why": "Don't argue. The customer decides what they eat.", "whyVi": "Đừng cãi. Khách ăn gì là quyền của khách." }
+              ] },
+              { "who": "narrator", "ask": "You write: 1 beef pho, no onions, 1 iced coffee. Where do you take the order?", "vi": "Bạn ghi: 1 phở bò không hành, 1 cà phê đá. Mang phiếu đi đâu?", "options": [
+                { "emoji": "👨‍🍳", "en": "To the kitchen, right away", "vi": "Vào bếp ngay", "ok": true, "why": "Right. The faster the kitchen gets it, the faster the food comes.", "whyVi": "Đúng. Bếp nhận phiếu càng sớm, món ra càng nhanh." },
+                { "emoji": "👖", "en": "Keep it in my pocket for later", "vi": "Bỏ túi để lát đưa", "why": "The customer is waiting. Take it to the kitchen now.", "whyVi": "Khách đang chờ. Mang vào bếp ngay." }
+              ] },
+              { "who": "chef", "ask": "Thanks. Any special requests?", "vi": "Cảm ơn. Có yêu cầu gì đặc biệt không?", "enter": "chef", "options": [
+                { "emoji": "🧅", "en": "Yes. No onions in the beef pho, please.", "vi": "Dạ có. Phở bò không hành ạ.", "ok": true, "why": "Perfect. You passed the message to the chef.", "whyVi": "Hoàn hảo. Bạn đã truyền đạt cho bếp." },
+                { "emoji": "🙂", "en": "No, nothing.", "vi": "Không có gì ạ.", "why": "You forgot: no onions! The customer will be unhappy.", "whyVi": "Quên rồi: không hành! Khách sẽ không vui." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_3", "title": "Bưng món ra bàn", "place": "kitchen",
+            "cast": { "customer": { "face": "👩", "en": "Customer", "vi": "Cô khách" } },
+            "steps": [
+              { "who": "chef", "ask": "Beef pho, no onions, for table three! Careful, it's very hot.", "vi": "Phở bò không hành, bàn số ba! Cẩn thận, nóng lắm.", "enter": "chef", "options": [
+                { "emoji": "🤲", "en": "Got it. I'll carry it with both hands.", "vi": "Dạ. Em bưng bằng hai tay.", "ok": true, "why": "Safe and careful. Hot soup can burn you or the customer.", "whyVi": "An toàn, cẩn thận. Súp nóng có thể làm bỏng bạn hoặc khách." },
+                { "emoji": "🏃", "en": "I'll run with it. It's faster.", "vi": "Em chạy cho nhanh.", "why": "Never run with hot food. Walk carefully.", "whyVi": "Không bao giờ chạy khi bưng đồ nóng. Đi cẩn thận." }
+              ] },
+              { "who": "narrator", "ask": "You arrive at table three. What do you say when you put the bowl down?", "vi": "Tới bàn số ba. Đặt tô xuống thì bạn nói gì?", "options": [
+                { "emoji": "🍜", "en": "Here's your beef pho, no onions. Careful, the bowl is hot.", "vi": "Phở bò không hành của chị đây. Cẩn thận, tô nóng ạ.", "ok": true, "why": "Great. Say the dish, the special request, and warn about the heat.", "whyVi": "Tuyệt. Nói tên món, yêu cầu riêng và nhắc tô nóng." },
+                { "emoji": "😶", "en": "Put it down and leave without a word.", "vi": "Đặt xuống rồi đi, không nói gì.", "why": "Tell the customer what it is and warn that it's hot.", "whyVi": "Hãy nói đây là món gì và nhắc khách tô nóng." }
+              ] },
+              { "who": "customer", "en": "Thank you! It smells great.", "vi": "Cảm ơn em! Thơm quá.", "enter": "customer" },
+              { "who": "narrator", "ask": "Two minutes later, you come back. What do you ask?", "vi": "Hai phút sau, bạn quay lại. Bạn hỏi gì?", "options": [
+                { "emoji": "👍", "en": "Is everything okay with your food?", "vi": "Món ăn có vừa miệng không ạ?", "ok": true, "why": "Yes. Check back after two minutes. You can fix problems early.", "whyVi": "Đúng. Quay lại hỏi sau hai phút để kịp xử lý nếu có vấn đề." },
+                { "emoji": "💵", "en": "Are you ready to pay?", "vi": "Chị trả tiền chưa?", "why": "Too early! She just started eating.", "whyVi": "Sớm quá! Khách mới bắt đầu ăn." }
+              ] },
+              { "who": "customer", "ask": "It's delicious. Can I have some more chili sauce?", "vi": "Ngon lắm. Cho chị thêm tương ớt được không?", "options": [
+                { "emoji": "🌶️", "en": "Of course. I'll bring it right away.", "vi": "Dạ được. Em mang ra ngay.", "ok": true, "why": "Good. 'Right away' means very soon.", "whyVi": "Tốt. 'Right away' nghĩa là ngay lập tức." },
+                { "emoji": "🙅", "en": "No more sauce.", "vi": "Hết tương rồi.", "why": "Sauce is free and easy to give. Help the customer.", "whyVi": "Tương ớt có sẵn mà. Giúp khách đi." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_4", "title": "Khách muốn gặp người nấu", "place": "dining",
+            "cast": { "customer": { "face": "👴", "en": "Old man", "vi": "Ông khách" } },
+            "steps": [
+              { "who": "customer", "ask": "This soup is delicious! Can I meet the person who cooked it?", "vi": "Món súp này ngon quá! Tôi gặp người nấu được không?", "enter": "customer", "options": [
+                { "emoji": "👨‍🍳", "en": "Of course. I'll call the chef.", "vi": "Dạ được. Để cháu gọi bếp trưởng.", "ok": true, "why": "Yes! The chef is the person who cooks the food.", "whyVi": "Đúng! Bếp trưởng (chef) là người nấu ăn." },
+                { "emoji": "🧾", "en": "I'll call the cashier.", "vi": "Để cháu gọi thu ngân.", "why": "A cashier takes the money. The cook is the chef.", "whyVi": "Thu ngân (cashier) nhận tiền. Người nấu là chef." },
+                { "emoji": "🧑‍💼", "en": "I'll call the owner.", "vi": "Để cháu gọi ông chủ.", "why": "The owner owns the restaurant, but the chef cooked the soup.", "whyVi": "Ông chủ sở hữu quán, nhưng chef mới là người nấu súp." }
+              ] },
+              { "who": "chef", "en": "Hello, sir. I'm the chef. I'm happy you like the soup.", "vi": "Chào ông. Tôi là bếp trưởng. Rất vui vì ông thích món súp.", "enter": "chef" },
+              { "who": "customer", "ask": "It's wonderful. Can we see the menu again? We want something sweet.", "vi": "Tuyệt lắm. Cho xem lại thực đơn nhé? Chúng tôi muốn ăn gì đó ngọt.", "options": [
+                { "emoji": "🍰", "en": "Of course. Here is the dessert menu.", "vi": "Dạ. Thực đơn tráng miệng đây ạ.", "ok": true, "why": "Right. Something sweet after a meal is dessert.", "whyVi": "Đúng. Món ngọt sau bữa ăn là món tráng miệng (dessert)." },
+                { "emoji": "🧂", "en": "Here is some more salt.", "vi": "Thêm muối đây ạ.", "why": "Salt is not sweet. He wants dessert.", "whyVi": "Muối đâu có ngọt. Ông muốn món tráng miệng." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_5", "title": "Dọn bàn", "place": "dining",
+            "steps": [
+              { "who": "manager", "ask": "The customers at table five just left. What do you take away first?", "vi": "Khách bàn năm vừa về. Em dọn cái gì trước?", "enter": "manager", "options": [
+                { "emoji": "🍽️", "en": "The dirty plates, bowls and glasses", "vi": "Đĩa, tô và ly bẩn", "ok": true, "why": "Right. Clear the dishes first.", "whyVi": "Đúng. Dọn chén đĩa trước." },
+                { "emoji": "🪑", "en": "The chairs", "vi": "Mấy cái ghế", "why": "The chairs stay. Take the dirty dishes.", "whyVi": "Ghế để nguyên. Dọn chén đĩa bẩn." }
+              ] },
+              { "who": "manager", "ask": "How do you carry the glasses?", "vi": "Em mang ly thế nào?", "options": [
+                { "emoji": "🧺", "en": "In a tray, not stacked inside each other", "vi": "Để trong khay, không lồng vào nhau", "ok": true, "why": "Yes. Stacked glasses get stuck and break.", "whyVi": "Đúng. Lồng ly vào nhau dễ kẹt và vỡ." },
+                { "emoji": "🏗️", "en": "Stack them all in one hand", "vi": "Chồng hết lên một tay", "why": "Glasses can get stuck and break. Use a tray.", "whyVi": "Ly dễ kẹt và vỡ. Dùng khay." }
+              ] },
+              { "who": "manager", "ask": "Now the table. What do you use to clean it?", "vi": "Giờ tới mặt bàn. Em lau bằng gì?", "options": [
+                { "emoji": "🧽", "en": "A clean cloth and table spray", "vi": "Khăn sạch và bình xịt lau bàn", "ok": true, "why": "Good. Wipe the whole table, the edges too.", "whyVi": "Tốt. Lau cả mặt bàn và cạnh bàn." },
+                { "emoji": "🧹", "en": "A broom", "vi": "Cây chổi", "why": "A broom is for the floor, not the table.", "whyVi": "Chổi để quét nhà, không lau bàn." }
+              ] },
+              { "who": "manager", "ask": "There is some rice and a napkin on the floor under the table. What do you do?", "vi": "Dưới gầm bàn có cơm và giấy ăn rơi. Em làm gì?", "options": [
+                { "emoji": "🧹", "en": "I'll sweep the floor too.", "vi": "Em quét sàn luôn.", "ok": true, "why": "Great. A clean table needs a clean floor.", "whyVi": "Tuyệt. Bàn sạch thì sàn cũng phải sạch." },
+                { "emoji": "🙈", "en": "Customers won't look down there.", "vi": "Khách không nhìn xuống đâu.", "why": "They will. And it can make people slip.", "whyVi": "Có đấy. Và còn làm người khác trượt ngã." }
+              ] },
+              { "who": "manager", "ask": "Last, set the table for the next customers. What do you put on it?", "vi": "Cuối cùng, bày bàn cho khách tiếp theo. Em đặt gì?", "options": [
+                { "emoji": "🥢", "en": "Clean chopsticks, spoons, napkins and the menu", "vi": "Đũa, muỗng sạch, giấy ăn và thực đơn", "ok": true, "why": "Perfect. The table is ready.", "whyVi": "Hoàn hảo. Bàn đã sẵn sàng." },
+                { "emoji": "🍽️", "en": "The dirty plates again", "vi": "Lại đặt đĩa bẩn lên", "why": "Never! Only clean things on the table.", "whyVi": "Không bao giờ! Chỉ đặt đồ sạch lên bàn." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_6", "title": "Tính tiền", "place": "counter",
+            "cast": { "customer": { "face": "🧔", "en": "Customer", "vi": "Anh khách" } },
+            "steps": [
+              { "who": "customer", "ask": "Excuse me, can I have the bill, please?", "vi": "Em ơi, cho anh xin hóa đơn.", "enter": "customer", "options": [
+                { "emoji": "🧾", "en": "Sure. Here is your bill.", "vi": "Dạ. Hóa đơn của anh đây.", "ok": true, "why": "Yes. 'The bill' shows how much to pay.", "whyVi": "Đúng. 'The bill' là hóa đơn ghi số tiền phải trả." },
+                { "emoji": "📖", "en": "Here is the menu.", "vi": "Thực đơn đây ạ.", "why": "He asked for the bill, not the menu.", "whyVi": "Khách xin hóa đơn (bill), không phải thực đơn." }
+              ] },
+              { "who": "customer", "ask": "Can I pay by card?", "vi": "Anh trả bằng thẻ được không?", "options": [
+                { "emoji": "💳", "en": "Yes, of course. Here is the card machine.", "vi": "Dạ được ạ. Máy quẹt thẻ đây ạ.", "ok": true, "why": "Good. Clear and polite.", "whyVi": "Tốt. Rõ ràng và lịch sự." },
+                { "emoji": "❓", "en": "Card? What is card?", "vi": "Thẻ? Thẻ là gì?", "why": "A card is a bank card. Most restaurants take cards.", "whyVi": "Card là thẻ ngân hàng. Hầu hết nhà hàng đều nhận thẻ." }
+              ] },
+              { "who": "customer", "ask": "Actually, here's cash. Keep the change!", "vi": "À thôi, anh đưa tiền mặt. Khỏi thối nhé!", "options": [
+                { "emoji": "🙏", "en": "Thank you so much! Have a nice day!", "vi": "Cảm ơn anh nhiều! Chúc anh một ngày tốt lành!", "ok": true, "why": "Yes! 'Keep the change' means the extra money is your tip.", "whyVi": "Đúng! 'Keep the change' là tiền thừa cho bạn làm tiền boa." },
+                { "emoji": "🔙", "en": "Wait, here is your change.", "vi": "Đợi chút, tiền thối của anh đây.", "why": "He said keep it. The change is your tip.", "whyVi": "Khách bảo giữ lại. Tiền thừa là tiền boa của bạn." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_7", "title": "Khách làm đổ nước", "place": "dining",
+            "cast": { "customer": { "face": "👦", "en": "Boy", "vi": "Cậu bé" } },
+            "steps": [
+              { "who": "narrator", "en": "Oh no! A boy knocked over his glass. There is water on the floor.", "vi": "Ôi không! Cậu bé làm đổ ly. Nước chảy ra sàn.", "enter": "customer" },
+              { "who": "customer", "ask": "I'm sorry! It was an accident.", "vi": "Cháu xin lỗi! Cháu lỡ tay.", "options": [
+                { "emoji": "🙂", "en": "Don't worry. I'll clean it up.", "vi": "Đừng lo. Để anh/chị lau cho.", "ok": true, "why": "Kind and calm. Good job.", "whyVi": "Nhẹ nhàng, bình tĩnh. Tốt lắm." },
+                { "emoji": "😠", "en": "Be careful next time!", "vi": "Lần sau cẩn thận vào!", "why": "He already said sorry. Be kind to customers.", "whyVi": "Cậu bé đã xin lỗi rồi. Hãy tử tế với khách." }
+              ] },
+              { "who": "narrator", "ask": "What do you use to clean the floor?", "vi": "Bạn dùng gì để lau sàn?", "options": [
+                { "emoji": "🧹", "en": "A mop", "vi": "Cây lau nhà", "ok": true, "why": "Yes. A mop cleans water on the floor.", "whyVi": "Đúng. Cây lau nhà (mop) lau nước trên sàn." },
+                { "emoji": "🍴", "en": "A fork", "vi": "Cái nĩa", "why": "A fork is for eating!", "whyVi": "Nĩa dùng để ăn mà!" }
+              ] },
+              { "who": "narrator", "ask": "The floor is still wet. What do you put there?", "vi": "Sàn vẫn còn ướt. Bạn đặt gì ở đó?", "options": [
+                { "emoji": "⚠️", "en": "A 'Wet floor' sign", "vi": "Biển 'Sàn ướt'", "ok": true, "why": "Right. The sign stops people from slipping.", "whyVi": "Đúng. Biển báo giúp mọi người không bị trượt ngã." },
+                { "emoji": "🪑", "en": "A chair", "vi": "Một cái ghế", "why": "A chair is not a clear warning. Use a 'Wet floor' sign.", "whyVi": "Ghế không phải biển cảnh báo. Dùng biển 'Sàn ướt'." }
+              ] },
+              { "who": "narrator", "ask": "His glass is empty now. What do you do?", "vi": "Ly của cậu bé hết nước rồi. Bạn làm gì?", "options": [
+                { "emoji": "🥤", "en": "Bring him a new drink", "vi": "Mang cho cậu bé ly nước mới", "ok": true, "why": "Nice service! The customer will remember that.", "whyVi": "Phục vụ chu đáo! Khách sẽ nhớ điều này." },
+                { "emoji": "💵", "en": "Tell him to pay for the glass", "vi": "Bắt cậu bé đền ly", "why": "It was an accident, and the glass didn't break.", "whyVi": "Chỉ là lỡ tay, ly cũng không vỡ." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_8", "title": "Khách phàn nàn súp nguội", "place": "table",
+            "cast": { "customer": { "face": "👩‍🦰", "en": "Customer", "vi": "Chị khách" } },
+            "steps": [
+              { "who": "customer", "ask": "Excuse me, my soup is cold.", "vi": "Em ơi, súp của chị nguội rồi.", "enter": "customer", "options": [
+                { "emoji": "🙇", "en": "I'm so sorry about that. Let me take it back and heat it up.", "vi": "Em xin lỗi chị. Để em mang vào hâm nóng lại.", "ok": true, "why": "Yes. Say sorry first, then fix the problem.", "whyVi": "Đúng. Xin lỗi trước, rồi xử lý vấn đề." },
+                { "emoji": "🙄", "en": "No, it's hot.", "vi": "Không, nó nóng mà.", "why": "Never argue with the customer.", "whyVi": "Đừng bao giờ cãi với khách." },
+                { "emoji": "🥄", "en": "Just eat it quickly.", "vi": "Chị ăn nhanh đi.", "why": "She is not happy. Heat it up or bring a new one.", "whyVi": "Khách không vui. Hâm lại hoặc mang tô mới." }
+              ] },
+              { "who": "chef", "ask": "Why is this soup back?", "vi": "Sao súp này bị trả lại?", "enter": "chef", "options": [
+                { "emoji": "🌡️", "en": "The customer said it was cold. Can you heat it up, please?", "vi": "Khách nói súp nguội. Anh hâm nóng lại giúp em nhé?", "ok": true, "why": "Clear. Say the problem and what you need.", "whyVi": "Rõ ràng. Nói vấn đề và việc cần làm." },
+                { "emoji": "🤷", "en": "I don't know.", "vi": "Em không biết.", "why": "Tell the chef the problem so he can fix it.", "whyVi": "Nói cho bếp biết vấn đề để bếp xử lý." }
+              ] },
+              { "who": "manager", "ask": "Good job. Bring her a free iced tea too. What does 'free' mean here?", "vi": "Làm tốt lắm. Mang cho chị ấy ly trà đá miễn phí nhé. 'Free' ở đây là gì?", "enter": "manager", "options": [
+                { "emoji": "🎁", "en": "She doesn't have to pay for it", "vi": "Chị ấy không phải trả tiền", "ok": true, "why": "Yes. Free means no money.", "whyVi": "Đúng. Free nghĩa là miễn phí." },
+                { "emoji": "🕊️", "en": "She can leave now", "vi": "Chị ấy được đi về", "why": "Here 'free' is about money: no charge.", "whyVi": "Ở đây 'free' nói về tiền: không tính phí." }
+              ] }
+            ]
+          },
+          {
+            "id": "wait_9", "title": "Khách bị dị ứng", "place": "table",
+            "cast": { "customer": { "face": "👱‍♀️", "en": "Customer", "vi": "Cô khách" } },
+            "steps": [
+              { "who": "customer", "ask": "Does this noodle dish have peanuts? I'm allergic to peanuts.", "vi": "Món mì này có đậu phộng không? Tôi bị dị ứng đậu phộng.", "enter": "customer", "options": [
+                { "emoji": "👨‍🍳", "en": "Let me check with the chef for you.", "vi": "Để em hỏi bếp giúp chị.", "ok": true, "why": "Yes. Allergies are serious. Always check.", "whyVi": "Đúng. Dị ứng rất nguy hiểm. Luôn hỏi lại cho chắc." },
+                { "emoji": "🤞", "en": "Maybe. Just try it.", "vi": "Chắc không. Chị cứ ăn thử.", "why": "Never guess with allergies. It can make people very sick.", "whyVi": "Đừng bao giờ đoán khi khách dị ứng. Có thể rất nguy hiểm." }
+              ] },
+              { "who": "chef", "ask": "Yes, there are peanuts in the sauce. What will you tell her?", "vi": "Có, trong nước sốt có đậu phộng. Em sẽ nói gì với khách?", "enter": "chef", "options": [
+                { "emoji": "🙏", "en": "Sorry, it has peanuts. Can I suggest another dish?", "vi": "Xin lỗi, món này có đậu phộng. Em gợi ý món khác nhé?", "ok": true, "why": "Excellent. Honest and helpful.", "whyVi": "Xuất sắc. Thật thà và nhiệt tình." },
+                { "emoji": "🤐", "en": "No peanuts. Enjoy!", "vi": "Không có đậu phộng. Chúc ngon miệng!", "why": "That's a lie, and it's dangerous!", "whyVi": "Nói dối như vậy rất nguy hiểm!" }
+              ] }
+            ]
+          }
         ]
       },
       {
-        "id": "r_order", "level": 1, "title": "Ghi món cho khách", "place": "table",
-        "cast": { "customer": { "face": "👩", "en": "Customer", "vi": "Cô khách" } },
-        "steps": [
-          { "who": "customer", "en": "Excuse me! We're ready to order.", "vi": "Em ơi! Chúng tôi gọi món nhé.", "enter": "customer" },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "📝", "en": "Sure. What would you like?", "vi": "Dạ vâng. Quý khách muốn dùng gì ạ?", "ok": true, "why": "Good. 'What would you like?' is polite.", "whyVi": "Tốt. 'What would you like?' là câu hỏi lịch sự." },
-            { "emoji": "✋", "en": "Wait.", "vi": "Đợi đó.", "why": "Too short and not polite. Say 'One moment, please' if you are busy.", "whyVi": "Quá cộc. Nếu bận hãy nói 'One moment, please'." },
-            { "emoji": "🤷", "en": "I don't know.", "vi": "Tôi không biết.", "why": "The customer wants to order. Ask what they would like.", "whyVi": "Khách muốn gọi món. Hãy hỏi khách muốn dùng gì." }
-          ] },
-          { "who": "customer", "en": "I'd like a bowl of beef pho and an iced coffee, please.", "vi": "Cho tôi một tô phở bò và một ly cà phê đá nhé." },
-          { "ask": "What did she order?", "vi": "Cô ấy gọi gì?", "options": [
-            { "emoji": "🍜☕", "en": "Beef pho and iced coffee", "vi": "Phở bò và cà phê đá", "ok": true, "why": "Correct! Beef pho and an iced coffee.", "whyVi": "Chính xác! Phở bò và cà phê đá." },
-            { "emoji": "🍗🍵", "en": "Chicken pho and hot tea", "vi": "Phở gà và trà nóng", "why": "Listen again: beef pho, iced coffee.", "whyVi": "Nghe lại: beef pho (phở bò), iced coffee (cà phê đá)." },
-            { "emoji": "🍚☕", "en": "Fried rice and iced coffee", "vi": "Cơm chiên và cà phê đá", "why": "The drink is right, but the food is beef pho.", "whyVi": "Đồ uống đúng, nhưng món ăn là phở bò." }
-          ] },
-          { "ask": "How do you check the order?", "vi": "Bạn kiểm tra lại món thế nào?", "options": [
-            { "emoji": "🔁", "en": "So, one beef pho and one iced coffee. Is that right?", "vi": "Vậy là một phở bò và một cà phê đá. Đúng không ạ?", "ok": true, "why": "Yes! Repeat the order to avoid mistakes.", "whyVi": "Đúng! Nhắc lại món để tránh nhầm lẫn." },
-            { "emoji": "💵", "en": "Pay now, please.", "vi": "Trả tiền luôn đi.", "why": "Customers pay after the meal. First, check the order.", "whyVi": "Khách trả tiền sau khi ăn. Trước tiên hãy kiểm tra lại món." },
-            { "emoji": "🏃", "en": "Okay, bye.", "vi": "Ừ, bye.", "why": "Check the order before you go to the kitchen.", "whyVi": "Kiểm tra lại món trước khi vào bếp." }
-          ] },
-          { "who": "customer", "en": "Yes, that's right. Thank you!", "vi": "Đúng rồi. Cảm ơn em!" },
-          { "ask": "Where do you take the order now?", "vi": "Giờ bạn mang phiếu gọi món đi đâu?", "options": [
-            { "emoji": "👨‍🍳", "en": "To the kitchen", "vi": "Vào bếp", "ok": true, "why": "Right. The chef needs the order to start cooking.", "whyVi": "Đúng. Bếp cần phiếu gọi món để bắt đầu nấu." },
-            { "emoji": "🧾", "en": "To the cashier", "vi": "Ra quầy thu ngân", "why": "Not yet. The kitchen needs to cook first.", "whyVi": "Chưa đâu. Bếp phải nấu trước đã." }
-          ] }
-        ]
-      },
-      {
-        "id": "r_dishes", "level": 0, "title": "Rửa chén", "place": "sink",
-        "steps": [
-          { "who": "senior", "en": "Today you will wash the dishes. These plates are very greasy.", "vi": "Hôm nay em rửa chén nhé. Mấy cái đĩa này dính nhiều dầu mỡ lắm.", "enter": "senior" },
-          { "ask": "What do you need to remove the grease?", "vi": "Bạn cần gì để tẩy sạch dầu mỡ?", "options": [
-            { "emoji": "🧴", "en": "Dish soap and hot water", "vi": "Nước rửa chén và nước nóng", "ok": true, "why": "Yes. Soap and hot water remove oil.", "whyVi": "Đúng. Nước rửa chén và nước nóng làm sạch dầu mỡ." },
-            { "emoji": "💧", "en": "Cold water only", "vi": "Chỉ nước lạnh", "why": "Cold water alone can't remove oil.", "whyVi": "Chỉ nước lạnh thì không sạch được dầu mỡ." },
-            { "emoji": "🧻", "en": "A napkin", "vi": "Giấy ăn", "why": "A napkin is for the table, not for washing plates.", "whyVi": "Giấy ăn dùng trên bàn ăn, không dùng để rửa đĩa." }
-          ] },
-          { "who": "senior", "en": "Good. Now, how much soap do you use?", "vi": "Tốt. Giờ em dùng bao nhiêu nước rửa chén?" },
-          { "ask": "How much soap?", "vi": "Dùng bao nhiêu nước rửa chén?", "options": [
-            { "emoji": "🧽", "en": "A little soap on the sponge", "vi": "Một ít trên miếng mút", "ok": true, "why": "Right. A little is enough. Too much soap is hard to rinse.", "whyVi": "Đúng. Một ít là đủ. Nhiều quá thì khó xả sạch." },
-            { "emoji": "🫗", "en": "The whole bottle", "vi": "Cả chai", "why": "That's too much! It wastes soap and is hard to rinse.", "whyVi": "Nhiều quá! Vừa phí, vừa khó xả sạch." },
-            { "emoji": "🚫", "en": "No soap at all", "vi": "Không dùng chút nào", "why": "Without soap, the grease stays on the plates.", "whyVi": "Không có xà bông thì dầu mỡ vẫn còn trên đĩa." }
-          ] },
-          { "who": "senior", "en": "Look at this pot. There is burnt food at the bottom.", "vi": "Nhìn cái nồi này. Dưới đáy có thức ăn bị cháy." },
-          { "ask": "What do you use to clean the burnt pot?", "vi": "Bạn dùng gì để chùi cái nồi bị cháy?", "options": [
-            { "emoji": "🧽", "en": "A scrubber", "vi": "Miếng chùi nồi", "ok": true, "why": "Yes. A scrubber removes burnt food.", "whyVi": "Đúng. Miếng chùi nồi (scrubber) cạo sạch phần bị cháy." },
-            { "emoji": "🥄", "en": "A spoon", "vi": "Cái muỗng", "why": "A spoon can scratch the pot. Use a scrubber.", "whyVi": "Muỗng có thể làm trầy nồi. Hãy dùng miếng chùi nồi." },
-            { "emoji": "🧣", "en": "A towel", "vi": "Khăn lau", "why": "A towel is for drying, not for scrubbing.", "whyVi": "Khăn dùng để lau khô, không dùng để chà." }
-          ] },
-          { "ask": "After washing, what do you do?", "vi": "Rửa xong, bạn làm gì?", "options": [
-            { "emoji": "🚿", "en": "Rinse them with clean water and let them dry.", "vi": "Xả lại bằng nước sạch rồi để ráo.", "ok": true, "why": "Perfect. Rinse, then dry.", "whyVi": "Hoàn hảo. Xả sạch rồi để ráo." },
-            { "emoji": "🫧", "en": "Put them away with soap on them.", "vi": "Cất luôn khi còn xà bông.", "why": "Soap left on plates is not safe. Rinse first.", "whyVi": "Còn xà bông trên đĩa là không an toàn. Hãy xả sạch trước." },
-            { "emoji": "🗑️", "en": "Throw them away.", "vi": "Vứt đi.", "why": "No! We use these plates again.", "whyVi": "Không! Đĩa này còn dùng lại." }
-          ] },
-          { "who": "senior", "en": "Great job! The plates are clean and shiny.", "vi": "Giỏi lắm! Đĩa sạch bóng rồi." }
-        ]
-      },
-      {
-        "id": "r_clean_table", "level": 0, "title": "Dọn bàn", "place": "dining",
-        "steps": [
-          { "who": "manager", "en": "The customers at table five just left. Please clean the table.", "vi": "Khách bàn năm vừa về. Em dọn bàn nhé.", "enter": "manager" },
-          { "ask": "What do you take first?", "vi": "Bạn mang đi cái gì trước?", "options": [
-            { "emoji": "🍽️", "en": "The dirty plates and glasses", "vi": "Đĩa và ly bẩn", "ok": true, "why": "Right. Clear the dishes first.", "whyVi": "Đúng. Dọn chén đĩa trước." },
-            { "emoji": "🪑", "en": "The chairs", "vi": "Mấy cái ghế", "why": "The chairs stay. Take the dirty dishes.", "whyVi": "Ghế để nguyên. Hãy dọn chén đĩa bẩn." }
-          ] },
-          { "ask": "Where do the dirty plates go?", "vi": "Đĩa bẩn mang đi đâu?", "options": [
-            { "emoji": "🚰", "en": "To the sink in the kitchen", "vi": "Vào bồn rửa trong bếp", "ok": true, "why": "Yes. They go to the washing area.", "whyVi": "Đúng. Mang vào khu rửa chén." },
-            { "emoji": "🗑️", "en": "Into the trash can", "vi": "Vào thùng rác", "why": "Only the leftover food goes in the trash, not the plates.", "whyVi": "Chỉ đồ ăn thừa bỏ vào thùng rác, không phải cái đĩa." }
-          ] },
-          { "ask": "What do you use to wipe the table?", "vi": "Bạn dùng gì để lau bàn?", "options": [
-            { "emoji": "🧽", "en": "A clean cloth and spray", "vi": "Khăn sạch và bình xịt", "ok": true, "why": "Good. Wipe the table so it's clean for the next customers.", "whyVi": "Tốt. Lau bàn sạch cho khách tiếp theo." },
-            { "emoji": "🧹", "en": "A broom", "vi": "Cây chổi", "why": "A broom is for the floor, not the table.", "whyVi": "Chổi dùng quét nhà, không dùng lau bàn." },
-            { "emoji": "📖", "en": "A menu", "vi": "Thực đơn", "why": "A menu is for ordering food.", "whyVi": "Thực đơn dùng để gọi món." }
-          ] },
-          { "who": "manager", "en": "Nice and clean. Thank you!", "vi": "Sạch sẽ rồi. Cảm ơn em!" }
-        ]
-      },
-      {
-        "id": "r_spill", "level": 1, "title": "Đổ nước ra sàn", "place": "dining",
-        "cast": { "customer": { "face": "👦", "en": "Boy", "vi": "Cậu bé" } },
-        "steps": [
-          { "who": "narrator", "en": "Oh no! A boy knocked over his glass. There is water on the floor.", "vi": "Ôi không! Cậu bé làm đổ ly. Nước chảy ra sàn.", "enter": "customer" },
-          { "who": "customer", "en": "I'm sorry! It was an accident.", "vi": "Cháu xin lỗi! Cháu lỡ tay." },
-          { "ask": "What do you say to the boy?", "vi": "Bạn nói gì với cậu bé?", "options": [
-            { "emoji": "🙂", "en": "Don't worry. I'll clean it up.", "vi": "Đừng lo. Để anh/chị lau cho.", "ok": true, "why": "Kind and calm. Good job.", "whyVi": "Nhẹ nhàng, bình tĩnh. Tốt lắm." },
-            { "emoji": "😠", "en": "Be careful next time!", "vi": "Lần sau cẩn thận vào!", "why": "He already said sorry. Be kind to customers.", "whyVi": "Cậu bé đã xin lỗi rồi. Hãy tử tế với khách." }
-          ] },
-          { "ask": "What do you use to clean the floor?", "vi": "Bạn dùng gì để lau sàn?", "options": [
-            { "emoji": "🧹", "en": "A mop", "vi": "Cây lau nhà", "ok": true, "why": "Yes. A mop cleans water on the floor.", "whyVi": "Đúng. Cây lau nhà (mop) lau nước trên sàn." },
-            { "emoji": "🍴", "en": "A fork", "vi": "Cái nĩa", "why": "A fork is for eating!", "whyVi": "Nĩa dùng để ăn mà!" },
-            { "emoji": "🛏️", "en": "A pillow", "vi": "Cái gối", "why": "A pillow is for sleeping.", "whyVi": "Gối dùng để ngủ." }
-          ] },
-          { "ask": "The floor is still wet. What do you put there?", "vi": "Sàn vẫn còn ướt. Bạn đặt gì ở đó?", "options": [
-            { "emoji": "⚠️", "en": "A 'Wet floor' sign", "vi": "Biển 'Sàn ướt'", "ok": true, "why": "Right. The sign stops people from slipping.", "whyVi": "Đúng. Biển báo giúp mọi người không bị trượt ngã." },
-            { "emoji": "🪑", "en": "A chair", "vi": "Một cái ghế", "why": "A chair is not a clear warning. Use a 'Wet floor' sign.", "whyVi": "Ghế không phải biển cảnh báo. Hãy dùng biển 'Sàn ướt'." }
-          ] }
-        ]
-      },
-      {
-        "id": "r_prep", "level": 1, "title": "Phụ bếp", "place": "kitchen",
-        "steps": [
-          { "who": "chef", "en": "We need onions for the soup. Can you chop them?", "vi": "Mình cần hành tây cho nồi súp. Em thái giúp nhé?", "enter": "chef" },
-          { "ask": "What do you do first?", "vi": "Việc đầu tiên bạn làm là gì?", "options": [
-            { "emoji": "🧼", "en": "Wash my hands", "vi": "Rửa tay", "ok": true, "why": "Yes! Always wash your hands before you touch food.", "whyVi": "Đúng! Luôn rửa tay trước khi chạm vào thức ăn." },
-            { "emoji": "📱", "en": "Check my phone", "vi": "Xem điện thoại", "why": "Not in the kitchen! Wash your hands first.", "whyVi": "Không xem điện thoại trong bếp! Rửa tay trước đã." }
-          ] },
-          { "ask": "What do you use to chop the onions?", "vi": "Bạn dùng gì để thái hành tây?", "options": [
-            { "emoji": "🔪", "en": "A knife and a cutting board", "vi": "Dao và thớt", "ok": true, "why": "Correct. Always cut on a cutting board.", "whyVi": "Chính xác. Luôn thái trên thớt." },
-            { "emoji": "🥄", "en": "A spoon and a bowl", "vi": "Muỗng và tô", "why": "A spoon can't chop. You need a knife.", "whyVi": "Muỗng không thái được. Bạn cần dao." },
-            { "emoji": "✂️", "en": "Scissors", "vi": "Cái kéo", "why": "We use a knife for onions.", "whyVi": "Thái hành tây thì dùng dao." }
-          ] },
-          { "who": "chef", "en": "Cut them into small pieces, please. Be careful with the knife.", "vi": "Thái nhỏ giúp anh nhé. Cẩn thận với con dao." },
-          { "ask": "How should you cut the onions?", "vi": "Bạn thái hành thế nào?", "options": [
-            { "emoji": "🧅", "en": "Into small pieces", "vi": "Thái nhỏ", "ok": true, "why": "Right. Small pieces cook fast in soup.", "whyVi": "Đúng. Thái nhỏ thì nấu súp nhanh chín." },
-            { "emoji": "🌕", "en": "Keep them whole", "vi": "Để nguyên củ", "why": "The chef said small pieces.", "whyVi": "Bếp trưởng bảo thái nhỏ (small pieces)." }
-          ] },
-          { "who": "chef", "en": "Perfect. Now put them in the pot.", "vi": "Hoàn hảo. Giờ cho vào nồi đi." }
-        ]
-      },
-      {
-        "id": "r_bill", "level": 1, "title": "Tính tiền", "place": "counter",
-        "cast": { "customer": { "face": "🧔", "en": "Customer", "vi": "Anh khách" } },
-        "steps": [
-          { "who": "customer", "en": "Excuse me, can I have the bill, please?", "vi": "Em ơi, cho anh xin hóa đơn.", "enter": "customer" },
-          { "ask": "What does the customer want?", "vi": "Khách muốn gì?", "options": [
-            { "emoji": "🧾", "en": "He wants to pay", "vi": "Khách muốn thanh toán", "ok": true, "why": "Yes. 'The bill' is the paper that shows how much to pay.", "whyVi": "Đúng. 'The bill' là hóa đơn ghi số tiền phải trả." },
-            { "emoji": "📖", "en": "He wants the menu", "vi": "Khách muốn thực đơn", "why": "He asked for the bill, not the menu.", "whyVi": "Khách xin hóa đơn (bill), không phải thực đơn." },
-            { "emoji": "🍜", "en": "He wants more food", "vi": "Khách muốn gọi thêm", "why": "He finished eating. He wants to pay.", "whyVi": "Khách ăn xong rồi. Khách muốn trả tiền." }
-          ] },
-          { "who": "customer", "en": "Can I pay by card?", "vi": "Anh trả bằng thẻ được không?" },
-          { "ask": "What do you say?", "vi": "Bạn trả lời thế nào?", "options": [
-            { "emoji": "💳", "en": "Yes, of course. Here is the card machine.", "vi": "Dạ được ạ. Máy quẹt thẻ đây ạ.", "ok": true, "why": "Good. Clear and polite.", "whyVi": "Tốt. Rõ ràng và lịch sự." },
-            { "emoji": "🙅", "en": "Card? What is card?", "vi": "Thẻ? Thẻ là gì?", "why": "A card is a bank card. Most restaurants take cards.", "whyVi": "Card là thẻ ngân hàng. Hầu hết nhà hàng đều nhận thẻ." }
-          ] },
-          { "who": "customer", "en": "Actually, here's cash. Keep the change!", "vi": "À thôi, anh đưa tiền mặt. Khỏi thối nhé!" },
-          { "ask": "What does 'Keep the change' mean?", "vi": "'Keep the change' nghĩa là gì?", "options": [
-            { "emoji": "💵", "en": "The extra money is a tip for you", "vi": "Tiền thừa là tiền boa cho bạn", "ok": true, "why": "Yes! You can keep the extra money. Say thank you.", "whyVi": "Đúng! Bạn được giữ tiền thừa. Nhớ cảm ơn khách." },
-            { "emoji": "👕", "en": "Change your clothes", "vi": "Thay quần áo", "why": "Here 'change' means the money you give back.", "whyVi": "Ở đây 'change' là tiền thối lại." },
-            { "emoji": "🔙", "en": "Give him his change now", "vi": "Thối tiền cho khách ngay", "why": "No, he said keep it. It's your tip.", "whyVi": "Không, khách bảo giữ lại. Đó là tiền boa." }
-          ] },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "🙏", "en": "Thank you so much! Have a nice day!", "vi": "Cảm ơn anh nhiều! Chúc anh một ngày tốt lành!", "ok": true, "why": "Perfect ending.", "whyVi": "Kết thúc hoàn hảo." },
-            { "emoji": "😶", "en": "Okay.", "vi": "Ừ.", "why": "Say thank you when someone gives you a tip.", "whyVi": "Được tip thì nhớ cảm ơn nhé." }
-          ] }
-        ]
-      },
-      {
-        "id": "r_cold_soup", "level": 2, "title": "Khách phàn nàn", "place": "table",
-        "cast": { "customer": { "face": "👩‍🦰", "en": "Customer", "vi": "Chị khách" } },
-        "steps": [
-          { "who": "customer", "en": "Excuse me, my soup is cold.", "vi": "Em ơi, súp của chị nguội rồi.", "enter": "customer" },
-          { "ask": "What do you say first?", "vi": "Bạn nói gì trước tiên?", "options": [
-            { "emoji": "🙇", "en": "I'm so sorry about that.", "vi": "Thành thật xin lỗi chị.", "ok": true, "why": "Yes. Say sorry first, then fix the problem.", "whyVi": "Đúng. Xin lỗi trước, rồi mới xử lý." },
-            { "emoji": "🙄", "en": "No, it's hot.", "vi": "Không, nó nóng mà.", "why": "Never argue with the customer.", "whyVi": "Đừng bao giờ cãi với khách." },
-            { "emoji": "🤷", "en": "That's not my problem.", "vi": "Không phải chuyện của tôi.", "why": "It is your job to help. Say sorry.", "whyVi": "Giúp khách là việc của bạn. Hãy xin lỗi." }
-          ] },
-          { "ask": "What do you do next?", "vi": "Tiếp theo bạn làm gì?", "options": [
-            { "emoji": "🔥", "en": "Let me take it back and heat it up for you.", "vi": "Để em mang vào hâm nóng lại cho chị.", "ok": true, "why": "Great. You fixed the problem.", "whyVi": "Tuyệt. Bạn đã xử lý vấn đề." },
-            { "emoji": "🥄", "en": "Just eat it quickly.", "vi": "Chị ăn nhanh đi.", "why": "The customer is not happy. Heat it up or bring a new one.", "whyVi": "Khách không vui. Hãy hâm lại hoặc mang tô mới." }
-          ] },
-          { "who": "customer", "en": "Thank you. That's very kind of you.", "vi": "Cảm ơn em. Em chu đáo quá." },
-          { "who": "manager", "en": "Good job. Bring her a free iced tea too.", "vi": "Làm tốt lắm. Mang thêm cho chị ấy ly trà đá miễn phí nhé.", "enter": "manager" },
-          { "ask": "What does 'free' mean here?", "vi": "'Free' ở đây nghĩa là gì?", "options": [
-            { "emoji": "🎁", "en": "She doesn't have to pay for it", "vi": "Chị ấy không phải trả tiền", "ok": true, "why": "Yes. Free means no money.", "whyVi": "Đúng. Free nghĩa là miễn phí." },
-            { "emoji": "🕊️", "en": "She can leave now", "vi": "Chị ấy được đi về", "why": "Here 'free' is about money: no charge.", "whyVi": "Ở đây 'free' nói về tiền: không tính phí." }
-          ] }
-        ]
-      },
-      {
-        "id": "r_allergy", "level": 2, "title": "Khách bị dị ứng", "place": "table",
-        "cast": { "customer": { "face": "👱‍♀️", "en": "Customer", "vi": "Cô khách" } },
-        "steps": [
-          { "who": "customer", "en": "Does this noodle dish have peanuts? I'm allergic to peanuts.", "vi": "Món mì này có đậu phộng không? Tôi bị dị ứng đậu phộng.", "enter": "customer" },
-          { "ask": "What is the best answer?", "vi": "Câu trả lời tốt nhất là gì?", "options": [
-            { "emoji": "👨‍🍳", "en": "Let me check with the chef for you.", "vi": "Để em hỏi bếp giúp chị.", "ok": true, "why": "Yes. Allergies are serious. Always check.", "whyVi": "Đúng. Dị ứng rất nguy hiểm. Luôn hỏi lại cho chắc." },
-            { "emoji": "🤞", "en": "Maybe. Just try it.", "vi": "Chắc không. Chị cứ ăn thử.", "why": "Never guess with allergies. It can make people very sick.", "whyVi": "Đừng bao giờ đoán khi khách dị ứng. Có thể rất nguy hiểm." }
-          ] },
-          { "who": "chef", "en": "Yes, there are peanuts in the sauce.", "vi": "Có, trong nước sốt có đậu phộng.", "enter": "chef" },
-          { "ask": "What do you tell the customer?", "vi": "Bạn nói gì với khách?", "options": [
-            { "emoji": "🙏", "en": "Sorry, it has peanuts. Can I suggest another dish?", "vi": "Xin lỗi, món này có đậu phộng. Em gợi ý món khác nhé?", "ok": true, "why": "Excellent. Honest and helpful.", "whyVi": "Xuất sắc. Thật thà và nhiệt tình." },
-            { "emoji": "🤐", "en": "No peanuts. Enjoy!", "vi": "Không có đậu phộng. Chúc ngon miệng!", "why": "That's a lie, and it's dangerous!", "whyVi": "Nói dối như vậy rất nguy hiểm!" }
-          ] }
+        "id": "cook", "icon": "🔪", "en": "Kitchen helper", "vi": "Phụ bếp",
+        "desc": "Giữ vệ sinh, sơ chế rau thịt, cất đồ vào kho lạnh, phụ đầu bếp.",
+        "lessons": [
+          {
+            "id": "cook_1", "title": "Vệ sinh trước khi vào bếp", "place": "kitchen",
+            "steps": [
+              { "who": "chef", "en": "Welcome to the kitchen. Before you touch any food, you must be clean.", "vi": "Chào mừng vào bếp. Trước khi chạm vào đồ ăn, em phải sạch sẽ.", "enter": "chef" },
+              { "who": "chef", "ask": "What do you wear on your head?", "vi": "Em đội gì trên đầu?", "options": [
+                { "emoji": "👒", "en": "A hair net or a chef's hat", "vi": "Lưới trùm tóc hoặc mũ đầu bếp", "ok": true, "why": "Yes. Nobody wants hair in their food.", "whyVi": "Đúng. Không ai muốn ăn trúng tóc." },
+                { "emoji": "🧢", "en": "Nothing, my hair is short", "vi": "Không cần, tóc em ngắn", "why": "Short hair can still fall into the food.", "whyVi": "Tóc ngắn vẫn có thể rơi vào đồ ăn." }
+              ] },
+              { "who": "chef", "ask": "How long do you wash your hands?", "vi": "Em rửa tay bao lâu?", "options": [
+                { "emoji": "⏱️", "en": "About twenty seconds, with soap", "vi": "Khoảng hai mươi giây, có xà bông", "ok": true, "why": "Right. Between the fingers and under the nails too.", "whyVi": "Đúng. Cả kẽ ngón tay và dưới móng." },
+                { "emoji": "💨", "en": "Two seconds, just water", "vi": "Hai giây, chỉ nước", "why": "That's not enough. Use soap for about twenty seconds.", "whyVi": "Chưa đủ. Dùng xà bông khoảng hai mươi giây." }
+              ] },
+              { "who": "chef", "ask": "You touched raw chicken. Now you want to cut bread. What do you do first?", "vi": "Em vừa cầm thịt gà sống. Giờ muốn cắt bánh mì. Em làm gì trước?", "options": [
+                { "emoji": "🧼", "en": "Wash my hands again", "vi": "Rửa tay lại", "ok": true, "why": "Yes! Raw meat has germs. Always wash after touching it.", "whyVi": "Đúng! Thịt sống có vi khuẩn. Cầm xong phải rửa tay." },
+                { "emoji": "🍞", "en": "Cut the bread right away", "vi": "Cắt bánh mì luôn", "why": "Germs from the chicken will go on the bread.", "whyVi": "Vi khuẩn từ thịt gà sẽ dính sang bánh mì." }
+              ] },
+              { "who": "chef", "en": "Good. Clean hands, clean food. Let's start working.", "vi": "Tốt. Tay sạch thì đồ ăn sạch. Bắt đầu làm việc nào." }
+            ]
+          },
+          {
+            "id": "cook_2", "title": "Sơ chế rau và thái hành", "place": "kitchen",
+            "steps": [
+              { "who": "chef", "ask": "We need vegetables for the soup. What do you do with them first?", "vi": "Mình cần rau cho nồi súp. Việc đầu tiên với rau là gì?", "enter": "chef", "options": [
+                { "emoji": "🚰", "en": "Wash them in clean water", "vi": "Rửa bằng nước sạch", "ok": true, "why": "Yes. Wash off dirt before you cut.", "whyVi": "Đúng. Rửa sạch đất cát trước khi thái." },
+                { "emoji": "🔪", "en": "Cut them right away", "vi": "Thái luôn", "why": "Wash first, or the dirt goes into the soup.", "whyVi": "Rửa trước, không thì đất cát vào nồi súp." }
+              ] },
+              { "who": "chef", "ask": "We use different cutting boards. Which board is for vegetables?", "vi": "Mình dùng thớt riêng. Thớt nào để thái rau?", "options": [
+                { "emoji": "🟩", "en": "The green board", "vi": "Thớt màu xanh lá", "ok": true, "why": "Right. Green for vegetables, red for raw meat.", "whyVi": "Đúng. Xanh lá cho rau, đỏ cho thịt sống." },
+                { "emoji": "🟥", "en": "The red board", "vi": "Thớt màu đỏ", "why": "Red is for raw meat. Never mix them.", "whyVi": "Đỏ là thớt thịt sống. Không dùng lẫn." }
+              ] },
+              { "who": "chef", "ask": "How do you hold the onion when you cut it?", "vi": "Em giữ củ hành thế nào khi thái?", "options": [
+                { "emoji": "🐾", "en": "Like a claw, fingertips bent away from the knife", "vi": "Như móng vuốt, gập đầu ngón tay tránh xa lưỡi dao", "ok": true, "why": "Yes! The claw grip keeps your fingers safe.", "whyVi": "Đúng! Cách cầm 'móng vuốt' giữ ngón tay an toàn." },
+                { "emoji": "🖐️", "en": "With my fingers flat, close to the knife", "vi": "Duỗi thẳng ngón tay, sát lưỡi dao", "why": "Dangerous! You can cut your fingers.", "whyVi": "Nguy hiểm! Dễ cắt vào tay." }
+              ] },
+              { "who": "chef", "ask": "Cut them into small pieces, please. Is this size okay?", "vi": "Thái nhỏ giúp anh. Cỡ này được chưa?", "options": [
+                { "emoji": "🧅", "en": "Small pieces, all the same size", "vi": "Miếng nhỏ, đều nhau", "ok": true, "why": "Perfect. Same size pieces cook at the same speed.", "whyVi": "Hoàn hảo. Miếng đều nhau thì chín đều." },
+                { "emoji": "🌕", "en": "Big and small pieces mixed", "vi": "Miếng to miếng nhỏ lẫn lộn", "why": "Big pieces stay hard while small pieces get too soft.", "whyVi": "Miếng to còn sống, miếng nhỏ lại nhừ quá." }
+              ] },
+              { "who": "chef", "ask": "You're finished cutting. What about the knife?", "vi": "Em thái xong rồi. Còn con dao thì sao?", "options": [
+                { "emoji": "🧽", "en": "Wash it, dry it and put it back in the knife holder", "vi": "Rửa, lau khô rồi cắm lại vào giá dao", "ok": true, "why": "Right. Never leave a knife in the sink. Someone can get hurt.", "whyVi": "Đúng. Không bao giờ bỏ dao trong bồn rửa, người khác dễ bị thương." },
+                { "emoji": "🫧", "en": "Drop it in the sink with the dishes", "vi": "Thả vào bồn chung với chén đĩa", "why": "The dishwasher can't see it and can cut their hand.", "whyVi": "Người rửa chén không thấy, dễ bị cắt tay." }
+              ] }
+            ]
+          },
+          {
+            "id": "cook_3", "title": "Cất đồ vào kho lạnh", "place": "fridge",
+            "steps": [
+              { "who": "chef", "en": "The delivery is here: meat, vegetables and eggs. Let's put them in the fridge.", "vi": "Hàng giao tới rồi: thịt, rau và trứng. Cất vào kho lạnh nào.", "enter": "chef" },
+              { "who": "chef", "ask": "Where do you put the raw meat?", "vi": "Thịt sống để ở đâu?", "options": [
+                { "emoji": "⬇️", "en": "On the bottom shelf", "vi": "Ở kệ dưới cùng", "ok": true, "why": "Yes. If meat juice drips, it won't fall on other food.", "whyVi": "Đúng. Nếu nước thịt nhỏ xuống, nó không rơi vào đồ khác." },
+                { "emoji": "⬆️", "en": "On the top shelf", "vi": "Ở kệ trên cùng", "why": "Meat juice can drip down onto the vegetables.", "whyVi": "Nước thịt có thể nhỏ xuống rau." }
+              ] },
+              { "who": "chef", "ask": "What do you write on the box?", "vi": "Em ghi gì lên hộp?", "options": [
+                { "emoji": "🏷️", "en": "What it is and today's date", "vi": "Tên đồ và ngày hôm nay", "ok": true, "why": "Right. We use the oldest food first.", "whyVi": "Đúng. Đồ cũ thì dùng trước." },
+                { "emoji": "✏️", "en": "Nothing", "vi": "Không ghi gì", "why": "Without a date, we don't know if the food is still fresh.", "whyVi": "Không ghi ngày thì không biết đồ còn tươi không." }
+              ] },
+              { "who": "chef", "ask": "There is old milk at the front and new milk in the box. How do you put the new milk?", "vi": "Phía trước có sữa cũ, trong thùng là sữa mới. Em xếp sữa mới thế nào?", "options": [
+                { "emoji": "🔙", "en": "New milk at the back, old milk at the front", "vi": "Sữa mới để sau, sữa cũ để trước", "ok": true, "why": "Yes. First in, first out. We use the old milk first.", "whyVi": "Đúng. Vào trước thì dùng trước. Sữa cũ dùng trước." },
+                { "emoji": "🔜", "en": "New milk at the front", "vi": "Sữa mới để phía trước", "why": "Then the old milk goes bad at the back.", "whyVi": "Vậy sữa cũ phía sau sẽ bị hư." }
+              ] },
+              { "who": "chef", "ask": "You're done. What about the fridge door?", "vi": "Xong rồi. Còn cửa kho lạnh thì sao?", "options": [
+                { "emoji": "🚪", "en": "Close it tightly", "vi": "Đóng thật kín", "ok": true, "why": "Right. An open door lets the cold air out and food goes bad.", "whyVi": "Đúng. Cửa mở thì hơi lạnh thoát ra, đồ ăn sẽ hư." },
+                { "emoji": "🌬️", "en": "Leave it open a little", "vi": "Để hé một chút", "why": "The cold air escapes. Close it tightly.", "whyVi": "Hơi lạnh sẽ thoát ra. Đóng thật kín." }
+              ] }
+            ]
+          }
         ]
       }
     ]
   },
   "delivery": {
     "places": {
+      "home": { "en": "Before work", "vi": "Trước giờ làm", "props": "🏍️⛽🔋🎒" },
       "shop": { "en": "Restaurant", "vi": "Quán ăn", "props": "🏪🥡🧾" },
       "street": { "en": "On the street", "vi": "Ngoài đường", "props": "🛣️🚦🏍️🏦💊" },
       "gate": { "en": "Customer's gate", "vi": "Cổng nhà khách", "props": "🏠🚪🌳" },
@@ -262,176 +453,183 @@
       "app": { "face": "📲", "en": "Delivery app", "vi": "Ứng dụng" },
       "staff": { "face": "🧑‍🍳", "en": "Shop staff", "vi": "Nhân viên quán" },
       "guard": { "face": "💂", "en": "Security guard", "vi": "Bảo vệ" },
+      "senior": { "face": "🧑‍🦰", "en": "Tuan (senior driver)", "vi": "Anh Tuấn (tài xế lâu năm)" },
       "customer": { "face": "🧑", "en": "Customer", "vi": "Khách" }
     },
-    "scenes": [
+    "roles": [
       {
-        "id": "d_pickup", "level": 0, "title": "Lấy hàng ở quán", "place": "shop",
-        "steps": [
-          { "who": "app", "en": "New order! Pick it up at Pho Hoa. Customer name: Lan.", "vi": "Có đơn mới! Lấy hàng ở quán Phở Hòa. Tên khách: Lan.", "enter": "app" },
-          { "who": "staff", "en": "Hi! Can I help you?", "vi": "Chào anh/chị! Tôi giúp gì được?", "enter": "staff" },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "🛵", "en": "Hi, I'm here to pick up an order for Lan.", "vi": "Chào bạn, mình tới lấy đơn của chị Lan.", "ok": true, "why": "Good. Say why you are here and the customer's name.", "whyVi": "Tốt. Nói lý do bạn đến và tên khách." },
-            { "emoji": "😤", "en": "Give me food.", "vi": "Đưa đồ ăn đây.", "why": "Too rude. And they don't know which order.", "whyVi": "Quá cộc. Và quán không biết đơn nào." },
-            { "emoji": "🍜", "en": "I want to eat pho.", "vi": "Tôi muốn ăn phở.", "why": "You are not the customer. You are picking up an order.", "whyVi": "Bạn không phải khách ăn. Bạn đến lấy đơn hàng." }
-          ] },
-          { "who": "staff", "en": "Here you are. One bag of food and two drinks.", "vi": "Của bạn đây. Một túi đồ ăn và hai ly nước." },
-          { "ask": "How many drinks are there?", "vi": "Có mấy ly nước?", "options": [
-            { "emoji": "2️⃣", "en": "Two drinks", "vi": "Hai ly", "ok": true, "why": "Correct. One bag and two drinks.", "whyVi": "Chính xác. Một túi và hai ly." },
-            { "emoji": "1️⃣", "en": "One drink", "vi": "Một ly", "why": "Listen again: two drinks.", "whyVi": "Nghe lại: two drinks (hai ly)." }
-          ] },
-          { "ask": "Before you leave, what should you do?", "vi": "Trước khi đi, bạn nên làm gì?", "options": [
-            { "emoji": "🧾", "en": "Check the order and the receipt.", "vi": "Kiểm tra đơn và hóa đơn.", "ok": true, "why": "Yes. Check everything so nothing is missing.", "whyVi": "Đúng. Kiểm tra kỹ để không thiếu món nào." },
-            { "emoji": "🏍️", "en": "Leave fast without looking.", "vi": "Chạy đi luôn không xem.", "why": "If something is missing, the customer will be angry.", "whyVi": "Nếu thiếu món, khách sẽ không vui." }
-          ] },
-          { "who": "staff", "en": "Thanks! Drive safely.", "vi": "Cảm ơn! Chạy xe cẩn thận nhé." }
-        ]
-      },
-      {
-        "id": "d_directions", "level": 1, "title": "Nghe chỉ đường", "place": "phone",
-        "cast": { "customer": { "face": "👩", "en": "Ms. Hoa", "vi": "Chị Hoa" } },
-        "steps": [
-          { "who": "customer", "en": "Hello? Go straight on Le Loi Street, then turn left at the bank.", "vi": "Alo? Đi thẳng đường Lê Lợi, rồi rẽ trái ở ngân hàng.", "enter": "customer" },
-          { "ask": "What do you do first?", "vi": "Bạn làm gì trước?", "options": [
-            { "emoji": "⬆️", "en": "Go straight", "vi": "Đi thẳng", "ok": true, "why": "Yes. First go straight on Le Loi Street.", "whyVi": "Đúng. Đầu tiên đi thẳng đường Lê Lợi." },
-            { "emoji": "⬅️", "en": "Turn left", "vi": "Rẽ trái", "why": "Turn left comes later, at the bank.", "whyVi": "Rẽ trái là bước sau, ở chỗ ngân hàng." },
-            { "emoji": "↩️", "en": "Turn around", "vi": "Quay đầu", "why": "She said go straight.", "whyVi": "Chị ấy bảo đi thẳng." }
-          ] },
-          { "ask": "Where do you turn left?", "vi": "Bạn rẽ trái ở đâu?", "options": [
-            { "emoji": "🏦", "en": "At the bank", "vi": "Ở ngân hàng", "ok": true, "why": "Correct. Turn left at the bank.", "whyVi": "Chính xác. Rẽ trái ở ngân hàng." },
-            { "emoji": "🏥", "en": "At the hospital", "vi": "Ở bệnh viện", "why": "Listen again: at the bank.", "whyVi": "Nghe lại: at the bank (ở ngân hàng)." },
-            { "emoji": "⛽", "en": "At the gas station", "vi": "Ở cây xăng", "why": "Listen again: at the bank.", "whyVi": "Nghe lại: at the bank (ở ngân hàng)." }
-          ] },
-          { "who": "customer", "en": "My house is the blue one, next to the pharmacy.", "vi": "Nhà chị màu xanh, ngay cạnh tiệm thuốc." },
-          { "ask": "Which house is it?", "vi": "Nhà khách là nhà nào?", "options": [
-            { "emoji": "💊", "en": "The blue house next to the pharmacy", "vi": "Nhà màu xanh cạnh tiệm thuốc", "ok": true, "why": "Yes! Blue house, next to the pharmacy.", "whyVi": "Đúng! Nhà xanh, cạnh tiệm thuốc." },
-            { "emoji": "🏫", "en": "The red house next to the school", "vi": "Nhà màu đỏ cạnh trường học", "why": "Listen again: blue, next to the pharmacy.", "whyVi": "Nghe lại: blue (xanh), next to the pharmacy (cạnh tiệm thuốc)." }
-          ] },
-          { "ask": "What do you say to end the call?", "vi": "Bạn nói gì để kết thúc cuộc gọi?", "options": [
-            { "emoji": "👍", "en": "Got it. I'll be there in five minutes.", "vi": "Em hiểu rồi. Năm phút nữa em tới.", "ok": true, "why": "Great. 'Got it' means I understand.", "whyVi": "Tuyệt. 'Got it' nghĩa là tôi hiểu rồi." },
-            { "emoji": "📴", "en": "Hang up without saying anything.", "vi": "Cúp máy luôn không nói gì.", "why": "Always say something before you hang up.", "whyVi": "Luôn nói gì đó trước khi cúp máy." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_call_gate", "level": 0, "title": "Tới nơi, gọi khách", "place": "gate",
-        "cast": { "customer": { "face": "🧑‍🦱", "en": "Mr. Nam", "vi": "Anh Nam" } },
-        "steps": [
-          { "who": "narrator", "en": "You are at the customer's gate. Nobody is outside.", "vi": "Bạn tới cổng nhà khách. Không có ai ở ngoài." },
-          { "ask": "You call the customer. What do you say?", "vi": "Bạn gọi cho khách. Bạn nói gì?", "options": [
-            { "emoji": "📞", "en": "Hi, I'm your delivery driver. I'm at the gate.", "vi": "Chào anh, em là tài xế giao hàng. Em đang ở cổng.", "ok": true, "why": "Clear and polite. The customer knows who you are and where.", "whyVi": "Rõ ràng, lịch sự. Khách biết bạn là ai và ở đâu." },
-            { "emoji": "❓", "en": "Who are you?", "vi": "Ai đó?", "why": "You called them. Tell them who you are.", "whyVi": "Bạn là người gọi. Hãy nói bạn là ai." }
-          ] },
-          { "who": "customer", "en": "Oh, thanks! I'm on the fifth floor. Can you wait two minutes?", "vi": "À, cảm ơn em! Anh ở tầng năm. Em đợi hai phút được không?", "enter": "customer" },
-          { "ask": "How long do you need to wait?", "vi": "Bạn cần đợi bao lâu?", "options": [
-            { "emoji": "⏱️", "en": "Two minutes", "vi": "Hai phút", "ok": true, "why": "Yes. He asked you to wait two minutes.", "whyVi": "Đúng. Anh ấy nhờ đợi hai phút." },
-            { "emoji": "🕔", "en": "Five minutes", "vi": "Năm phút", "why": "Five is his floor. The wait is two minutes.", "whyVi": "Năm là số tầng. Thời gian đợi là hai phút." }
-          ] },
-          { "ask": "What do you answer?", "vi": "Bạn trả lời thế nào?", "options": [
-            { "emoji": "👌", "en": "No problem. I'll wait here.", "vi": "Không sao ạ. Em đợi ở đây.", "ok": true, "why": "Friendly and clear.", "whyVi": "Thân thiện và rõ ràng." },
-            { "emoji": "🏍️", "en": "No. I'm leaving now.", "vi": "Không. Em đi đây.", "why": "Two minutes is short. Be patient with customers.", "whyVi": "Hai phút thôi mà. Hãy kiên nhẫn với khách." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_handoff", "level": 0, "title": "Giao hàng, thu tiền", "place": "gate",
-        "cast": { "customer": { "face": "👵", "en": "Grandma", "vi": "Bà cụ" } },
-        "steps": [
-          { "who": "narrator", "en": "The customer opens the door.", "vi": "Khách mở cửa.", "enter": "customer" },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "🥡", "en": "Hello! Here is your order.", "vi": "Cháu chào bà! Đơn hàng của bà đây ạ.", "ok": true, "why": "Good. Simple and friendly.", "whyVi": "Tốt. Đơn giản và thân thiện." },
-            { "emoji": "💸", "en": "Money first!", "vi": "Đưa tiền trước!", "why": "Be polite. Greet the customer first.", "whyVi": "Lịch sự nào. Chào khách trước đã." }
-          ] },
-          { "who": "customer", "en": "Thank you, dear. How much is it?", "vi": "Cảm ơn cháu. Bao nhiêu tiền vậy?" },
-          { "who": "narrator", "en": "The app says: one hundred and twenty thousand dong. Cash on delivery.", "vi": "Ứng dụng ghi: một trăm hai mươi nghìn đồng. Thu tiền khi giao." },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "💵", "en": "It's one hundred and twenty thousand dong, please.", "vi": "Dạ một trăm hai mươi nghìn ạ.", "ok": true, "why": "Correct price, polite words.", "whyVi": "Đúng giá, lời lẽ lịch sự." },
-            { "emoji": "💰", "en": "It's two hundred thousand.", "vi": "Hai trăm nghìn ạ.", "why": "That's the wrong price. Read the app again.", "whyVi": "Sai giá rồi. Xem lại ứng dụng nhé." }
-          ] },
-          { "who": "customer", "en": "Here is one hundred and fifty thousand.", "vi": "Đây, một trăm năm mươi nghìn." },
-          { "ask": "How much change do you give back?", "vi": "Bạn thối lại bao nhiêu?", "options": [
-            { "emoji": "3️⃣0️⃣", "en": "Thirty thousand", "vi": "Ba mươi nghìn", "ok": true, "why": "Yes: 150 minus 120 is 30.", "whyVi": "Đúng: 150 trừ 120 là 30." },
-            { "emoji": "5️⃣0️⃣", "en": "Fifty thousand", "vi": "Năm mươi nghìn", "why": "Check again: 150 minus 120 is 30.", "whyVi": "Tính lại: 150 trừ 120 là 30." },
-            { "emoji": "2️⃣0️⃣", "en": "Twenty thousand", "vi": "Hai mươi nghìn", "why": "Check again: 150 minus 120 is 30.", "whyVi": "Tính lại: 150 trừ 120 là 30." }
-          ] },
-          { "ask": "How do you say goodbye?", "vi": "Bạn chào tạm biệt thế nào?", "options": [
-            { "emoji": "😋", "en": "Enjoy your meal! Have a nice day!", "vi": "Bà ăn ngon miệng! Chúc bà một ngày vui!", "ok": true, "why": "Lovely. Customers will give you five stars.", "whyVi": "Dễ thương. Khách sẽ cho bạn năm sao." },
-            { "emoji": "😶", "en": "Bye.", "vi": "Bye.", "why": "It's okay, but a warmer goodbye is better.", "whyVi": "Cũng được, nhưng chào ấm áp hơn thì tốt hơn." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_guard", "level": 1, "title": "Gặp bảo vệ chung cư", "place": "building",
-        "steps": [
-          { "who": "guard", "en": "Excuse me. Who are you visiting?", "vi": "Xin lỗi. Anh/chị tới gặp ai?", "enter": "guard" },
-          { "ask": "What do you answer?", "vi": "Bạn trả lời thế nào?", "options": [
-            { "emoji": "🥡", "en": "I'm delivering food to room twelve oh three.", "vi": "Em giao đồ ăn cho phòng 1203.", "ok": true, "why": "Clear. Say what you do and the room number.", "whyVi": "Rõ ràng. Nói việc bạn làm và số phòng." },
-            { "emoji": "🤫", "en": "It's a secret.", "vi": "Bí mật.", "why": "The guard needs to know. Tell him the room number.", "whyVi": "Bảo vệ cần biết. Hãy nói số phòng." }
-          ] },
-          { "who": "guard", "en": "Drivers can't go upstairs. Please leave it at the front desk.", "vi": "Tài xế không được lên lầu. Để đồ ở quầy lễ tân nhé." },
-          { "ask": "Where do you leave the food?", "vi": "Bạn để đồ ăn ở đâu?", "options": [
-            { "emoji": "🛎️", "en": "At the front desk", "vi": "Ở quầy lễ tân", "ok": true, "why": "Yes. The front desk is in the lobby.", "whyVi": "Đúng. Quầy lễ tân ở sảnh." },
-            { "emoji": "🛗", "en": "In the elevator", "vi": "Trong thang máy", "why": "He said the front desk.", "whyVi": "Bảo vệ nói để ở quầy lễ tân (front desk)." },
-            { "emoji": "🚪", "en": "Outside the building", "vi": "Ngoài tòa nhà", "why": "Food outside can get lost. Use the front desk.", "whyVi": "Để ngoài dễ mất. Hãy để ở quầy lễ tân." }
-          ] },
-          { "ask": "Then you send a message to the customer. Which one?", "vi": "Sau đó bạn nhắn cho khách. Tin nào?", "options": [
-            { "emoji": "💬", "en": "Hi! I left your food at the front desk. Enjoy!", "vi": "Chào bạn! Mình để đồ ăn ở quầy lễ tân rồi nhé. Ngon miệng!", "ok": true, "why": "Perfect. The customer knows where the food is.", "whyVi": "Hoàn hảo. Khách biết đồ ăn ở đâu." },
-            { "emoji": "❔", "en": "Food somewhere.", "vi": "Đồ ăn ở đâu đó.", "why": "Tell the customer the exact place.", "whyVi": "Hãy nói rõ chỗ để đồ." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_rain", "level": 1, "title": "Trời mưa to", "place": "street",
-        "steps": [
-          { "who": "narrator", "en": "It starts to rain heavily. You still have one order.", "vi": "Trời bắt đầu mưa to. Bạn còn một đơn hàng." },
-          { "ask": "What do you do with the food bag?", "vi": "Bạn làm gì với túi đồ ăn?", "options": [
-            { "emoji": "🛍️", "en": "Cover it so it stays dry.", "vi": "Che lại cho khỏi ướt.", "ok": true, "why": "Yes. Wet food makes customers unhappy.", "whyVi": "Đúng. Đồ ăn bị ướt khách sẽ không vui." },
-            { "emoji": "🌧️", "en": "Nothing. A little rain is okay.", "vi": "Kệ. Mưa chút không sao.", "why": "Heavy rain can ruin the food. Cover it.", "whyVi": "Mưa to làm hỏng đồ ăn. Hãy che lại." }
-          ] },
-          { "ask": "You will be late. What message do you send?", "vi": "Bạn sẽ tới trễ. Bạn nhắn gì cho khách?", "options": [
-            { "emoji": "💬", "en": "Sorry, I'll be ten minutes late because of the rain.", "vi": "Xin lỗi, mình sẽ trễ mười phút vì trời mưa.", "ok": true, "why": "Good. Say sorry, how late, and why.", "whyVi": "Tốt. Xin lỗi, nói trễ bao lâu và lý do." },
-            { "emoji": "🙈", "en": "Send nothing.", "vi": "Không nhắn gì.", "why": "Customers worry when they don't know. Send a message.", "whyVi": "Khách sẽ lo khi không biết gì. Hãy nhắn tin." }
-          ] },
-          { "ask": "Is it safe to drive fast in the rain?", "vi": "Chạy nhanh khi trời mưa có an toàn không?", "options": [
-            { "emoji": "🐢", "en": "No. I should slow down.", "vi": "Không. Mình nên chạy chậm lại.", "ok": true, "why": "Right. Roads are slippery. Safety first.", "whyVi": "Đúng. Đường trơn. An toàn là trên hết." },
-            { "emoji": "🏎️", "en": "Yes. Faster is better.", "vi": "Có. Càng nhanh càng tốt.", "why": "Wet roads are dangerous. Slow down.", "whyVi": "Đường ướt rất nguy hiểm. Hãy chạy chậm." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_wrong_address", "level": 2, "title": "Sai địa chỉ", "place": "street",
-        "cast": { "customer": { "face": "👨‍💼", "en": "Mr. Long", "vi": "Anh Long" } },
-        "steps": [
-          { "who": "narrator", "en": "You are at the address, but it's an empty shop.", "vi": "Bạn tới đúng địa chỉ, nhưng đó là một cửa hàng bỏ trống." },
-          { "ask": "What do you say when you call the customer?", "vi": "Bạn nói gì khi gọi cho khách?", "options": [
-            { "emoji": "📞", "en": "Hi, I can't find your house. Can you check the address?", "vi": "Chào anh, em không tìm thấy nhà. Anh kiểm tra lại địa chỉ giúp em?", "ok": true, "why": "Good. Explain the problem and ask for help.", "whyVi": "Tốt. Nói rõ vấn đề và nhờ khách giúp." },
-            { "emoji": "😡", "en": "You gave me the wrong address!", "vi": "Anh cho sai địa chỉ rồi!", "why": "Don't blame the customer. Ask them to check.", "whyVi": "Đừng trách khách. Hãy nhờ khách kiểm tra lại." }
-          ] },
-          { "who": "customer", "en": "Oh, sorry! It's number twenty-five, not fifty-two.", "vi": "Ồ, xin lỗi em! Số hai mươi lăm, không phải năm mươi hai.", "enter": "customer" },
-          { "ask": "What is the right house number?", "vi": "Số nhà đúng là bao nhiêu?", "options": [
-            { "emoji": "2️⃣5️⃣", "en": "Twenty-five", "vi": "Hai mươi lăm", "ok": true, "why": "Yes. Twenty-five, not fifty-two.", "whyVi": "Đúng. 25, không phải 52." },
-            { "emoji": "5️⃣2️⃣", "en": "Fifty-two", "vi": "Năm mươi hai", "why": "Fifty-two was the wrong one.", "whyVi": "52 là số sai." }
-          ] },
-          { "ask": "What do you say?", "vi": "Bạn nói gì?", "options": [
-            { "emoji": "👍", "en": "No problem. I'm on my way.", "vi": "Không sao ạ. Em đang tới.", "ok": true, "why": "Friendly. 'On my way' means coming now.", "whyVi": "Thân thiện. 'On my way' nghĩa là đang trên đường tới." },
-            { "emoji": "😒", "en": "This is too much work.", "vi": "Phiền quá đi.", "why": "Mistakes happen. Stay friendly.", "whyVi": "Ai cũng có lúc nhầm. Hãy giữ thái độ thân thiện." }
-          ] }
-        ]
-      },
-      {
-        "id": "d_fragile", "level": 2, "title": "Hàng dễ vỡ", "place": "shop",
-        "steps": [
-          { "who": "staff", "en": "This box is fragile. There are glass cups inside.", "vi": "Hộp này dễ vỡ. Bên trong là ly thủy tinh.", "enter": "staff" },
-          { "ask": "What does 'fragile' mean?", "vi": "'Fragile' nghĩa là gì?", "options": [
-            { "emoji": "🍷", "en": "It can break easily.", "vi": "Dễ vỡ.", "ok": true, "why": "Yes. Fragile things break easily.", "whyVi": "Đúng. Đồ fragile là đồ dễ vỡ." },
-            { "emoji": "🏋️", "en": "It is very heavy.", "vi": "Rất nặng.", "why": "Heavy is about weight. Fragile means it breaks easily.", "whyVi": "Heavy là nặng. Fragile là dễ vỡ." },
-            { "emoji": "🧊", "en": "It must stay cold.", "vi": "Phải giữ lạnh.", "why": "That's for ice cream. Fragile means it breaks easily.", "whyVi": "Đó là cho kem. Fragile là dễ vỡ." }
-          ] },
-          { "ask": "How do you carry it?", "vi": "Bạn mang hộp này thế nào?", "options": [
-            { "emoji": "🤲", "en": "Carefully, and keep it upright.", "vi": "Cẩn thận, giữ cho thẳng đứng.", "ok": true, "why": "Right. Don't shake it or turn it over.", "whyVi": "Đúng. Đừng lắc hay lật ngược." },
-            { "emoji": "🤹", "en": "Throw it in the bag with other things.", "vi": "Quăng vào túi chung với đồ khác.", "why": "The cups will break!", "whyVi": "Ly sẽ bị vỡ!" }
-          ] },
-          { "who": "staff", "en": "Thank you. Please drive slowly.", "vi": "Cảm ơn. Nhớ chạy chậm nhé." }
+        "id": "driver", "icon": "🛵", "en": "Delivery driver", "vi": "Tài xế giao hàng",
+        "desc": "Chuẩn bị xe, lấy hàng, nghe chỉ đường, gọi khách, giao hàng và thu tiền.",
+        "lessons": [
+          {
+            "id": "drv_1", "title": "Chuẩn bị trước giờ chạy", "place": "home",
+            "steps": [
+              { "who": "senior", "en": "Hi, I'm Tuan. I've been a driver for five years. Let's get ready together.", "vi": "Chào em, anh là Tuấn, chạy giao hàng năm năm rồi. Mình chuẩn bị cùng nhau nhé.", "enter": "senior" },
+              { "who": "senior", "ask": "What is the most important thing to wear?", "vi": "Thứ quan trọng nhất phải đội là gì?", "options": [
+                { "emoji": "⛑️", "en": "A helmet", "vi": "Mũ bảo hiểm", "ok": true, "why": "Yes. Always wear a helmet. Safety first.", "whyVi": "Đúng. Luôn đội mũ bảo hiểm. An toàn là trên hết." },
+                { "emoji": "🕶️", "en": "Sunglasses", "vi": "Kính râm", "why": "Sunglasses are nice, but a helmet saves your life.", "whyVi": "Kính râm cũng được, nhưng mũ bảo hiểm mới cứu mạng bạn." }
+              ] },
+              { "who": "senior", "ask": "Before you start, what do you check on your motorbike?", "vi": "Trước khi chạy, em kiểm tra gì trên xe?", "options": [
+                { "emoji": "⛽", "en": "Gas, tires and brakes", "vi": "Xăng, lốp và phanh", "ok": true, "why": "Right. No gas or bad brakes means no work, or an accident.", "whyVi": "Đúng. Hết xăng hay phanh hỏng là mất việc hoặc tai nạn." },
+                { "emoji": "🎵", "en": "The music on my phone", "vi": "Nhạc trên điện thoại", "why": "Check the bike first: gas, tires and brakes.", "whyVi": "Kiểm tra xe trước: xăng, lốp và phanh." }
+              ] },
+              { "who": "senior", "ask": "Your phone has twenty percent battery. What do you do?", "vi": "Điện thoại còn hai mươi phần trăm pin. Em làm gì?", "options": [
+                { "emoji": "🔋", "en": "Charge it and bring a power bank", "vi": "Sạc pin và mang theo sạc dự phòng", "ok": true, "why": "Yes. Without your phone, you can't get orders or find addresses.", "whyVi": "Đúng. Hết pin thì không nhận đơn, không tìm được địa chỉ." },
+                { "emoji": "🤷", "en": "It's enough for today", "vi": "Đủ dùng cho hôm nay", "why": "The app and the map use a lot of battery. Charge it.", "whyVi": "Ứng dụng và bản đồ rất tốn pin. Sạc đi em." }
+              ] },
+              { "who": "senior", "ask": "Your delivery bag is dirty inside. Is that okay?", "vi": "Bên trong túi giao hàng bị bẩn. Vậy có sao không?", "options": [
+                { "emoji": "🧽", "en": "No. I'll clean it. Food must stay clean.", "vi": "Không được. Em sẽ lau sạch. Đồ ăn phải sạch.", "ok": true, "why": "Right. Customers don't want food from a dirty bag.", "whyVi": "Đúng. Khách không muốn nhận đồ ăn từ túi bẩn." },
+                { "emoji": "🙈", "en": "Yes. Nobody looks inside.", "vi": "Không sao. Ai nhìn vào trong đâu.", "why": "The food boxes touch the inside. Clean it.", "whyVi": "Hộp đồ ăn chạm vào bên trong túi. Lau sạch đi." }
+              ] },
+              { "who": "senior", "en": "Great. Helmet, bike, phone, bag. Now you're ready. Let's go!", "vi": "Tốt. Mũ, xe, điện thoại, túi. Sẵn sàng rồi. Đi thôi!" }
+            ]
+          },
+          {
+            "id": "drv_2", "title": "Lấy hàng ở quán", "place": "shop",
+            "steps": [
+              { "who": "app", "en": "New order! Pick it up at Pho Hoa. Customer name: Lan.", "vi": "Có đơn mới! Lấy hàng ở quán Phở Hòa. Tên khách: Lan.", "enter": "app" },
+              { "who": "staff", "ask": "Hi! Can I help you?", "vi": "Chào bạn! Tôi giúp gì được?", "enter": "staff", "options": [
+                { "emoji": "🛵", "en": "Hi, I'm here to pick up an order for Lan.", "vi": "Chào bạn, mình tới lấy đơn của chị Lan.", "ok": true, "why": "Good. Say why you are here and the customer's name.", "whyVi": "Tốt. Nói lý do bạn đến và tên khách." },
+                { "emoji": "😤", "en": "Give me food.", "vi": "Đưa đồ ăn đây.", "why": "Too rude. And they don't know which order.", "whyVi": "Quá cộc. Và quán không biết đơn nào." }
+              ] },
+              { "who": "staff", "ask": "Here you are. One bag of food and two drinks.", "vi": "Của bạn đây. Một túi đồ ăn và hai ly nước.", "options": [
+                { "emoji": "🧾", "en": "Thanks. Let me check the receipt first.", "vi": "Cảm ơn. Để mình kiểm tra hóa đơn đã.", "ok": true, "why": "Yes. Check everything so nothing is missing.", "whyVi": "Đúng. Kiểm tra kỹ để không thiếu món nào." },
+                { "emoji": "🏃", "en": "Thanks. Bye!", "vi": "Cảm ơn. Bye!", "why": "If something is missing, the customer will be angry. Check first.", "whyVi": "Nếu thiếu món, khách sẽ không vui. Kiểm tra trước." }
+              ] },
+              { "who": "narrator", "ask": "The receipt says three drinks, but there are only two. What do you say?", "vi": "Hóa đơn ghi ba ly nước, nhưng chỉ có hai. Bạn nói gì?", "options": [
+                { "emoji": "3️⃣", "en": "Excuse me, the order has three drinks, but I only have two.", "vi": "Xin lỗi, đơn có ba ly nước mà mình chỉ có hai.", "ok": true, "why": "Great. Polite and clear. Now the shop can fix it.", "whyVi": "Tuyệt. Lịch sự và rõ ràng. Quán sẽ bổ sung." },
+                { "emoji": "🤐", "en": "Say nothing and leave.", "vi": "Không nói gì rồi đi.", "why": "The customer will get a wrong order. Speak up.", "whyVi": "Khách sẽ nhận đơn thiếu. Hãy lên tiếng." }
+              ] },
+              { "who": "staff", "ask": "Oh, sorry! Here's the third drink. How do you put the drinks in your bag?", "vi": "Ồ, xin lỗi! Ly thứ ba đây. Bạn xếp nước vào túi thế nào?", "options": [
+                { "emoji": "🥤", "en": "Standing up, in the cup holder", "vi": "Dựng đứng, đặt vào khay giữ ly", "ok": true, "why": "Right. Drinks lying down will spill.", "whyVi": "Đúng. Để nằm thì nước sẽ đổ." },
+                { "emoji": "🙃", "en": "Lying down on top of the food", "vi": "Nằm ngang đè lên đồ ăn", "why": "They will spill all over the food.", "whyVi": "Nước sẽ đổ lên hết đồ ăn." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_3", "title": "Nghe khách chỉ đường", "place": "phone",
+            "cast": { "customer": { "face": "👩", "en": "Ms. Hoa", "vi": "Chị Hoa" } },
+            "steps": [
+              { "who": "customer", "ask": "Hello? Go straight on Le Loi Street, then turn left at the bank. Where do you turn left?", "vi": "Alo? Đi thẳng đường Lê Lợi, rồi rẽ trái ở ngân hàng. Em rẽ trái ở đâu?", "enter": "customer", "options": [
+                { "emoji": "🏦", "en": "At the bank", "vi": "Ở ngân hàng", "ok": true, "why": "Correct. Go straight first, then turn left at the bank.", "whyVi": "Chính xác. Đi thẳng trước, rồi rẽ trái ở ngân hàng." },
+                { "emoji": "🏥", "en": "At the hospital", "vi": "Ở bệnh viện", "why": "Listen again: at the bank.", "whyVi": "Nghe lại: at the bank (ở ngân hàng)." }
+              ] },
+              { "who": "customer", "ask": "My house is the blue one, next to the pharmacy. Which house is it?", "vi": "Nhà chị màu xanh, ngay cạnh tiệm thuốc. Nhà nào?", "options": [
+                { "emoji": "💊", "en": "The blue house next to the pharmacy", "vi": "Nhà màu xanh cạnh tiệm thuốc", "ok": true, "why": "Yes! Blue house, next to the pharmacy.", "whyVi": "Đúng! Nhà xanh, cạnh tiệm thuốc." },
+                { "emoji": "🏫", "en": "The red house next to the school", "vi": "Nhà màu đỏ cạnh trường học", "why": "Listen again: blue, next to the pharmacy.", "whyVi": "Nghe lại: blue (xanh), next to the pharmacy (cạnh tiệm thuốc)." }
+              ] },
+              { "who": "customer", "ask": "Did you get that?", "vi": "Em hiểu chưa?", "options": [
+                { "emoji": "👍", "en": "Got it. I'll be there in five minutes.", "vi": "Em hiểu rồi. Năm phút nữa em tới.", "ok": true, "why": "Great. 'Got it' means I understand.", "whyVi": "Tuyệt. 'Got it' nghĩa là tôi hiểu rồi." },
+                { "emoji": "📴", "en": "Hang up without saying anything.", "vi": "Cúp máy luôn không nói gì.", "why": "Always say something before you hang up.", "whyVi": "Luôn nói gì đó trước khi cúp máy." }
+              ] },
+              { "who": "narrator", "ask": "You are driving. The customer calls again. What do you do?", "vi": "Bạn đang chạy xe. Khách gọi lại. Bạn làm gì?", "options": [
+                { "emoji": "🅿️", "en": "Pull over safely, then answer", "vi": "Tấp vào lề an toàn rồi mới nghe", "ok": true, "why": "Yes. Never use your phone while driving.", "whyVi": "Đúng. Không bao giờ dùng điện thoại khi đang chạy xe." },
+                { "emoji": "📱", "en": "Answer while driving", "vi": "Vừa chạy vừa nghe", "why": "Dangerous! Pull over first.", "whyVi": "Nguy hiểm! Tấp vào lề trước." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_4", "title": "Tới nơi, gọi khách", "place": "gate",
+            "cast": { "customer": { "face": "🧑‍🦱", "en": "Mr. Nam", "vi": "Anh Nam" } },
+            "steps": [
+              { "who": "narrator", "ask": "You are at the customer's gate. Nobody is outside. You call. What do you say?", "vi": "Bạn tới cổng nhà khách. Không ai ở ngoài. Bạn gọi điện. Bạn nói gì?", "options": [
+                { "emoji": "📞", "en": "Hi, I'm your delivery driver. I'm at the gate.", "vi": "Chào anh, em là tài xế giao hàng. Em đang ở cổng.", "ok": true, "why": "Clear and polite. The customer knows who you are and where.", "whyVi": "Rõ ràng, lịch sự. Khách biết bạn là ai và ở đâu." },
+                { "emoji": "❓", "en": "Who are you?", "vi": "Ai đó?", "why": "You called them. Tell them who you are.", "whyVi": "Bạn là người gọi. Hãy nói bạn là ai." }
+              ] },
+              { "who": "customer", "ask": "Oh, thanks! I'm on the fifth floor. Can you wait two minutes?", "vi": "À, cảm ơn em! Anh ở tầng năm. Em đợi hai phút được không?", "enter": "customer", "options": [
+                { "emoji": "⏱️", "en": "No problem. I'll wait here for two minutes.", "vi": "Không sao ạ. Em đợi ở đây hai phút.", "ok": true, "why": "Friendly and clear.", "whyVi": "Thân thiện và rõ ràng." },
+                { "emoji": "🕔", "en": "Five minutes? Okay.", "vi": "Năm phút hả? Được.", "why": "Five is his floor. The wait is two minutes.", "whyVi": "Năm là số tầng. Thời gian đợi là hai phút." }
+              ] },
+              { "who": "customer", "ask": "Here I am! Thanks for waiting.", "vi": "Anh đây rồi! Cảm ơn em đã đợi.", "options": [
+                { "emoji": "🥡", "en": "Here is your order. Please check it.", "vi": "Đơn của anh đây. Anh kiểm tra giúp em.", "ok": true, "why": "Good. Let the customer check the order.", "whyVi": "Tốt. Để khách tự kiểm tra đơn hàng." },
+                { "emoji": "💸", "en": "Money first!", "vi": "Đưa tiền trước!", "why": "Be polite. Give the order and let them check.", "whyVi": "Lịch sự nào. Đưa hàng và để khách kiểm tra." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_5", "title": "Giao hàng, thu tiền", "place": "gate",
+            "cast": { "customer": { "face": "👵", "en": "Grandma", "vi": "Bà cụ" } },
+            "steps": [
+              { "who": "customer", "ask": "Thank you, dear. How much is it?", "vi": "Cảm ơn cháu. Bao nhiêu tiền vậy?", "enter": "customer", "options": [
+                { "emoji": "💵", "en": "It's one hundred and twenty thousand dong, please.", "vi": "Dạ một trăm hai mươi nghìn ạ.", "ok": true, "why": "Correct price, polite words.", "whyVi": "Đúng giá, lời lẽ lịch sự." },
+                { "emoji": "💰", "en": "It's two hundred thousand.", "vi": "Hai trăm nghìn ạ.", "why": "That's the wrong price. The app says one hundred and twenty thousand.", "whyVi": "Sai giá rồi. Ứng dụng ghi một trăm hai mươi nghìn." }
+              ] },
+              { "who": "customer", "ask": "Here is one hundred and fifty thousand.", "vi": "Đây, một trăm năm mươi nghìn.", "options": [
+                { "emoji": "3️⃣", "en": "Here's your change: thirty thousand.", "vi": "Tiền thối của bà đây: ba mươi nghìn.", "ok": true, "why": "Yes: 150 minus 120 is 30.", "whyVi": "Đúng: 150 trừ 120 là 30." },
+                { "emoji": "5️⃣", "en": "Here's your change: fifty thousand.", "vi": "Tiền thối của bà đây: năm mươi nghìn.", "why": "Check again: 150 minus 120 is 30.", "whyVi": "Tính lại: 150 trừ 120 là 30." }
+              ] },
+              { "who": "customer", "ask": "You're so kind. Have a good day!", "vi": "Cháu tốt bụng quá. Chúc cháu một ngày vui!", "options": [
+                { "emoji": "😋", "en": "Enjoy your meal! Have a nice day too!", "vi": "Bà ăn ngon miệng! Chúc bà một ngày vui!", "ok": true, "why": "Lovely. Customers will give you five stars.", "whyVi": "Dễ thương. Khách sẽ cho bạn năm sao." },
+                { "emoji": "😶", "en": "Bye.", "vi": "Bye.", "why": "It's okay, but a warmer goodbye is better.", "whyVi": "Cũng được, nhưng chào ấm áp hơn thì tốt hơn." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_6", "title": "Gặp bảo vệ chung cư", "place": "building",
+            "steps": [
+              { "who": "guard", "ask": "Excuse me. Who are you visiting?", "vi": "Xin lỗi. Bạn tới gặp ai?", "enter": "guard", "options": [
+                { "emoji": "🥡", "en": "I'm delivering food to room twelve oh three.", "vi": "Em giao đồ ăn cho phòng 1203.", "ok": true, "why": "Clear. Say what you do and the room number.", "whyVi": "Rõ ràng. Nói việc bạn làm và số phòng." },
+                { "emoji": "🤫", "en": "It's a secret.", "vi": "Bí mật.", "why": "The guard needs to know. Tell him the room number.", "whyVi": "Bảo vệ cần biết. Hãy nói số phòng." }
+              ] },
+              { "who": "guard", "ask": "Drivers can't go upstairs. Please leave it at the front desk.", "vi": "Tài xế không được lên lầu. Để đồ ở quầy lễ tân nhé.", "options": [
+                { "emoji": "🛎️", "en": "Okay. I'll leave it at the front desk.", "vi": "Dạ. Em để ở quầy lễ tân.", "ok": true, "why": "Yes. Follow the building's rules.", "whyVi": "Đúng. Làm theo quy định của tòa nhà." },
+                { "emoji": "🛗", "en": "I'll take the elevator anyway.", "vi": "Em cứ đi thang máy lên.", "why": "Don't break the rules. Use the front desk.", "whyVi": "Đừng làm trái quy định. Để ở quầy lễ tân." }
+              ] },
+              { "who": "narrator", "ask": "Then you send a message to the customer. Which one?", "vi": "Sau đó bạn nhắn cho khách. Tin nào?", "options": [
+                { "emoji": "💬", "en": "Hi! I left your food at the front desk. Enjoy!", "vi": "Chào bạn! Mình để đồ ăn ở quầy lễ tân rồi nhé. Ngon miệng!", "ok": true, "why": "Perfect. The customer knows where the food is.", "whyVi": "Hoàn hảo. Khách biết đồ ăn ở đâu." },
+                { "emoji": "❔", "en": "Food somewhere.", "vi": "Đồ ăn ở đâu đó.", "why": "Tell the customer the exact place.", "whyVi": "Hãy nói rõ chỗ để đồ." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_7", "title": "Trời mưa to", "place": "street",
+            "steps": [
+              { "who": "narrator", "en": "It starts to rain heavily. You still have one order.", "vi": "Trời bắt đầu mưa to. Bạn còn một đơn hàng." },
+              { "who": "senior", "ask": "Hey, it's raining! What do you do with the food bag?", "vi": "Ê, mưa rồi! Em làm gì với túi đồ ăn?", "enter": "senior", "options": [
+                { "emoji": "🛍️", "en": "Cover it with a plastic cover so it stays dry", "vi": "Trùm áo mưa cho túi để không ướt", "ok": true, "why": "Yes. Wet food makes customers unhappy.", "whyVi": "Đúng. Đồ ăn bị ướt khách sẽ không vui." },
+                { "emoji": "🌧️", "en": "Nothing. A little rain is okay.", "vi": "Kệ. Mưa chút không sao.", "why": "Heavy rain can ruin the food. Cover it.", "whyVi": "Mưa to làm hỏng đồ ăn. Che lại." }
+              ] },
+              { "who": "senior", "ask": "You will be late. What message do you send?", "vi": "Em sẽ tới trễ. Em nhắn gì cho khách?", "options": [
+                { "emoji": "💬", "en": "Sorry, I'll be ten minutes late because of the rain.", "vi": "Xin lỗi, mình sẽ trễ mười phút vì trời mưa.", "ok": true, "why": "Good. Say sorry, how late, and why.", "whyVi": "Tốt. Xin lỗi, nói trễ bao lâu và lý do." },
+                { "emoji": "🙈", "en": "Send nothing.", "vi": "Không nhắn gì.", "why": "Customers worry when they don't know. Send a message.", "whyVi": "Khách sẽ lo khi không biết gì. Hãy nhắn tin." }
+              ] },
+              { "who": "senior", "ask": "Is it safe to drive fast in the rain?", "vi": "Chạy nhanh khi trời mưa có an toàn không?", "options": [
+                { "emoji": "🐢", "en": "No. I should slow down and keep my distance.", "vi": "Không. Em nên chạy chậm và giữ khoảng cách.", "ok": true, "why": "Right. Roads are slippery. Safety first.", "whyVi": "Đúng. Đường trơn. An toàn là trên hết." },
+                { "emoji": "🏎️", "en": "Yes. Faster is better.", "vi": "Có. Càng nhanh càng tốt.", "why": "Wet roads are dangerous. Slow down.", "whyVi": "Đường ướt rất nguy hiểm. Chạy chậm lại." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_8", "title": "Khách cho sai địa chỉ", "place": "street",
+            "cast": { "customer": { "face": "👨‍💼", "en": "Mr. Long", "vi": "Anh Long" } },
+            "steps": [
+              { "who": "narrator", "ask": "You are at the address, but it's an empty shop. You call the customer. What do you say?", "vi": "Bạn tới đúng địa chỉ, nhưng đó là cửa hàng bỏ trống. Bạn gọi khách. Bạn nói gì?", "options": [
+                { "emoji": "📞", "en": "Hi, I can't find your house. Can you check the address?", "vi": "Chào anh, em không tìm thấy nhà. Anh kiểm tra lại địa chỉ giúp em?", "ok": true, "why": "Good. Explain the problem and ask for help.", "whyVi": "Tốt. Nói rõ vấn đề và nhờ khách giúp." },
+                { "emoji": "😡", "en": "You gave me the wrong address!", "vi": "Anh cho sai địa chỉ rồi!", "why": "Don't blame the customer. Ask them to check.", "whyVi": "Đừng trách khách. Nhờ khách kiểm tra lại." }
+              ] },
+              { "who": "customer", "ask": "Oh, sorry! It's number twenty-five, not fifty-two.", "vi": "Ồ, xin lỗi em! Số hai mươi lăm, không phải năm mươi hai.", "enter": "customer", "options": [
+                { "emoji": "👍", "en": "No problem. Number twenty-five. I'm on my way.", "vi": "Không sao ạ. Số hai mươi lăm. Em đang tới.", "ok": true, "why": "Friendly. Repeat the number. 'On my way' means coming now.", "whyVi": "Thân thiện. Nhắc lại số nhà. 'On my way' là đang trên đường tới." },
+                { "emoji": "😒", "en": "Fifty-two? This is too much work.", "vi": "Năm mươi hai hả? Phiền quá đi.", "why": "Wrong number, and unfriendly. It's twenty-five.", "whyVi": "Sai số nhà, lại thiếu thân thiện. Là số 25." }
+              ] }
+            ]
+          },
+          {
+            "id": "drv_9", "title": "Hàng dễ vỡ", "place": "shop",
+            "steps": [
+              { "who": "staff", "ask": "This box is fragile. There are glass cups inside. Do you understand 'fragile'?", "vi": "Hộp này dễ vỡ. Bên trong là ly thủy tinh. Bạn hiểu 'fragile' không?", "enter": "staff", "options": [
+                { "emoji": "🍷", "en": "Yes. It can break easily.", "vi": "Có. Nó dễ vỡ.", "ok": true, "why": "Yes. Fragile things break easily.", "whyVi": "Đúng. Đồ fragile là đồ dễ vỡ." },
+                { "emoji": "🏋️", "en": "Yes. It's very heavy.", "vi": "Có. Nó rất nặng.", "why": "Heavy is about weight. Fragile means it breaks easily.", "whyVi": "Heavy là nặng. Fragile là dễ vỡ." }
+              ] },
+              { "who": "staff", "ask": "How will you carry it?", "vi": "Bạn sẽ chở nó thế nào?", "options": [
+                { "emoji": "🤲", "en": "Carefully, standing up, away from heavy things", "vi": "Cẩn thận, dựng đứng, tránh xa đồ nặng", "ok": true, "why": "Right. Don't shake it or put heavy things on it.", "whyVi": "Đúng. Đừng lắc hay đè đồ nặng lên." },
+                { "emoji": "🤹", "en": "Throw it in the bag with other things", "vi": "Quăng vào túi chung với đồ khác", "why": "The cups will break!", "whyVi": "Ly sẽ bị vỡ!" }
+              ] },
+              { "who": "staff", "ask": "Thank you. Please drive slowly.", "vi": "Cảm ơn. Nhớ chạy chậm nhé.", "options": [
+                { "emoji": "🐢", "en": "Don't worry. I'll drive slowly and avoid bumps.", "vi": "Đừng lo. Mình sẽ chạy chậm và tránh ổ gà.", "ok": true, "why": "Great. The customer will get the cups in one piece.", "whyVi": "Tuyệt. Khách sẽ nhận được ly nguyên vẹn." },
+                { "emoji": "💨", "en": "I'm always fast!", "vi": "Mình lúc nào cũng nhanh!", "why": "Fast and fragile don't go together. Drive slowly.", "whyVi": "Nhanh mà chở đồ dễ vỡ thì không ổn. Chạy chậm thôi." }
+              ] }
+            ]
+          }
         ]
       }
     ]

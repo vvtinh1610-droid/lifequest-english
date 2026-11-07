@@ -3,6 +3,8 @@
 > **Skills first, money later.** Game nhập vai cho người lớn (18+) mất gốc tiếng Anh. Người chơi sống một đời người, đi từ người lao động lên ông chủ, và học tiếng Anh qua từng công việc.
 > Chủ dự án: Tinh (không phải lập trình viên). Giải thích ngắn gọn, bằng tiếng Việt, khi báo cáo cho Tinh.
 > File `CLAUDE.md` và `GEMINI.md` phải luôn **giống hệt nhau**. Sửa file này thì chép sang file kia.
+> **Chia việc:** Gemini viết nội dung số lượng lớn (bài ca làm, câu hỏi, từ vựng) theo `docs/gemini/README.md`;
+> Claude Code là trưởng nhóm: đặt khung, kiểm tra, sửa, gộp (`tools/merge-jobs.js`), thu âm, chạy thử, commit.
 
 ## Tài liệu thiết kế
 Bản thiết kế đầy đủ (Claude Doc): "LifeQuest English – Tài liệu thiết kế game (bản 2)". Mục 15 là phạm vi giai đoạn 1.
@@ -39,6 +41,10 @@ tools/build-data.js      Gộp dữ liệu thành js/data.bundle.js
 tools/list-speech.js     Liệt kê mọi câu game có thể đọc → tools/speech-list.json
 tools/make-audio.py      Thu âm các câu đó bằng Kokoro (2 giọng), tạo audio/ và js/audio.index.js
 tools/voice-samples.py   Tạo trang nghe thử các giọng Kokoro (audio-samples/, không đưa lên git)
+tools/validate-jobs.js   Kiểm tra data/jobs.json (hoặc file bài Gemini viết)
+tools/merge-jobs.js      Gộp file bài do Gemini viết vào data/jobs.json (kiểm tra lỗi trước, --dry để chạy thử)
+tools/serve.py           Máy chủ thử game trên điện thoại qua Wi-Fi (không cache)
+docs/gemini/README.md    Bộ prompt giao việc cho Gemini (giáo trình nghề, bài học, từ vựng) + quy trình gộp
 tests/smoke.py        Chạy thử toàn bộ luồng chơi bằng Playwright, chụp ảnh vào tests/shots/
 ```
 
@@ -64,24 +70,29 @@ tests/smoke.py        Chạy thử toàn bộ luồng chơi bằng Playwright, c
 5. Thu âm câu mới: `node tools/list-speech.js` rồi `tools\.venv\Scripts\python.exe tools\make-audio.py` (chỉ thu câu còn thiếu). Rồi chạy thử.
 
 ## Ca làm nhập vai (data/jobs.json → js/screens/shift.js)
-Mỗi ca = `shiftScenes` (2) tình huống. Người chơi ở trong một khung cảnh, nghe quản lý / đồng nghiệp / khách nói, rồi chọn việc cần làm
-hoặc câu cần nói. Sai thì được giải thích (Anh + Việt) và chọn lại; sai 2 lần thì hiện đáp án. Tiền công tính theo số lần đúng ngay.
+Mỗi nghề có nhiều **vị trí** (`roles`: rửa chén, phục vụ bàn, phụ bếp, tài xế…), mỗi vị trí có các **bài** (`lessons`) học theo thứ tự,
+dạy **cả tiếng Anh lẫn tay nghề thật, chi tiết từng thao tác** (vd. rửa chén: đeo găng → nước nóng vừa → rửa ly trước, chảo sau → cạo thức ăn thừa →
+mặt mềm / mặt nhám → chà xoay tròn cả mặt sau và viền → còn nhớt thì rửa lại → xả → úp giá → rửa, vắt, phơi miếng mút → dọn bồn → rửa tay).
+Mỗi lần làm = 1 bài. Học xong bài thì mở bài sau (`state.jobProgress[roleId]`); học hết thì ôn lại ngẫu nhiên.
+- Câu thoại (`who` + `en`) **tự chuyển** khi đọc xong, không bắt người chơi bấm "Tiếp tục".
+- Câu hỏi do **chính nhân vật nói** (`who` + `ask`), không tách thành câu dẫn + câu hỏi ngắn. Máy đọc câu hỏi → đọc từng lựa chọn → "Choose your answer."
+  Mỗi câu thoại và mỗi lựa chọn có nút 🔊. Sai thì giải thích (Anh + Việt), chọn lại; sai 2 lần thì hiện đáp án. Tiền công theo số lần đúng ngay.
 ```json
 "restaurant": {
   "places": { "sink": { "en": "Washing area", "vi": "Khu rửa chén", "props": "🚰🫧🍽️🧽" } },
   "cast":   { "senior": { "face": "👩‍🦱", "en": "Mai (senior)", "vi": "Chị Mai" } },
-  "scenes": [ { "id": "r_dishes", "level": 0, "title": "Rửa chén", "place": "sink", "cast": { ...ghi đè... },
-    "steps": [
-      { "who": "senior", "en": "These plates are very greasy.", "vi": "...", "enter": "senior" },
-      { "ask": "What do you need to remove the grease?", "vi": "...", "options": [
-        { "emoji": "🧴", "en": "Dish soap and hot water", "vi": "...", "ok": true, "why": "...", "whyVi": "..." },
-        { "emoji": "💧", "en": "Cold water only", "vi": "...", "why": "Cold water alone can't remove oil.", "whyVi": "..." } ] } ] } ]
+  "roles": [ { "id": "dish", "icon": "🧽", "en": "Dishwasher", "vi": "Rửa chén", "desc": "...",
+    "lessons": [ { "id": "dish_3", "title": "Rửa đĩa cho sạch bóng", "place": "sink", "cast": { ...ghi đè... },
+      "steps": [
+        { "who": "senior", "en": "Now let's wash the plates. Take the sponge.", "vi": "...", "enter": "senior" },
+        { "who": "senior", "ask": "How much soap do you put on the sponge?", "vi": "...", "options": [
+          { "emoji": "💧", "en": "A few drops", "vi": "Vài giọt", "ok": true, "why": "A few drops are enough.", "whyVi": "..." },
+          { "emoji": "🫗", "en": "Half the bottle", "vi": "Nửa chai", "why": "That's too much!", "whyVi": "..." } ] } ] } ] } ]
 }
 ```
-- `who`: một nhân vật trong `cast` hoặc `narrator` (lời dẫn). `enter`: nhân vật bước vào khung cảnh. Mỗi `ask` có đúng 1 lựa chọn `ok`.
-- Viết như đời thật: nhân vật nói gì, người chơi phải làm gì; tình huống nhiều bước (vd. rửa chén: chọn nước rửa → dùng bao nhiêu → chùi nồi → xả, để ráo).
-- `level` 0–4 theo bậc tiếng Anh. Thứ tự lựa chọn được xáo khi chơi. `node tools/build-data.js` báo lỗi nếu dữ liệu sai.
-- Thêm tình huống mới → chạy lại 2 lệnh thu âm (bước 5 ở phần Thêm từ vựng).
+- `who`: một nhân vật trong `cast` hoặc `narrator` (lời dẫn). `enter`: nhân vật bước vào khung cảnh. Mỗi `ask` có đúng 1 lựa chọn `ok`, 2–3 lựa chọn là vừa.
+- Thứ tự lựa chọn được xáo khi chơi. `node tools/build-data.js` báo lỗi nếu dữ liệu sai.
+- Thêm bài mới → chạy lại 2 lệnh thu âm (bước 5 ở phần Thêm từ vựng).
 
 ## Giọng đọc thu sẵn (Kokoro)
 - `LQ.speak(text)` tìm câu trong `js/audio.index.js` (so khớp không phân biệt hoa thường, gộp khoảng trắng) → phát `audio/<giọng>/<mã>.mp3`.
@@ -114,12 +125,14 @@ Mẫu một từ (16 trường, bắt buộc đủ):
 - [x] Chợ: khách nói cả câu có lý do mua (nghe lại, nghe chậm, dịch) + mua đồ ăn
 - [x] Thuyết minh tiếng Anh tự động + phụ đề cho mọi hành động; hướng dẫn song ngữ từng khu; chọn từ xen kẽ từ mới theo bậc
 - [x] Giọng đọc AI thu sẵn (Kokoro, ~1.500 câu × 2 giọng nam/nữ), người chơi tự chọn giọng
-- [x] Ca nhà hàng, ca giao hàng nhập vai theo tình huống thật (18 tình huống trong `data/jobs.json`), chọn môn phái ở cấp 10
+- [x] Ca làm nhập vai theo vị trí: Rửa chén (5 bài chi tiết), Phục vụ bàn (9), Phụ bếp (3), Tài xế giao hàng (9); chọn môn phái ở cấp 10
+- [x] Chế độ test: mở bằng `?test` (tài khoản test, công cụ test trong Hồ sơ); máy chủ thử trên điện thoại `python tools/serve.py`
 - [x] Cấp 1–20, năng lượng hồi theo thời gian, ngủ, nâng cấp phòng, đồ đã thuộc hiện trong phòng
 - [x] 7 nhiệm vụ chính, nhiệm vụ hằng ngày, ôn tập ngắt quãng, sổ từ, hồ sơ, sao chép kết quả gửi Zalo
 - [x] Từ vựng Gemini 8 đợt (400 từ: home, dig, market, restaurant×2, city, delivery, work) trong `data/words/`, đã bỏ từ mẫu
 
 Việc tiếp theo:
-- [ ] Thêm nhiều tình huống hơn cho mỗi nghề (nhờ Gemini viết theo định dạng `data/jobs.json`), thêm nghề mới (đi học, giải trí…)
+- [ ] Viết sâu hơn các vị trí Phục vụ bàn, Phụ bếp, Tài xế cho chi tiết như Rửa chén; thêm vị trí Đầu bếp, Thu ngân
+- [ ] Thêm nghề / bối cảnh mới: đi học, giải trí, đi chợ, đi khám bệnh…
 - [ ] Gắn Cloudflare Web Analytics vào `index.html`
 - [ ] Thử kín với 20–50 người, đo tỉ lệ quay lại ngày hôm sau
