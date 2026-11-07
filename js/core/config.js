@@ -10,7 +10,8 @@
     bagSize: 10,
     digEnergy: 1,                 // năng lượng mỗi tảng đá
     shiftEnergy: 12,              // năng lượng mỗi ca làm
-    shiftQuestions: 6,
+    shiftQuestions: 6,            // (ôn tập kiểu câu hỏi)
+    shiftScenes: 2,               // số tình huống nhập vai mỗi ca làm (data/jobs.json)
     // Bãi đào: tỉ lệ mỗi tảng đá (phần còn lại là đá trống)
     goldChance: 0.18,
     itemChance: 0.70,

@@ -49,7 +49,7 @@
     ['map', '🗺️', 'Bản đồ', 'Map'], ['quests', '📜', 'Nhiệm vụ', 'Quests'], ['review', '🔁', 'Ôn tập', 'Review'],
     ['wordbook', '📖', 'Sổ từ', 'Word book'], ['profile', '👤', 'Hồ sơ', 'Profile'],
   ];
-  const TAB_OF = { dig: 'map', market: 'map', job: 'map', home: 'map', quiz: 'map' };
+  const TAB_OF = { dig: 'map', market: 'map', job: 'map', home: 'map', quiz: 'map', shift: 'map' };
   LQ.renderNav = () => {
     const cur = TAB_OF[LQ.current.name] || LQ.current.name;
     LQ.$('#nav').innerHTML = TABS.map(([id, ic, label, en]) =>

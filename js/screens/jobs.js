@@ -18,9 +18,9 @@
           <div class="row">${LQ.helpBtn('job')}<button class="btn small light" data-act="nav" data-to="map" data-en="Back to the map">← Bản đồ</button></div></div>
         <div class="card soft">
           ${p.job === 'restaurant'
-            ? '<p>👨‍🍳 Quán đông khách nước ngoài. Nghe khách gọi món, hiểu yêu cầu, trả lời cho đúng.</p>'
-            : '<p>🧑‍💼 Đơn hàng đến liên tục. Đọc chỉ đường, nghe khách gọi điện, giao đúng chỗ.</p>'}
-          <p class="small">Mỗi ca: ${C().shiftQuestions} tình huống · tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} ${LQ.COIN} mỗi câu đúng · đúng hết được thêm tip.</p>
+            ? '<p>👨‍🍳 Bạn là nhân viên mới của một nhà hàng. Đón khách, ghi món, phụ bếp, rửa chén, tính tiền… Quản lý và chị Mai sẽ chỉ bạn từng việc.</p>'
+            : '<p>🛵 Bạn là tài xế giao hàng. Lấy hàng ở quán, nghe khách chỉ đường, gặp bảo vệ chung cư, giao hàng và thu tiền.</p>'}
+          <p class="small">Mỗi ca: ${C().shiftScenes} tình huống thực tế · tốn ${cost} ⚡ · ${C().payPerCorrect}${bonus ? ' (+20% môn phái)' : ''} ${LQ.COIN} mỗi lần làm đúng ngay · không sai lần nào được thêm tip.</p>
         </div>
         <button class="btn block" data-act="startShift" data-job="${p.job}" data-en="Start my shift" ${s.energy >= cost ? '' : 'disabled'}>Bắt đầu ca làm · Start</button>
         ${s.energy < cost ? '<p class="small muted center">Không đủ năng lượng. Mua đồ ăn ở Chợ hoặc chờ hồi năng lượng.</p>' : ''}
@@ -44,17 +44,9 @@
     const job = C().jobs[key];
     const cost = energyCost(key);
     if (!LQ.useEnergy(cost)) { LQ.toast('⚡ Không đủ năng lượng.'); return; }
-    const n = C().shiftQuestions;
-    const main = LQ.pickWords([job.mainTopic], Math.ceil(n * 0.67));
-    const ids = new Set(main.map(w => w.id));
-    const others = LQ.pickWords(job.topics.filter(t => t !== job.mainTopic), n, w => !ids.has(w.id));
-    const words = LQ.shuffle(main.concat(others).slice(0, n));
-    const faces = LQ.shuffle(job.npcs);
-    LQ.runQuiz({
-      title: job.name, icon: job.icon, back: 'map',
-      questions: words.map(w => LQ.makeQuestion(w)),
-      npc: i => { const k = i % job.lines.length; return { face: faces[i % faces.length], line: job.lines[k], lineVi: job.linesVi[k] }; },
-      onFinish: r => {
+    // Ca làm nhập vai theo tình huống thật (data/jobs.json), xem js/screens/shift.js
+    const started = LQ.startRolePlay(key, r => {
+      {
         const s = LQ.state;
         const perfect = r.correct === r.total;
         const pay = Math.round(r.correct * C().payPerCorrect * sectBonus(key));
@@ -67,11 +59,12 @@
         LQ.emit('shift_any', 1);
         if (perfect) LQ.emit('perfect', 1);
         LQ.beep('coin');
-        LQ.narrate(perfect ? `Perfect shift! You earned ${pay + tip} gold coins.` : `Your shift is over. You earned ${pay + tip} gold coins.`,
-          perfect ? `Ca làm hoàn hảo! Bạn kiếm được ${pay + tip} đồng vàng.` : `Hết ca rồi. Bạn kiếm được ${pay + tip} đồng vàng.`);
+        LQ.narrate(perfect ? 'Perfect shift! Here is your pay and a big tip!' : 'Your shift is over. Here is your pay. Good job!',
+          perfect ? `Ca làm hoàn hảo! Tiền công và tip lớn đây! (+${pay + tip})` : `Hết ca rồi. Tiền công của bạn đây! (+${pay + tip})`);
         return `<b>Hết ca!</b><br>Tiền công: +${pay} ${LQ.COIN}${tip ? `<br>Tip: +${tip} ${LQ.COIN} ${perfect ? '(không sai câu nào!)' : '😄'}` : ''}<br>Kinh nghiệm: +${xp}`;
-      },
+      }
     });
+    if (!started) { LQ.addEnergy(cost); LQ.toast('Chưa có tình huống cho nghề này.'); }
   };
 
   // ---------- Chọn môn phái ----------

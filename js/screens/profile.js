@@ -32,12 +32,16 @@
         <button class="btn block light" data-act="copyStats">📋 Sao chép kết quả (gửi qua Zalo)</button>
         <h2>Cài đặt</h2>
         <div class="card">
-          <div class="obj"><span>🗣️ Tốc độ đọc</span>
+          <div class="small" style="font-weight:700;margin-bottom:6px">🎙️ Giọng đọc tiếng Anh</div>
+          ${LQ.voicePickerHTML()}
+          <div class="obj" style="margin-top:8px"><span>🗣️ Tốc độ đọc</span>
             <span><button class="btn small ${s.settings.rate < 0.8 ? '' : 'light'}" data-act="setRate" data-v="0.7">Chậm</button>
             <button class="btn small ${s.settings.rate >= 0.8 ? '' : 'light'}" data-act="setRate" data-v="0.9">Vừa</button></span></div>
           <div class="obj"><span>🔔 Âm thanh hiệu ứng</span><button class="btn small light" data-act="toggle" data-k="sound">${s.settings.sound ? 'Bật' : 'Tắt'}</button></div>
           <div class="obj"><span>🔊 Đọc tiếng Anh</span><button class="btn small light" data-act="toggle" data-k="voice">${s.settings.voice ? 'Bật' : 'Tắt'}</button></div>
+          <button class="btn block light small" style="margin-top:8px" data-act="soundTest">🔊 Thử âm thanh</button>
         </div>
+        ${LQ.testPanelHTML()}
         <button class="btn block ghost" data-act="retakeTest">🧭 Làm lại bài xếp bậc</button>
         <div style="height:10px"></div>
         <button class="btn block ghost small" style="color:var(--bad);border-color:var(--bad)" data-act="askReset">Xóa dữ liệu, chơi lại từ đầu</button>

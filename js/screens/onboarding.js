@@ -19,7 +19,8 @@
         🍜 Chạy bàn, 🛵 giao hàng, nhận lương và tip<br>📈 Lên cấp, chọn môn phái, nâng cấp phòng trọ
       </div>
       <button class="btn block gold" data-act="toCreate">Bắt đầu cuộc đời mới</button>
-      <p class="center small muted">Dành cho người từ 18 tuổi. Tiến độ lưu trên máy này.</p>`,
+      <p class="center small muted">Dành cho người từ 18 tuổi. Tiến độ lưu trên máy này.</p>
+      ${LQ.testMode ? '<button class="btn block light" data-act="testAccount">🧪 Vào nhanh bằng tài khoản test</button>' : ''}`,
   };
   LQ.act.toCreate = () => LQ.go('create');
 
@@ -40,6 +41,8 @@
       <div class="choice-grid">
         ${C().looks.map(l => `<button class="choice ${draft.look === l.id ? 'on' : ''}" data-act="crSet" data-k="look" data-v="${l.id}"><span class="big">${l[draft.gender]}</span>${l.name}</button>`).join('')}
       </div>
+      <h3>Giọng đọc tiếng Anh</h3>
+      ${LQ.voicePickerHTML()}
       <h3>Tính cách</h3>
       <div class="choice-grid">
         ${C().personalities.map(p => `<button class="choice ${draft.personality === p.id ? 'on' : ''}" data-act="crSet" data-k="personality" data-v="${p.id}"><span class="big">${p.icon}</span>${p.name}<br><span class="small muted">${p.desc}</span></button>`).join('')}

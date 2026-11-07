@@ -50,6 +50,14 @@
     const [en, vi] = t(v);
     return { en, vi };
   }
+  // Mọi câu khách có thể nói về một món (dùng khi thu âm sẵn: tools/list-speech.js)
+  LQ.customerLines = w => {
+    const word = w.word.toLowerCase();
+    const [p, pv] = PURPOSE[word] || GENERIC;
+    const many = LQ.isPlural(word) && !LQ.isUncount(word);
+    const v = { a: LQ.art(word), it: many ? 'them' : 'it', one: many || LQ.isUncount(word) ? 'any' : 'one', vi: w.vi, p, pv };
+    return TEMPLATES.filter((t, k) => k !== 2 || /^for /.test(p)).map(t => t(v)[0]);
+  };
 
   let tab = 'sell';
   let cust = null;

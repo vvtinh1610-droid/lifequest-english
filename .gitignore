@@ -1,3 +1,6 @@
 tests/shots/
 node_modules/
 .DS_Store
+tools/.venv/
+tools/.models/
+audio-samples/

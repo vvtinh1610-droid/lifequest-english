@@ -21,9 +21,13 @@
         out.push(w);
       }
     };
-    tryPool((LQ.byTopic[word.topic] || []).filter(w => w.type === word.type || field !== 'word'));
+    // Đáp án nhiễu cùng loại với đáp án đúng (từ đi với từ, mẫu câu đi với mẫu câu) để không lộ đáp án
+    const isSentence = w => /[.?!]$/.test(w.word) || w.word.split(' ').length > 3;
+    const same = w => isSentence(w) === isSentence(word) && (w.type === word.type || (w.type !== 'phrase' && word.type !== 'phrase'));
+    tryPool((LQ.byTopic[word.topic] || []).filter(w => w.type === word.type));
+    tryPool((LQ.byTopic[word.topic] || []).filter(same));
+    tryPool(LQ.words.filter(same));
     tryPool(LQ.byTopic[word.topic] || []);
-    tryPool(LQ.words.filter(w => w.type === word.type));
     tryPool(LQ.words);
     return out.slice(0, n);
   }

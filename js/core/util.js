@@ -44,32 +44,119 @@ window.LQ = window.LQ || {};
     chooseVoice();
     window.speechSynthesis.onvoiceschanged = chooseVoice;
   }
+  // Giọng đọc: ưu tiên file thu sẵn (giọng AI Kokoro, xem tools/make-audio.py và js/audio.index.js);
+  // câu nào chưa có file thì dùng giọng có sẵn của máy (speechSynthesis).
   // LQ.speak(text): đọc ngay, cắt câu đang đọc. LQ.speakNext(text): đọc nối tiếp sau câu đang đọc.
-  function utter(text, rate, queue) {
+  LQ.audioKey = t => String(t).trim().replace(/\s+/g, ' ').toLowerCase();
+  const audioId = t => {
+    const idx = window.LQ_AUDIO && window.LQ_AUDIO.ids;
+    return idx ? idx[LQ.audioKey(t)] : null;
+  };
+  LQ.hasAudio = t => !!audioId(t);
+  // Ghi lại câu chưa có file, để lần thu âm sau bổ sung (xem trong console: LQ.missingAudio)
+  LQ.missingAudio = new Set();
+
+  let player = null;           // một thẻ <audio> dùng chung (iPhone chỉ cho phát lại thẻ đã được "mở khóa")
+  const queue = [];
+  let playing = false;
+  let current = null;
+  const settings = () => (LQ.state && LQ.state.settings) || {};
+
+  // Thư mục giọng: giọng người chơi chọn trước, rồi giọng còn lại (phòng khi câu đó chưa thu xong giọng này)
+  const folders = () => {
+    const v = (window.LQ_AUDIO && window.LQ_AUDIO.voices) || {};
+    const first = v[settings().voiceGender] || v.female;
+    return [first].concat(Object.values(v).filter(f => f !== first)).filter(Boolean);
+  };
+  let watchdog = null;
+  // Một số điện thoại Android không báo "đọc xong" → tự chuyển câu sau một khoảng thời gian ước lượng
+  const guard = (item, ms) => { clearTimeout(watchdog); watchdog = setTimeout(() => { if (current === item) next(); }, ms); };
+  LQ.audioLog = [];            // nhật ký gần nhất, dùng cho nút "Thử âm thanh"
+  const logA = m => { LQ.audioLog.push(m); if (LQ.audioLog.length > 12) LQ.audioLog.shift(); };
+
+  function next() {
+    clearTimeout(watchdog);
+    playing = false;
+    const item = queue.shift();
+    current = item || null;
+    if (!item) return;
+    playing = true;
+    const id = audioId(item.text);
+    if (id) playFile(item, id, folders(), 0);
+    else { LQ.missingAudio.add(item.text); synth(item); }
+  }
+  function playFile(item, id, dirs, k) {
+    if (k >= dirs.length) { synth(item); return; }
     try {
-      if (!('speechSynthesis' in window) || !text) return;
-      const s = LQ.state && LQ.state.settings;
-      if (s && s.voice === false) return;
-      const synth = window.speechSynthesis;
-      if (!queue) synth.cancel();
+      player = player || new Audio();
+      let failed = false;
+      // Lỗi tải / không phát được → thử giọng kia → cuối cùng đọc bằng giọng máy. Bỏ qua khi câu đã bị cắt ngang.
+      const fail = e => {
+        if (failed || current !== item) return;
+        failed = true;
+        logA(`lỗi file ${dirs[k]}/${id}: ${(e && (e.name || e.type)) || 'error'}`);
+        playFile(item, id, dirs, k + 1);
+      };
+      player.onended = () => { if (current === item) next(); };
+      player.onerror = fail;
+      player.src = `audio/${dirs[k]}/${id}.mp3`;
+      const s = settings();
+      const r = item.rate || s.rate || 0.85;   // "Vừa" = bình thường, "Chậm" / Nghe chậm = 0.75–0.8
+      player.playbackRate = r < 0.65 ? 0.75 : r < 0.8 ? 0.8 : 1;
+      const p = player.play();
+      if (p && p.then) p.then(() => logA(`phát file ${dirs[k]}`)).catch(fail);
+      guard(item, 4000 + item.text.length * 150);
+    } catch (e) { synth(item); }
+  }
+  function synth(item) {
+    try {
+      if (!('speechSynthesis' in window)) { logA('máy không có giọng đọc'); if (current === item) next(); return; }
       if (!voice) chooseVoice();
-      const u = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(item.text);
       u.lang = 'en-US';
       if (voice) u.voice = voice;
-      u.rate = rate || (s && s.rate) || 0.85;
-      synth.speak(u);
-      if (synth.paused) synth.resume();
-    } catch (e) { /* bỏ qua */ }
+      u.rate = item.rate || settings().rate || 0.85;
+      // Chỉ chuyển câu khi chính câu này đọc xong (câu bị hủy thì bỏ qua)
+      const done = () => { if (current === item) next(); };
+      u.onend = done;
+      u.onerror = e => { logA(`lỗi giọng máy: ${e && e.error}`); done(); };
+      window.speechSynthesis.speak(u);
+      if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+      logA(`giọng máy: ${voice ? voice.name : 'mặc định'}`);
+      guard(item, 3000 + item.text.length * 120);
+    } catch (e) { if (current === item) next(); }
+  }
+  function stopAll() {
+    clearTimeout(watchdog);
+    queue.length = 0;
+    current = null;
+    if (player) { player.onended = null; player.onerror = null; try { player.pause(); } catch (e) { /* bỏ qua */ } }
+    // Chỉ hủy giọng máy khi nó đang đọc: gọi cancel() thừa làm Chrome Android nuốt mất câu tiếp theo
+    try { const ss = window.speechSynthesis; if (ss && (ss.speaking || ss.pending)) ss.cancel(); } catch (e) { /* bỏ qua */ }
+    playing = false;
+  }
+  function utter(text, rate, append) {
+    if (!text || settings().voice === false) return;
+    if (!append) stopAll();
+    queue.push({ text: String(text), rate });
+    if (!playing) next();
   }
   LQ.speak = (text, rate) => utter(text, rate, false);
   LQ.speakNext = (text, rate) => utter(text, rate, true);
 
-  // Điện thoại (nhất là iPhone) chỉ cho phát giọng đọc sau lần chạm đầu tiên: mở khóa ngay lần chạm đó
+  // Điện thoại (nhất là iPhone) chỉ cho phát âm thanh sau lần chạm đầu tiên: mở khóa ngay lần chạm đó
   let unlocked = false;
   const unlock = () => {
-    if (unlocked || !('speechSynthesis' in window)) return;
+    if (unlocked) return;
     unlocked = true;
-    try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; window.speechSynthesis.speak(u); } catch (e) { /* bỏ qua */ }
+    try { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; window.speechSynthesis.speak(u); } } catch (e) { /* bỏ qua */ }
+    try {
+      if (!player) {
+        player = new Audio('audio/_silence.mp3');
+        const p = player.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+    } catch (e) { /* bỏ qua */ }
   };
   document.addEventListener('touchend', unlock, { once: true, passive: true });
   document.addEventListener('click', unlock, { once: true });

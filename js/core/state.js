@@ -21,8 +21,9 @@
     quests: { main: {}, mainIndex: 0, dailyDate: '', daily: [] },
     counters: {},          // bộ đếm sự kiện cho nhiệm vụ
     stats: { days: [], minutes: 0, sessions: 0, digs: 0, gold: 0, sells: 0, shifts: 0, correct: 0, wrong: 0, tests: [] },
-    settings: { rate: 0.85, sound: true, voice: true },
+    settings: { rate: 0.85, sound: true, voice: true, voiceGender: 'female' },   // voiceGender: female (Heart) | male (Adam)
     seenIntro: {},
+    scenes: {},            // id tình huống ca làm -> số lần đã chơi
   });
 
   LQ.load = () => {

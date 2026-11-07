@@ -77,6 +77,20 @@
   };
   LQ.cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
+  // ---------- Chọn giọng đọc (nam / nữ), lưu ở settings.voiceGender ----------
+  const VOICE_OPTS = [['female', '👩', 'Nữ', 'Female voice'], ['male', '👨', 'Nam', 'Male voice']];
+  LQ.voicePickerHTML = () => {
+    const cur = (LQ.state.settings && LQ.state.settings.voiceGender) || 'female';
+    return `<div class="choice-grid">${VOICE_OPTS.map(([id, ic, vi, en]) =>
+      `<button class="choice ${cur === id ? 'on' : ''}" data-act="setVoice" data-v="${id}"><span class="big">${ic}</span>${vi} · ${en}</button>`).join('')}</div>`;
+  };
+  LQ.act.setVoice = d => {
+    LQ.state.settings.voiceGender = d.v;
+    if (LQ.current.name === 'create') { const inp = LQ.$('#cr-name'); if (inp) inp.dispatchEvent(new Event('input')); }
+    LQ.render();
+    LQ.narrate('Hi! I will read English for you.', 'Xin chào! Tôi sẽ đọc tiếng Anh cho bạn.');
+  };
+
   // ---------- Hướng dẫn từng khu vực (song ngữ, tự đọc tiếng Anh) ----------
   const GUIDES = {
     map: { title: 'Bản đồ', icon: '🗺️', steps: [
@@ -98,10 +112,11 @@
       ['Buy food here when you need energy.', 'Mua đồ ăn ở đây khi cần năng lượng.'],
     ] },
     job: { title: 'Ca làm', icon: '💼', steps: [
-      ['A shift is a set of real work situations.', 'Một ca làm là một chuỗi tình huống công việc thật.'],
-      ['Listen, read, and choose the right answer.', 'Nghe, đọc và chọn câu trả lời đúng.'],
-      ['Every right answer gives you money.', 'Mỗi câu đúng được trả tiền công.'],
-      ['No mistakes? You get a big tip!', 'Không sai câu nào? Bạn được tip lớn!'],
+      ['In a shift, you work in real situations.', 'Trong ca làm, bạn làm việc trong các tình huống thật.'],
+      ['Listen to your boss, your co-workers and the customers.', 'Nghe quản lý, đồng nghiệp và khách nói.'],
+      ['Choose what to do or what to say.', 'Chọn việc cần làm hoặc câu cần nói.'],
+      ['If you are wrong, your senior will explain why.', 'Nếu sai, đàn anh đàn chị sẽ giải thích lý do.'],
+      ['Right the first time? You get paid more and get a tip!', 'Đúng ngay lần đầu? Bạn được trả nhiều hơn và có tip!'],
     ] },
     home: { title: 'Xóm trọ', icon: '🏚️', steps: [
       ['This is your room. Sleep here to get full energy.', 'Đây là phòng của bạn. Ngủ ở đây để hồi đầy năng lượng.'],

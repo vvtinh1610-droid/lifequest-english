@@ -218,7 +218,7 @@
     const vars = { a: LQ.art(item.word), A: LQ.cap(LQ.art(item.word)), w: item.vi, W: LQ.cap(item.vi) };
     const found = LQ.line('found', vars);
     const intro = kind === 'chest'
-      ? { en: `Wow! A treasure chest! ${gold} gold coins and ${vars.a}!`, vi: `Wow! Rương kho báu! ${gold} đồng vàng và ${item.vi}!` }
+      ? { en: `Wow! A treasure chest! Gold and ${vars.a}!`, vi: `Wow! Rương kho báu! Có vàng và ${item.vi}!` }
       : found;
     const tags = `${kind === 'chest' ? `<div class="tag gold">🧰 Rương kho báu · +${gold} ${LQ.COIN}</div> ` : ''}${isNew ? '<div class="tag gold">Từ mới!</div>' : ''}`;
     LQ.showWord(item, `${tags}<button class="btn block" data-act="closeAfter" data-en="Put it in my bag">Bỏ vào túi 🎒</button>`, intro);

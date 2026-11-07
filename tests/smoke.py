@@ -109,21 +109,33 @@ with sync_playwright() as p:
     click(page, '[data-act="buyFood"]', 1)
     shot(page, "13-food")
 
-    # Ca nhà hàng
+    # Ca nhà hàng (nhập vai): bấm Tiếp tục, chọn đáp án cho tới màn tổng kết
+    def play_shift(prefix):
+        for k in range(80):
+            if page.locator('[data-act="shDone"]').count():
+                shot(page, f"{prefix}-summary")
+                click(page, '[data-act="shDone"]')
+                return
+            opts = page.locator('.opt.role:not([disabled])')
+            if opts.count() and page.locator('#sh-fb [data-act="shNext"]').count() == 0:
+                if k < 6:
+                    shot(page, f"{prefix}-ask-{k}")
+                opts.first.click()
+                page.wait_for_timeout(150)
+                continue
+            if page.locator('[data-act="shNext"]').count():
+                if k < 3:
+                    shot(page, f"{prefix}-line-{k}")
+                page.locator('[data-act="shNext"]').last.click()
+                page.wait_for_timeout(150)
+                continue
+            errors.append(f"{prefix}: ca làm bị kẹt ở bước {k}")
+            return
+
     page.evaluate("LQ.go('job', {job: 'restaurant'})")
     shot(page, "14-job-intro")
     click(page, '[data-act="startShift"]')
-    for k in range(10):
-        if page.locator('[data-act="quizAnswer"]').count() == 0:
-            break
-        if k == 0:
-            shot(page, "15-quiz-q")
-        click(page, '[data-act="quizAnswer"]', 0)
-        if k == 0:
-            shot(page, "16-quiz-feedback")
-        click(page, '[data-act="quizNext"]')
-    shot(page, "17-quiz-summary")
-    click(page, '[data-act="quizDone"]')
+    play_shift("15-restaurant")
     page.wait_for_timeout(200)
     shot(page, "18-after-shift")
     page.evaluate("LQ.closeModal()")
@@ -139,12 +151,7 @@ with sync_playwright() as p:
     # Ca giao hàng
     page.evaluate("LQ.state.energy = 100; LQ.go('job', {job: 'delivery'})")
     click(page, '[data-act="startShift"]')
-    for k in range(10):
-        if page.locator('[data-act="quizAnswer"]').count() == 0:
-            break
-        click(page, '[data-act="quizAnswer"]', 1)
-        click(page, '[data-act="quizNext"]')
-    click(page, '[data-act="quizDone"]')
+    play_shift("19-delivery")
     page.evaluate("LQ.closeModal()")
 
     for name in ["review", "quests", "wordbook", "profile"]:
