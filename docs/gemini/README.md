@@ -14,19 +14,44 @@ Thứ tự: **Prompt 1** (giáo trình, làm 1 lần cho mỗi nghề) → Claud
 
 ---
 
-## Prompt 1 — Giáo trình nghề nhà hàng (làm 1 lần)
+## Prompt 1 — Giáo trình nghề nhà hàng (mỗi lần 1 vị trí)
+
+Đã xong: **dish** (Rửa chén) → `docs/gemini/outlines/restaurant-dish.json` (Claude Code đã duyệt và sửa).
+Làm tiếp theo **thứ tự ưu tiên** (vị trí người mới làm được trước, vị trí quản lý / chuyên gia để sau khi người chơi lên cấp):
+1. Nhân viên mới: busser, host, wait, cook (commis / phụ bếp), barista, cashier, clean, runner (Food Runner), reservation, cloakroom, valet, receiving (nhận hàng)
+2. Lành nghề: linecook, garde (Garde Manger), pastry, bartender, steward (Chief Steward), expo (Aboyeur / điều phối bếp)
+3. Chuyên gia: saucier, poissonnier, rotisseur, sommelier, mixologist, cdp (Chef de Partie), sous (Sous Chef), headwaiter (Maître d')
+4. Quản lý: manager (quản lý ca), arm (phó quản lý), banquet, exec (Bếp trưởng điều hành), gm (Giám đốc nhà hàng), fnb (Giám đốc ẩm thực)
 
 ```
 Bạn là chuyên gia đào tạo nhân viên nhà hàng ở Mỹ/Úc và là giáo viên tiếng Anh cho người Việt mất gốc (18+).
-Tôi đang làm game học tiếng Anh "LifeQuest English": người chơi đi làm trong nhà hàng, học tiếng Anh QUA từng thao tác nghề thật.
+Tôi đang làm game học tiếng Anh "LifeQuest English": người chơi đi làm trong nhà hàng, học tiếng Anh QUA từng thao tác nghề thật,
+như đang sống và làm việc thật trong nhà hàng.
 
-Hãy lập GIÁO TRÌNH CHI TIẾT cho nghề nhà hàng, chia theo VỊ TRÍ (role). Gồm ít nhất các vị trí:
-dish (Rửa chén), busser (Dọn bàn), host (Đón khách/Lễ tân), wait (Phục vụ bàn), barista (Pha chế cà phê/đồ uống),
-cashier (Thu ngân), cook (Phụ bếp/sơ chế), linecook (Đầu bếp đứng bếp), clean (Vệ sinh nhà hàng), manager (Quản lý ca).
-Mỗi vị trí 12–20 bài, đi từ ngày đầu đi làm đến thành thạo. Mỗi bài là MỘT công việc cụ thể, chia nhỏ tới từng thao tác tay
-(ví dụ rửa chảo: chọn mặt nhám của mút → không dùng búi sắt cho chảo chống dính → chà trong, ngoài, đáy, cán → chỗ cháy chà mạnh,
-chỗ khác chà nhẹ → xả → còn nhờn thì chà lại → lau khô → treo lên móc). Có cả an toàn, vệ sinh, giao tiếp với đồng nghiệp/khách,
-xử lý sự cố, và các đồ vật/dụng cụ có thật trong nhà hàng.
+Hãy lập GIÁO TRÌNH CỰC KỲ CHI TIẾT cho vị trí: <ĐIỀN 1 VỊ TRÍ, ví dụ: busser (Dọn bàn)>.
+16–20 bài, đi từ ngày đầu đi làm đến thành thạo. Mỗi bài là MỘT công việc cụ thể.
+
+CÁCH VIẾT MỖI THAO TÁC (bắt buộc, áp dụng cho MỌI thao tác, không chỉ vài cái):
+- Làm GÌ, bằng TAY nào / DỤNG CỤ gì, đặt Ở ĐÂU, theo THỨ TỰ nào.
+- DẤU HIỆU THÀNH CÔNG nhìn/nghe/sờ thấy được, và DẤU HIỆU THẤT BẠI.
+- Nếu thất bại thì LÀM GÌ tiếp, khi nào phải BÁO ai.
+Ví dụ chuẩn: "Chấm công vào ca bằng vân tay: đặt phẳng bụng ngón trỏ vào chính giữa ô quét, giữ yên 1–2 giây.
+Thành công: máy kêu 'bíp', đèn xanh, hiện tên, mã số nhân viên và giờ vào ca. Thất bại: đèn đỏ, chữ 'Error', không hiện tên
+→ lau khô ngón tay, đặt lại ngay giữa ô quét; 3 lần vẫn lỗi thì báo Quản lý ca ghi giờ bằng tay."
+Một thao tác có thể dài 1–3 câu. Mỗi bài 10–14 thao tác như vậy.
+
+LUẬT NHÀ (theo chuẩn vệ sinh an toàn thực phẩm Mỹ/Úc, KHÔNG được viết trái):
+- Chén dĩa, xoong chảo sau khi khử trùng thì để HONG KHÔ TỰ NHIÊN (air dry), không lau bằng khăn.
+- Dao muỗng nĩa sạch cất với CÁN hướng lên; không chạm tay vào đầu ăn, miệng ly, mặt trong chén dĩa sạch.
+- Ly thủy tinh, chảo chống dính: dùng mặt mềm, không dùng búi sắt. Thớt: đỏ = thịt sống, xanh lá = rau, vàng = gà, xanh dương = hải sản.
+- Rửa tay 20 giây có xà phòng: khi vào ca, sau khi đi vệ sinh, sau khi chạm rác / thịt sống / tiền / điện thoại, khi thay găng.
+- Không đổ dầu mỡ xuống cống. Đồ vỡ: không nhặt bằng tay không. Sàn ướt: đặt biển "Wet Floor".
+- Trong bếp gọi to khi di chuyển: "Behind!", "Corner!", "Hot!", "Sharp!". Đầu bếp được gọi chung là "Chef".
+- Gọi đúng chức danh: Chef / Executive Chef (bếp trưởng), Sous Chef (bếp phó), line cook (đầu bếp đứng bếp), Manager (quản lý ca).
+- Có số đo thật (nhiệt độ, thời gian) thì ghi cả °F và °C.
+
+Ngoài thao tác tay, mỗi vị trí phải có bài về: an toàn, vệ sinh, giao tiếp với đồng nghiệp / khách (câu tiếng Anh cụ thể),
+xử lý sự cố thường gặp, và tên các đồ vật / dụng cụ / máy móc có thật trong khu vực làm việc.
 
 Chỉ trả về JSON (không giải thích), đúng dạng:
 {
@@ -35,15 +60,19 @@ Chỉ trả về JSON (không giải thích), đúng dạng:
     { "id": "dish", "icon": "🧽", "en": "Dishwasher", "vi": "Rửa chén", "desc": "1 câu tiếng Việt mô tả vị trí",
       "lessons": [
         { "id": "dish_01", "title": "Tên bài tiếng Việt", "place": "sink",
-          "actions": ["8–12 thao tác/tình huống chi tiết, viết tiếng Việt, đúng thứ tự làm"],
+          "actions": ["10–14 thao tác chi tiết theo CÁCH VIẾT ở trên, tiếng Việt, đúng thứ tự làm"],
           "vocab": ["15–25 từ/cụm từ tiếng Anh chính của bài, dạng 'english = tiếng Việt'"] }
       ] }
   ]
 }
-Quy định: id bài = <id vị trí>_<2 chữ số> (dish_01, dish_02…). "place" chọn trong: door, dining, table, kitchen, fridge, sink,
+Quy định: id bài = <id vị trí>_<2 chữ số> (busser_01, busser_02…). "place" chọn trong: door, dining, table, kitchen, fridge, sink,
 counter, bar, storage, restroom, office, backdoor (hoặc đề xuất địa điểm mới, ghi kèm "newPlaces": {"id": {"en","vi","props":"3–5 emoji"}}).
-Vì dài, hãy trả lời theo từng phần: lần này chỉ làm 3 vị trí đầu (dish, busser, host). Tôi sẽ nói "tiếp" để làm các vị trí sau.
+Không lặp lại bài đã có ở vị trí khác (ví dụ chấm công, thay đồ đã có ở dish_01 thì chỉ nhắc ngắn).
+Chỉ làm 1 vị trí trong lần trả lời này.
 ```
+
+Nếu Gemini viết còn chung chung, gửi thêm: *"Viết lại, áp dụng CÁCH VIẾT MỖI THAO TÁC cho TẤT CẢ thao tác (làm gì, tay/dụng cụ, ở đâu,
+dấu hiệu thành công, dấu hiệu thất bại, xử lý khi thất bại). Chỉ trả về JSON."*
 
 ---
 
@@ -61,6 +90,9 @@ Viết 2 bài sau, dựa đúng giáo trình:
 
 YÊU CẦU NỘI DUNG
 - Dạy TAY NGHỀ THẬT, chi tiết từng thao tác theo đúng thứ tự trong "actions". Mỗi bài 8–12 câu hỏi ("ask").
+- Hỏi cả DẤU HIỆU thành công / thất bại và cách xử lý (ví dụ: "The screen shows a red light and 'Error'. What do you do?").
+- Đúng chuẩn vệ sinh Mỹ/Úc: chén dĩa khử trùng xong để hong khô tự nhiên (không lau khăn); dao muỗng nĩa sạch cất cán hướng lên;
+  ly và chảo chống dính dùng mặt mềm; rửa tay 20 giây; không đổ dầu xuống cống; đồ vỡ không nhặt tay không; gọi đầu bếp là "Chef".
 - Câu hỏi do CHÍNH NHÂN VẬT nói ("who" + "ask"), ví dụ: "Good. Now, how much soap do you use?" — không viết câu hỏi cụt kiểu "How much soap?".
 - Xen 1–3 câu thoại dẫn dắt ("who" + "en"), nhưng KHÔNG viết 2 câu thoại liền nhau nếu có thể gộp vào câu hỏi.
 - Lựa chọn sai phải là LỖI NGƯỜI MỚI HAY MẮC thật sự (không vô lý kiểu "dùng gối để lau sàn").
